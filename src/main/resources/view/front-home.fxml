@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.FrontHomeController"
+            stylesheets="@/style/home.css"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            styleClass="root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="22.0" styleClass="navbar">
+            <padding>
+                <Insets top="18" right="36" bottom="18" left="36"/>
+            </padding>
+
+            <children>
+                <Label text="AfkArt" styleClass="logo"/>
+
+                <Label text="Accueil" styleClass="nav-item"/>
+                <Label text="Blog" styleClass="nav-item"/>
+                <Label text="Événements" styleClass="nav-item"/>
+                <Label text="Produits" styleClass="nav-item"/>
+                <Label text="Mes propositions" styleClass="nav-item"/>
+                <Label text="Mes réservations" styleClass="nav-item"/>
+                <Label text="Livraisons" styleClass="nav-item"/>
+                <Label text="Suivi livraison" styleClass="nav-item"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <Button fx:id="loginButton" text="Se connecter" onAction="#goToLogin" styleClass="btn-primary"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <HBox alignment="CENTER_LEFT" spacing="70.0" styleClass="hero-section">
+            <padding>
+                <Insets top="50" right="60" bottom="50" left="60"/>
+            </padding>
+
+            <children>
+                <VBox spacing="24.0" prefWidth="620.0">
+                    <children>
+                        <Label text="Marketplace eco-responsable" styleClass="badge"/>
+
+                        <VBox spacing="2.0">
+                            <children>
+                                <Label text="L'art qui donne une" styleClass="title-main"/>
+                                <Label text="seconde vie" styleClass="title-accent"/>
+                            </children>
+                        </VBox>
+
+                        <Label text="Découvrez des créations uniques réalisées par des artisans locaux à partir de matériaux recyclés. Chaque pièce raconte une histoire."
+                               wrapText="true"
+                               styleClass="description"/>
+
+                        <HBox spacing="16.0">
+                            <children>
+                                <Button text="Explorer la galerie" styleClass="btn-primary"/>
+                                <Button text="Nos artisans" styleClass="btn-outline"/>
+                            </children>
+                        </HBox>
+
+                        <HBox spacing="55.0">
+                            <children>
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label text="150" styleClass="stat-number"/>
+                                        <Label text="Artisans" styleClass="stat-label"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label text="2500" styleClass="stat-number"/>
+                                        <Label text="Créations" styleClass="stat-label"/>
+                                    </children>
+                                </VBox>
+
+                                <VBox spacing="6.0">
+                                    <children>
+                                        <Label text="98" styleClass="stat-number"/>
+                                        <Label text="Satisfaits" styleClass="stat-label"/>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+
+                <StackPane prefWidth="600.0" prefHeight="620.0">
+                    <children>
+                        <ImageView fx:id="heroImageView"
+                                   fitWidth="600.0"
+                                   fitHeight="620.0"
+                                   preserveRatio="false"
+                                   smooth="true"/>
+                    </children>
+                </StackPane>
+            </children>
+        </HBox>
+    </center>
+</BorderPane>

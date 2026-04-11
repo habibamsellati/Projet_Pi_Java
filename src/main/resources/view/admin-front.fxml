@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.AdminFrontController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/style/role-space.css"
+            styleClass="root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="90.0" styleClass="header">
+            <children>
+                <Label text="AfkArt" styleClass="logo"/>
+
+                <Button text="Accueil" styleClass="nav-btn-flat"/>
+                <Button text="Blog" styleClass="nav-btn-flat"/>
+                <Button text="Livraisons" styleClass="nav-btn-flat"/>
+                <Button text="Suivi Livraison" styleClass="nav-btn-flat"/>
+                <Button text="Produits" styleClass="nav-btn-flat"/>
+                <Button text="Propositions" styleClass="nav-btn-flat"/>
+                <Button text="Événements" styleClass="nav-btn-flat"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <VBox alignment="CENTER_LEFT" spacing="4.0" styleClass="profile-box">
+                    <children>
+                        <Label fx:id="userNameLabel" text="Nom Utilisateur" onMouseClicked="#handleOpenProfile" styleClass="profile-name-clickable"/>
+                        <Label fx:id="userRoleLabel" text="(ADMIN)" styleClass="profile-role"/>
+                    </children>
+                    <padding>
+                        <Insets top="12" right="20" bottom="12" left="20"/>
+                    </padding>
+                </VBox>
+
+                <Button text="Aller au Dashboard" onAction="#handleOpenDashboard" styleClass="primary-header-btn"/>
+                <Button text="Se déconnecter" onAction="#handleLogout" styleClass="logout-btn"/>
+            </children>
+
+            <padding>
+                <Insets top="18" right="42" bottom="18" left="42"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="22.0">
+            <padding>
+                <Insets top="110" right="40" bottom="60" left="40"/>
+            </padding>
+
+            <children>
+                <Label text="Espace Admin" styleClass="page-title"/>
+                <Label text="Supervision generale, gestion des comptes et suivi des activites."
+                       styleClass="page-subtitle"/>
+
+                <HBox alignment="CENTER" spacing="34.0">
+                    <children>
+
+                        <VBox alignment="CENTER" spacing="18.0" prefWidth="360.0" prefHeight="260.0" styleClass="feature-card">
+                            <children>
+                                <Label text="👤" styleClass="card-icon"/>
+                                <Label text="Comptes" styleClass="card-title"/>
+                                <Label text="Creation, modification et suppression."
+                                       wrapText="true"
+                                       styleClass="card-subtitle"/>
+                            </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="18.0" prefWidth="360.0" prefHeight="260.0" styleClass="feature-card">
+                            <children>
+                                <Label text="📦" styleClass="card-icon"/>
+                                <Label text="Produits" styleClass="card-title"/>
+                                <Label text="Gestion des produits recyclables."
+                                       wrapText="true"
+                                       styleClass="card-subtitle"/>
+                            </children>
+                        </VBox>
+
+                        <VBox alignment="CENTER" spacing="18.0" prefWidth="360.0" prefHeight="260.0" styleClass="feature-card">
+                            <children>
+                                <Label text="🧾" styleClass="card-icon"/>
+                                <Label text="Reclamations" styleClass="card-title"/>
+                                <Label text="Suivi et resolution des tickets."
+                                       wrapText="true"
+                                       styleClass="card-subtitle"/>
+                            </children>
+                        </VBox>
+
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

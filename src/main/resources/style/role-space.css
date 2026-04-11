@@ -1,0 +1,136 @@
+.root {
+    -fx-background-color: #f8f6f2;
+    -fx-font-family: "Segoe UI", "Poppins", sans-serif;
+}
+
+.header {
+    -fx-background-color: #f6f3ee;
+    -fx-border-color: transparent transparent #e4ddd3 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 18;
+}
+
+.logo {
+    -fx-font-size: 38px;
+    -fx-text-fill: #5b4636;
+    -fx-font-family: "Georgia";
+    -fx-padding: 0 10 0 0;
+}
+
+.nav-btn-flat {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4a4037;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 10 8 10 8;
+}
+
+.nav-btn-flat:hover {
+    -fx-text-fill: #c97e4e;
+}
+
+.profile-box {
+    -fx-background-color: #f8f6f2;
+    -fx-border-color: #cfc5b7;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-min-width: 180;
+}
+
+.profile-name {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2621;
+}
+
+.profile-role {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6a6158;
+}
+
+.logout-btn {
+    -fx-background-color: #f8f6f2;
+    -fx-text-fill: #2f2621;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-border-color: #cfc5b7;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-padding: 18 28 18 28;
+    -fx-cursor: hand;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #efe8dd;
+}
+
+.content-area {
+    -fx-background-color: #faf9f6;
+}
+
+.page-title {
+    -fx-font-size: 54px;
+    -fx-text-fill: #3f3026;
+    -fx-font-family: "Georgia";
+    -fx-padding: 30 0 0 0;
+}
+
+.page-subtitle {
+    -fx-font-size: 18px;
+    -fx-text-fill: #564b43;
+    -fx-padding: 0 0 25 0;
+}
+
+.feature-card {
+    -fx-background-color: #f6f3ee;
+    -fx-background-radius: 28;
+    -fx-border-radius: 28;
+    -fx-padding: 35 25 35 25;
+}
+
+.card-icon {
+    -fx-background-color: #cae4c3;
+    -fx-background-radius: 50%;
+    -fx-min-width: 92;
+    -fx-min-height: 92;
+    -fx-alignment: center;
+    -fx-font-size: 34px;
+    -fx-padding: 24;
+}
+
+.card-title {
+    -fx-font-size: 28px;
+    -fx-text-fill: #3f3026;
+    -fx-font-family: "Georgia";
+}
+
+.card-subtitle {
+    -fx-font-size: 16px;
+    -fx-text-fill: #5a5148;
+}
+
+.primary-header-btn {
+    -fx-background-color: #c97e4e;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 24;
+    -fx-padding: 18 28 18 28;
+    -fx-cursor: hand;
+}
+
+.primary-header-btn:hover {
+    -fx-background-color: #b96f40;
+}
+
+.profile-name-clickable {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2621;
+    -fx-cursor: hand;
+}
+
+.profile-name-clickable:hover {
+    -fx-text-fill: #c97e4e;
+}

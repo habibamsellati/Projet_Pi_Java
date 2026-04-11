@@ -1,0 +1,180 @@
+.root {
+    -fx-background-color: #fbf9f5;
+    -fx-font-family: "Segoe UI", "Poppins", sans-serif;
+}
+
+.header {
+    -fx-background-color: #f6f3ee;
+    -fx-border-color: transparent transparent #e4ddd3 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 18;
+}
+
+.logo {
+    -fx-font-size: 38px;
+    -fx-text-fill: #5b4636;
+    -fx-font-family: "Georgia";
+    -fx-padding: 0 10 0 0;
+}
+
+.nav-btn-flat {
+    -fx-background-color: transparent;
+    -fx-text-fill: #4a4037;
+    -fx-font-size: 16px;
+    -fx-cursor: hand;
+    -fx-padding: 10 8 10 8;
+}
+
+.nav-btn-flat:hover {
+    -fx-text-fill: #c97e4e;
+}
+
+.profile-box {
+    -fx-background-color: #f8f6f2;
+    -fx-border-color: #cfc5b7;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-min-width: 180;
+}
+
+.profile-name {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2621;
+}
+
+.profile-role {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #6a6158;
+}
+
+.logout-btn {
+    -fx-background-color: #f8f6f2;
+    -fx-text-fill: #2f2621;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-border-color: #cfc5b7;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-padding: 18 28 18 28;
+    -fx-cursor: hand;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #efe8dd;
+}
+
+.content-area {
+    -fx-background-color: #fbf9f5;
+}
+
+.badge-label {
+    -fx-background-color: #cae4c3;
+    -fx-background-radius: 999;
+    -fx-text-fill: #49603f;
+    -fx-font-size: 16px;
+    -fx-padding: 12 24 12 24;
+}
+
+.hero-title {
+    -fx-font-size: 68px;
+    -fx-text-fill: #3f3026;
+    -fx-font-family: "Georgia";
+}
+
+.hero-title-accent {
+    -fx-font-size: 68px;
+    -fx-text-fill: #c97e4e;
+    -fx-font-family: "Georgia";
+}
+
+.hero-description {
+    -fx-font-size: 18px;
+    -fx-text-fill: #554b44;
+    -fx-line-spacing: 8px;
+}
+
+.primary-cta {
+    -fx-background-color: #c97e4e;
+    -fx-text-fill: white;
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 28;
+    -fx-padding: 16 28 16 28;
+    -fx-cursor: hand;
+}
+
+.primary-cta:hover {
+    -fx-background-color: #b96f40;
+}
+
+.secondary-cta {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3f3026;
+    -fx-font-size: 18px;
+    -fx-border-color: #7b6f66;
+    -fx-border-radius: 28;
+    -fx-background-radius: 28;
+    -fx-padding: 16 28 16 28;
+    -fx-cursor: hand;
+}
+
+.secondary-cta:hover {
+    -fx-background-color: #f2ece4;
+}
+
+.stat-number {
+    -fx-font-size: 44px;
+    -fx-text-fill: #c97e4e;
+    -fx-font-family: "Georgia";
+}
+
+.stat-label {
+    -fx-font-size: 17px;
+    -fx-text-fill: #4d433c;
+}
+
+.hero-image-box {
+    -fx-background-color: linear-gradient(to right, #2a2a31, #181818);
+    -fx-background-radius: 30;
+    -fx-border-radius: 30;
+}
+
+.image-placeholder {
+    -fx-text-fill: #d8d8d8;
+    -fx-font-size: 24px;
+}
+
+.floating-card {
+    -fx-background-color: white;
+    -fx-background-radius: 22;
+    -fx-border-radius: 22;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.10), 18, 0.15, 0, 4);
+}
+
+.floating-icon {
+    -fx-font-size: 26px;
+}
+
+.floating-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2621;
+}
+
+.floating-subtitle {
+    -fx-font-size: 15px;
+    -fx-text-fill: #655b54;
+}
+
+.profile-name-clickable {
+    -fx-font-size: 17px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2621;
+    -fx-cursor: hand;
+}
+
+.profile-name-clickable:hover {
+    -fx-text-fill: #c97e4e;
+}

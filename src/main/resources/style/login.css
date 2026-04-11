@@ -1,0 +1,147 @@
+.root {
+    -fx-background-color: #f6f6f6;
+}
+
+/* Header */
+.header {
+    -fx-background-color: #f3efec;
+    -fx-border-color: #e4ddd7;
+    -fx-border-width: 0 0 1 0;
+}
+
+.logo {
+    -fx-font-size: 30px;
+    -fx-font-family: "Georgia";
+    -fx-text-fill: #6f4a3a;
+    -fx-font-weight: normal;
+}
+
+.nav-btn-flat {
+    -fx-background-color: transparent;
+    -fx-text-fill: #3f3a37;
+    -fx-font-size: 15px;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+}
+
+.nav-btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #c9beb5;
+    -fx-border-radius: 28;
+    -fx-background-radius: 28;
+    -fx-text-fill: #2f2a28;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 24 10 24;
+    -fx-cursor: hand;
+}
+
+.nav-btn-primary {
+    -fx-background-color: #cb7b4f;
+    -fx-text-fill: white;
+    -fx-background-radius: 28;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 26 10 26;
+    -fx-cursor: hand;
+}
+
+/* Card */
+.card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 22;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 18, 0.15, 0, 4);
+}
+
+.title {
+    -fx-font-size: 30px;
+    -fx-font-family: "Georgia";
+    -fx-text-fill: #b56e49;
+}
+
+.subtitle {
+    -fx-font-size: 14px;
+    -fx-text-fill: #4a4a4a;
+    -fx-padding: 0 0 10 0;
+}
+
+.field-label-chip {
+    -fx-background-color: #f8d9d5;
+    -fx-background-radius: 8;
+    -fx-text-fill: #c25757;
+    -fx-font-weight: bold;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 14px;
+}
+
+.field-label {
+    -fx-text-fill: #2a2a2a;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+}
+
+.input {
+    -fx-pref-height: 48;
+    -fx-background-color: white;
+    -fx-border-color: #d8d8d8;
+    -fx-border-radius: 14;
+    -fx-background-radius: 14;
+    -fx-padding: 0 14 0 14;
+    -fx-font-size: 14px;
+    -fx-prompt-text-fill: #b7b7b7;
+}
+
+.btn-primary {
+    -fx-background-color: #c9784e;
+    -fx-text-fill: white;
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 28;
+    -fx-pref-height: 48;
+    -fx-cursor: hand;
+    -fx-padding: 0 18 0 18;
+}
+
+.divider {
+    -fx-text-fill: #888888;
+    -fx-font-size: 13px;
+}
+
+.btn-google {
+    -fx-background-color: white;
+    -fx-border-color: #d9d0c8;
+    -fx-border-radius: 28;
+    -fx-background-radius: 28;
+    -fx-pref-height: 48;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222222;
+    -fx-cursor: hand;
+}
+
+.btn-facebook {
+    -fx-background-color: #eef1fa;
+    -fx-text-fill: #385898;
+    -fx-background-radius: 28;
+    -fx-pref-height: 48;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.forgot-link {
+    -fx-text-fill: #c9784e;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+}
+
+.bottom-text {
+    -fx-text-fill: #2f2f2f;
+    -fx-font-size: 14px;
+}
+
+.signup-link {
+    -fx-text-fill: #c9784e;
+    -fx-font-size: 14px;
+    -fx-border-color: transparent;
+}

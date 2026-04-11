@@ -1,0 +1,181 @@
+.root {
+    -fx-background-color: #fbf8f3;
+    -fx-font-family: "Segoe UI", "Poppins", sans-serif;
+}
+
+.header {
+    -fx-background-color: #f6f1e8;
+    -fx-border-color: transparent transparent #e2d7c8 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 18;
+}
+
+.logo {
+    -fx-font-size: 34px;
+    -fx-text-fill: #6e4f3d;
+    -fx-font-family: "Georgia";
+    -fx-padding: 0 10 0 0;
+}
+
+.nav-btn-flat {
+    -fx-background-color: transparent;
+    -fx-text-fill: #5a4b40;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+    -fx-padding: 8 8 8 8;
+}
+
+.nav-btn-flat:hover {
+    -fx-text-fill: #c4865b;
+}
+
+.profile-box {
+    -fx-background-color: #faf6f0;
+    -fx-border-color: #dccbb8;
+    -fx-border-radius: 22;
+    -fx-background-radius: 22;
+    -fx-min-width: 190;
+}
+
+.profile-name-clickable {
+    -fx-font-size: 16px;
+    -fx-font-weight: bold;
+    -fx-font-style: italic;
+    -fx-text-fill: #b5835a;
+    -fx-cursor: hand;
+}
+
+.profile-name-clickable:hover {
+    -fx-text-fill: #9f6c46;
+}
+
+.profile-role {
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7a695c;
+}
+
+.logout-btn {
+    -fx-background-color: #faf6f0;
+    -fx-text-fill: #3c3028;
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-border-color: #dccbb8;
+    -fx-border-radius: 22;
+    -fx-background-radius: 22;
+    -fx-padding: 16 24 16 24;
+    -fx-cursor: hand;
+}
+
+.logout-btn:hover {
+    -fx-background-color: #f2e8dc;
+}
+
+.profile-top-card {
+    -fx-background-color: linear-gradient(to right, #fbf7f0, #f4ede3);
+    -fx-background-radius: 24;
+    -fx-border-radius: 24;
+    -fx-border-color: #dfcfbe;
+    -fx-border-width: 1.2;
+}
+
+.big-avatar {
+    -fx-font-size: 42px;
+    -fx-background-color: #fffdfa;
+    -fx-background-radius: 50%;
+    -fx-border-color: #e2d2c0;
+    -fx-border-radius: 50%;
+    -fx-padding: 18;
+}
+
+.big-name {
+    -fx-font-size: 22px;
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-text-fill: #b5835a;
+}
+
+.big-email {
+    -fx-font-size: 15px;
+    -fx-text-fill: #6f635a;
+}
+
+.info-card {
+    -fx-background-color: #f8f3ec;
+    -fx-background-radius: 18;
+    -fx-border-radius: 18;
+    -fx-border-color: #dccbb8;
+    -fx-border-width: 1.2;
+}
+
+.info-title-small {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8b7869;
+}
+
+.info-value {
+    -fx-font-size: 15px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #3d3027;
+    -fx-font-family: "Georgia";
+}
+
+
+.form-card {
+    -fx-background-color: #fffdfa;
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-border-color: #dccbb8;
+    -fx-border-width: 1.2;
+}
+
+.section-title {
+    -fx-font-size: 16px;
+    -fx-font-family: "Georgia";
+    -fx-font-style: italic;
+    -fx-font-weight: bold;
+    -fx-text-fill: #7e5b44;
+}
+
+.field-label {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #4e4036;
+}
+
+.input {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-border-color: #dccbb8;
+    -fx-border-width: 1.1;
+    -fx-padding: 8 12 8 12;
+    -fx-font-size: 12px;
+    -fx-text-fill: #3a2f28;
+}
+
+.input:focused {
+    -fx-border-color: #c89b79;
+    -fx-background-color: #fffdf9;
+}
+
+.primary-btn:hover {
+    -fx-background-color: #b96f40;
+}
+
+.primary-btn {
+    -fx-background-color: #c97e4e;
+    -fx-text-fill: white;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-background-radius: 18;
+    -fx-padding: 10 18 10 18;
+    -fx-cursor: hand;
+}
+
+.message-label {
+    -fx-font-size: 12px;
+    -fx-text-fill: #8c4f38;
+}

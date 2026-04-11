@@ -1,0 +1,125 @@
+.root {
+    -fx-background-color: #f7f3ee;
+    -fx-font-family: "Segoe UI";
+}
+
+.navbar {
+    -fx-background-color: #f5efe9;
+    -fx-border-color: transparent transparent #e8dfd6 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.logo {
+    -fx-font-size: 30px;
+    -fx-font-family: "Georgia";
+    -fx-font-weight: bold;
+    -fx-text-fill: #7b4b3a;
+}
+
+.nav-item {
+    -fx-font-size: 16px;
+    -fx-text-fill: #4b4b4b;
+}
+
+.hero-section {
+    -fx-background-color: #f7f3ee;
+}
+
+.badge {
+    -fx-background-color: #dff3e2;
+    -fx-text-fill: #2f7d32;
+    -fx-background-radius: 24;
+    -fx-padding: 8 16 8 16;
+    -fx-font-size: 14px;
+}
+
+.title-main {
+    -fx-font-size: 56px;
+    -fx-text-fill: #2d2d2d;
+    -fx-font-family: "Georgia";
+}
+
+.title-accent {
+    -fx-font-size: 56px;
+    -fx-text-fill: #c97c50;
+    -fx-font-family: "Georgia";
+}
+
+.description {
+    -fx-font-size: 19px;
+    -fx-text-fill: #666666;
+    -fx-line-spacing: 6px;
+}
+
+.btn-primary {
+    -fx-background-color: #c97c50;
+    -fx-text-fill: white;
+    -fx-background-radius: 26;
+    -fx-padding: 12 24 12 24;
+    -fx-font-weight: bold;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #b86e44;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-border-color: #a39a92;
+    -fx-text-fill: #333333;
+    -fx-border-radius: 26;
+    -fx-background-radius: 26;
+    -fx-padding: 12 24 12 24;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.btn-outline:hover {
+    -fx-background-color: #ece7e2;
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+}
+
+.stat-number {
+    -fx-font-size: 48px;
+    -fx-font-family: "Georgia";
+    -fx-text-fill: #c97c50;
+}
+
+.stat-label {
+    -fx-font-size: 18px;
+    -fx-text-fill: #555555;
+}
+
+.hero-image-box {
+    -fx-background-color: transparent;
+}
+
+.hero-image {
+}
+
+.floating-card {
+    -fx-background-color: white;
+    -fx-background-radius: 18;
+    -fx-padding: 14 18 14 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.18), 14, 0.18, 0, 4);
+}
+
+.floating-icon {
+    -fx-font-size: 20px;
+}
+
+.floating-title {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2d2d2d;
+}
+
+.floating-subtitle {
+    -fx-font-size: 13px;
+    -fx-text-fill: #666666;
+}

@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.ClientDashboardController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/style/client-dashboard.css"
+            styleClass="root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="90.0" styleClass="header">
+            <children>
+                <Label text="AfkArt" styleClass="logo"/>
+
+                <Button text="Accueil" styleClass="nav-btn-flat"/>
+                <Button text="Blog" styleClass="nav-btn-flat"/>
+                <Button text="Livraisons" styleClass="nav-btn-flat"/>
+                <Button text="Suivi Livraison" styleClass="nav-btn-flat"/>
+                <Button text="Produits" styleClass="nav-btn-flat"/>
+                <Button text="Propositions" styleClass="nav-btn-flat"/>
+                <Button text="Événements" styleClass="nav-btn-flat"/>
+                <Button text="Mes réservations" styleClass="nav-btn-flat"/>
+                <Button text="Réclamations" styleClass="nav-btn-flat"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <VBox alignment="CENTER_LEFT" spacing="4.0" styleClass="profile-box">
+                    <children>
+                        <Label fx:id="userNameLabel" text="Nom Utilisateur" onMouseClicked="#handleOpenProfile" styleClass="profile-name-clickable"/>
+                        <Label fx:id="userRoleLabel" text="(CLIENT)" styleClass="profile-role"/>
+                    </children>
+                    <padding>
+                        <Insets top="12" right="20" bottom="12" left="20"/>
+                    </padding>
+                </VBox>
+
+                <Button text="Se déconnecter" onAction="#handleLogout" styleClass="logout-btn"/>
+            </children>
+
+            <padding>
+                <Insets top="18" right="42" bottom="18" left="42"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <AnchorPane styleClass="content-area">
+
+            <HBox alignment="CENTER_LEFT" spacing="80.0"
+                  AnchorPane.topAnchor="70.0"
+                  AnchorPane.leftAnchor="110.0"
+                  AnchorPane.rightAnchor="110.0">
+
+                <children>
+
+                    <VBox spacing="24.0" prefWidth="620.0">
+                        <children>
+                            <Label text="🌿 Marketplace eco-responsable" styleClass="badge-label"/>
+
+                            <VBox spacing="4.0">
+                                <children>
+                                    <Label text="L'art qui donne une" styleClass="hero-title"/>
+                                    <Label text="seconde vie" styleClass="hero-title-accent"/>
+                                </children>
+                            </VBox>
+
+                            <Label text="Decouvrez des creations uniques realisees par des artisans locaux a partir de materiaux recycles. Chaque piece raconte une histoire."
+                                   wrapText="true"
+                                   styleClass="hero-description"/>
+
+                            <HBox spacing="18.0">
+                                <children>
+                                    <Button text="Explorer la galerie" styleClass="primary-cta"/>
+                                    <Button text="Nos artisans" styleClass="secondary-cta"/>
+                                </children>
+                            </HBox>
+
+                            <HBox spacing="70.0">
+                                <children>
+                                    <VBox spacing="5.0">
+                                        <children>
+                                            <Label text="150" styleClass="stat-number"/>
+                                            <Label text="Artisans" styleClass="stat-label"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                        <children>
+                                            <Label text="2500" styleClass="stat-number"/>
+                                            <Label text="Creations" styleClass="stat-label"/>
+                                        </children>
+                                    </VBox>
+
+                                    <VBox spacing="5.0">
+                                        <children>
+                                            <Label text="98" styleClass="stat-number"/>
+                                            <Label text="98% Satisfaits" styleClass="stat-label"/>                                        </children>
+                                    </VBox>
+                                </children>
+                            </HBox>
+                        </children>
+                    </VBox>
+
+                    <StackPane prefWidth="650.0" prefHeight="560.0">
+                        <children>
+                            <AnchorPane prefWidth="650.0" prefHeight="560.0" styleClass="hero-image-box">
+                                <children>
+                                    <Label text="Image produit / artisanat"
+                                           layoutX="190.0"
+                                           layoutY="250.0"
+                                           styleClass="image-placeholder"/>
+
+                                    <HBox alignment="CENTER_LEFT" spacing="14.0"
+                                          layoutX="35.0"
+                                          layoutY="420.0"
+                                          styleClass="floating-card">
+                                        <children>
+                                            <Label text="🛡" styleClass="floating-icon"/>
+                                            <VBox spacing="4.0">
+                                                <children>
+                                                    <Label text="100% Local" styleClass="floating-title"/>
+                                                    <Label text="Artisans francais" styleClass="floating-subtitle"/>
+                                                </children>
+                                            </VBox>
+                                        </children>
+                                        <padding>
+                                            <Insets top="14" right="18" bottom="14" left="18"/>
+                                        </padding>
+                                    </HBox>
+                                </children>
+                            </AnchorPane>
+                        </children>
+                    </StackPane>
+
+                </children>
+            </HBox>
+        </AnchorPane>
+    </center>
+</BorderPane>

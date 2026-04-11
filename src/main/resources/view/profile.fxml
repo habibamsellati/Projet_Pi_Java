@@ -1,0 +1,187 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/8"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.ProfileController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/style/profile.css"
+            styleClass="root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="90.0" styleClass="header">
+            <children>
+                <Label text="AfkArt" styleClass="logo"/>
+
+                <Button text="Accueil" onAction="#handleBackToDashboard" styleClass="nav-btn-flat"/>
+                <Button text="Blog" styleClass="nav-btn-flat"/>
+                <Button text="Livraisons" styleClass="nav-btn-flat"/>
+                <Button text="Suivi Livraison" styleClass="nav-btn-flat"/>
+                <Button text="Produits" styleClass="nav-btn-flat"/>
+                <Button text="Propositions" styleClass="nav-btn-flat"/>
+                <Button text="Événements" styleClass="nav-btn-flat"/>
+                <Button text="Réservations" styleClass="nav-btn-flat"/>
+                <Button text="Réclamations" styleClass="nav-btn-flat"/>
+
+                <Region HBox.hgrow="ALWAYS"/>
+
+                <VBox alignment="CENTER_LEFT" spacing="4.0" styleClass="profile-box">
+                    <children>
+                        <Label fx:id="userNameLabel" text="Nom Utilisateur" styleClass="profile-name-clickable"/>
+                        <Label fx:id="userRoleLabel" text="(ROLE)" styleClass="profile-role"/>
+                    </children>
+                    <padding>
+                        <Insets top="12" right="20" bottom="12" left="20"/>
+                    </padding>
+                </VBox>
+
+                <Button text="Se déconnecter" onAction="#handleLogout" styleClass="logout-btn"/>
+            </children>
+
+            <padding>
+                <Insets top="18" right="42" bottom="18" left="42"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="TOP_CENTER" spacing="24.0">
+            <padding>
+                <Insets top="28" right="30" bottom="30" left="30"/>
+            </padding>
+
+            <children>
+
+                <HBox spacing="18.0" alignment="CENTER_LEFT" styleClass="profile-top-card" maxWidth="950.0">
+                    <children>
+                        <Label text="👤" styleClass="big-avatar"/>
+
+                        <VBox spacing="8.0">
+                            <children>
+                                <Label fx:id="profileNameLabel" text="Nom complet" styleClass="big-name"/>
+                                <Label fx:id="profileEmailLabel" text="email@example.com" styleClass="big-email"/>
+                            </children>
+                        </VBox>
+                    </children>
+                    <padding>
+                        <Insets top="22" right="28" bottom="22" left="28"/>
+                    </padding>
+                </HBox>
+
+                <HBox alignment="TOP_CENTER" spacing="28.0">
+
+                    <children>
+
+                        <VBox spacing="18.0" prefWidth="520.0">
+
+                            <HBox spacing="14.0">
+                                <children>
+                                    <VBox spacing="8.0" prefWidth="253.0" styleClass="info-card">
+                                        <children>
+                                            <Label text="ROLE" styleClass="info-title-small"/>
+                                            <Label fx:id="roleValueLabel" text="CLIENT" styleClass="info-value"/>
+                                        </children>
+                                        <padding>
+                                            <Insets top="16" right="18" bottom="16" left="18"/>
+                                        </padding>
+                                    </VBox>
+
+                                    <VBox spacing="8.0" prefWidth="253.0" styleClass="info-card">
+                                        <children>
+                                            <Label text="SEXE" styleClass="info-title-small"/>
+                                            <Label fx:id="sexeValueLabel" text="FEMME" styleClass="info-value"/>
+                                        </children>
+                                        <padding>
+                                            <Insets top="16" right="18" bottom="16" left="18"/>
+                                        </padding>
+                                    </VBox>
+                                </children>
+                            </HBox>
+
+                            <HBox spacing="14.0">
+                                <children>
+                                    <VBox spacing="8.0" prefWidth="253.0" styleClass="info-card">
+                                        <children>
+                                            <Label text="STATUT" styleClass="info-title-small"/>
+                                            <Label fx:id="statutValueLabel" text="Actif" styleClass="info-value"/>
+                                        </children>
+                                        <padding>
+                                            <Insets top="16" right="18" bottom="16" left="18"/>
+                                        </padding>
+                                    </VBox>
+
+                                    <VBox spacing="8.0" prefWidth="253.0" styleClass="info-card">
+                                        <children>
+                                            <Label text="DATE DE CRÉATION" styleClass="info-title-small"/>
+                                            <Label fx:id="dateCreationValueLabel" text="22/02/2026" styleClass="info-value"/>
+                                        </children>
+                                        <padding>
+                                            <Insets top="16" right="18" bottom="16" left="18"/>
+                                        </padding>
+                                    </VBox>
+                                </children>
+                            </HBox>
+
+                            <VBox spacing="10.0" styleClass="form-card">
+                                <children>
+                                    <Label text="Informations personnelles" styleClass="section-title"/>
+
+                                    <Label text="Nom" styleClass="field-label"/>
+                                    <TextField fx:id="nomField" styleClass="input"/>
+
+                                    <Label text="Prénom" styleClass="field-label"/>
+                                    <TextField fx:id="prenomField" styleClass="input"/>
+
+                                    <Label text="Email" styleClass="field-label"/>
+                                    <TextField fx:id="emailField" styleClass="input"/>
+
+                                    <Button text="Mettre à jour le profil"
+                                            onAction="#handleUpdateProfile"
+                                            maxWidth="Infinity"
+                                            styleClass="primary-btn"/>
+                                </children>
+                                <padding>
+                                    <Insets top="20" right="20" bottom="20" left="20"/>
+                                </padding>
+                            </VBox>
+
+                        </VBox>
+
+                        <VBox spacing="14.0" prefWidth="360.0" styleClass="form-card">
+                            <children>
+                                <Label text="Mettre à jour le mot de passe" styleClass="section-title"/>
+
+                                <Label text="Nouveau mot de passe" styleClass="field-label"/>
+                                <PasswordField fx:id="newPasswordField" styleClass="input"/>
+
+                                <Label text="Confirmer le mot de passe" styleClass="field-label"/>
+                                <PasswordField fx:id="confirmPasswordField" styleClass="input"/>
+
+                                <Button text="Enregistrer"
+                                        onAction="#handleUpdatePassword"
+                                        maxWidth="Infinity"
+                                        styleClass="primary-btn"/>
+
+                                <Label fx:id="messageLabel" text="" wrapText="true" styleClass="message-label"/>
+                            </children>
+                            <padding>
+                                <Insets top="24" right="22" bottom="22" left="22"/>
+                            </padding>
+                        </VBox>
+
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>
