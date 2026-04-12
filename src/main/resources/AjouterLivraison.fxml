@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="650.0" prefWidth="800.0" style="-fx-background-color: #F4F4F4;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.AjouterLivraisoncontrollers">
+    <children>
+        <VBox alignment="TOP_CENTER" layoutX="175.0" layoutY="14.0" prefWidth="450.0" spacing="20.0" style="-fx-background-color: white; -fx-background-radius: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);">
+            <children>
+                <Label fx:id="labelTitre" text="Ajouter une Livraison" textFill="#5d4037">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="10.0" />
+                    </VBox.margin>
+                </Label>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555555;" text="Date de livraison" />
+                        <DatePicker fx:id="datePicker" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="Sélectionnez une date" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555555;" text="Adresse complète" />
+                        <TextField fx:id="adresseField" prefHeight="40.0" promptText="Ex: 123 Rue de l'Art, Tunis" style="-fx-background-radius: 8;" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555555;" text="Numéro de Commande" />
+                        <ComboBox fx:id="commandeCombo" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="--- Choisir une commande ---" />
+                    </children>
+                </VBox>
+
+                <VBox spacing="8.0">
+                    <children>
+                        <Label style="-fx-font-weight: bold; -fx-text-fill: #555555;" text="Assigner à un Livreur" />
+                        <ComboBox fx:id="livreurCombo" maxWidth="1.7976931348623157E308" prefHeight="40.0" promptText="--- Sélectionner un livreur ---" />
+                    </children>
+                </VBox>
+
+                <Button fx:id="btnCreer" maxWidth="1.7976931348623157E308" onAction="#handleCreer" prefHeight="50.0" style="-fx-background-color: #8D6E63; -fx-text-fill: white; -fx-background-radius: 30; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" text="Créer la livraison">
+                    <VBox.margin>
+                        <Insets top="15.0" />
+                    </VBox.margin>
+                </Button>
+
+                <Hyperlink fx:id="btnRetour" onAction="#retourListe" text="← Retour à la liste" textFill="#888888">
+                    <VBox.margin>
+                        <Insets top="5.0" />
+                    </VBox.margin>
+                </Hyperlink>
+            </children>
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
+            </padding>
+        </VBox>
+    </children>
+</AnchorPane>
