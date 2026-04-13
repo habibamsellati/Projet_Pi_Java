@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.AjouterPropositionController">
+    <VBox spacing="18" alignment="TOP_CENTER" style="-fx-padding: 35;">
+        <Label text="Soumettre une Proposition" style="-fx-font-size: 30; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+        <Label text="Négociez le prix d'un produit recyclable" style="-fx-text-fill: #A1887F;"/>
+
+        <VBox spacing="14" style="-fx-max-width: 760; -fx-background-color: white; -fx-padding: 22; -fx-background-radius: 12;">
+            <Label text="Produit concerné" style="-fx-font-weight: bold; -fx-font-size: 15;"/>
+            <VBox spacing="6">
+                <Label text="Choisir le produit *" style="-fx-font-weight: bold;"/>
+                <HBox spacing="10">
+                    <ComboBox fx:id="cbProduits" HBox.hgrow="ALWAYS" promptText="Sélectionnez un produit dans la liste"/>
+                    <Button text="Actualiser la liste" onAction="#handleActualiserProduits"/>
+                </HBox>
+            </VBox>
+
+            <HBox spacing="18">
+                <ImageView fx:id="imageViewProduit" fitWidth="150" fitHeight="110" preserveRatio="true"
+                           style="-fx-background-color: #F2EEE8; -fx-border-color: #D7CCC8;"/>
+                <VBox spacing="8" HBox.hgrow="ALWAYS">
+                    <Label fx:id="lblProduitInfo" text="Sélectionnez un produit ci-dessus." wrapText="true"/>
+                    <HBox spacing="10">
+                        <Label text="Image (colonne image) :" style="-fx-font-weight: bold;"/>
+                        <Label fx:id="lblProduitImageName" text="-"/>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <Label text="Votre offre" style="-fx-font-weight: bold; -fx-font-size: 15;"/>
+            <Label text="Titre *" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="tfTitre" promptText="Ex: Offre d'achat"/>
+
+            <Label text="Description *" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="taDescription" promptText="Expliquez votre proposition..." prefHeight="120"/>
+
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Prix proposé (DT) *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfPrixPropose" promptText="Ex: 25.0"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Téléphone (8 chiffres) *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfTelephone" promptText="Ex: 22111222"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Calculer différence (%)" onAction="#handleCalculerDiff"/>
+                <Label text="Différence :" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblDiffPourcentage" text="-" style="-fx-font-weight: bold; -fx-text-fill: #70554C;"/>
+            </HBox>
+
+            <VBox spacing="10" styleClass="upload-box" style="-fx-padding: 18;">
+                <Label text="📷" style="-fx-font-size: 28;"/>
+                <Label text="Joindre une image (optionnel)" style="-fx-font-weight: bold;"/>
+                <Button text="Choisir un fichier" onAction="#handleUploadImage"/>
+            </VBox>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Envoyer l'offre" styleClass="btn-publier" onAction="#handleEnvoyer"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

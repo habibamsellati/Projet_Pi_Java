@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.ModuleEcommerceV1Controller">
+    <top>
+        <Label text="E-commerce V1 — CRUD (données brutes)" style="-fx-font-size: 16px; -fx-font-weight: bold;"
+               BorderPane.alignment="CENTER">
+            <padding>
+                <Insets top="10" bottom="8"/>
+            </padding>
+        </Label>
+    </top>
+    <center>
+        <TabPane tabClosingPolicy="UNAVAILABLE">
+            <Tab text="Articles">
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="10" right="12" bottom="12" left="12"/>
+                    </padding>
+                    <TableView fx:id="tvArticles" prefHeight="220">
+                        <columns>
+                            <TableColumn fx:id="colArtId" text="ID" prefWidth="50"/>
+                            <TableColumn fx:id="colTitre" text="Titre" prefWidth="200"/>
+                            <TableColumn fx:id="colPrix" text="Prix" prefWidth="80"/>
+                            <TableColumn fx:id="colCat" text="Catégorie" prefWidth="120"/>
+                            <TableColumn fx:id="colDate" text="Date" prefWidth="140"/>
+                        </columns>
+                    </TableView>
+                    <GridPane hgap="8" vgap="6">
+                        <Label text="Titre" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="tfArtTitre" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="400"/>
+                        <Label text="Contenu (≥10)" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextArea fx:id="taArtContenu" GridPane.columnIndex="1" GridPane.rowIndex="1" prefRowCount="3"
+                                  wrapText="true"/>
+                        <Label text="Prix" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="tfArtPrix" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="120"/>
+                        <Label text="Catégorie" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                        <TextField fx:id="tfArtCat" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        <Label text="Artisan user id" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                        <TextField fx:id="tfArtisanId" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4"
+                                   prefWidth="80"/>
+                    </GridPane>
+                    <HBox spacing="8">
+                        <Button text="Rafraîchir catalogue" onAction="#handleArticlesRefresh"/>
+                        <Button text="Ajouter" onAction="#handleArticleAjouter"/>
+                        <Button text="Modifier (sélection)" onAction="#handleArticleModifier"/>
+                        <Button text="Supprimer (sélection)" onAction="#handleArticleSupprimer"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+            <Tab text="Commandes (panier)">
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="10" right="12" bottom="12" left="12"/>
+                    </padding>
+                    <HBox spacing="12">
+                        <VBox spacing="4">
+                            <Label text="Client user id"/>
+                            <TextField fx:id="tfCmdClientId" text="3" prefWidth="80"/>
+                        </VBox>
+                        <VBox spacing="4">
+                            <Label text="Artisan user id (liste reçue)"/>
+                            <TextField fx:id="tfCmdArtisanId" text="1" prefWidth="80"/>
+                        </VBox>
+                    </HBox>
+                    <Label text="Panier : une ligne par article « idArticle,quantité »"/>
+                    <TextArea fx:id="taPanierLignes" prefRowCount="4" promptText="Ex:&#10;1,2&#10;5,1"/>
+                    <GridPane hgap="8" vgap="4">
+                        <Label text="Adresse livraison" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                        <TextField fx:id="tfCmdAdresse" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="400"/>
+                        <Label text="Mode paiement" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                        <TextField fx:id="tfCmdMode" text="carte" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                        <Label text="Téléphone" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                        <TextField fx:id="tfCmdTel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                    </GridPane>
+                    <HBox spacing="8">
+                        <Button text="Créer commande (panier)" onAction="#handleCommandeCreer"/>
+                        <Button text="Lister client" onAction="#handleCommandeListerClient"/>
+                        <Button text="Lister artisan" onAction="#handleCommandeListerArtisan"/>
+                    </HBox>
+                    <Label text="Commande id + nouveau statut (ex: Expédiée, confirmée, livrée)"/>
+                    <HBox spacing="8">
+                        <TextField fx:id="tfCmdIdStatut" promptText="id commande" prefWidth="100"/>
+                        <TextField fx:id="tfCmdNouveauStatut" promptText="statut" prefWidth="160"/>
+                        <Button text="MAJ statut" onAction="#handleCommandeStatut"/>
+                        <Button text="Annuler commande (client)" onAction="#handleCommandeAnnuler"/>
+                    </HBox>
+                    <SplitPane dividerPositions="0.5" prefHeight="220">
+                        <TextArea fx:id="taCmdClient" editable="false" wrapText="true"/>
+                        <TextArea fx:id="taCmdArtisan" editable="false" wrapText="true"/>
+                    </SplitPane>
+                </VBox>
+            </Tab>
+            <Tab text="Commentaires">
+                <VBox spacing="8">
+                    <padding>
+                        <Insets top="10" right="12" bottom="12" left="12"/>
+                    </padding>
+                    <HBox spacing="8">
+                        <Label text="Article id"/>
+                        <TextField fx:id="tfComArticleId" prefWidth="80"/>
+                        <Button text="Charger" onAction="#handleComCharger"/>
+                    </HBox>
+                    <ListView fx:id="lvCom" prefHeight="200"/>
+                    <TextArea fx:id="taComContenu" prefRowCount="3" promptText="Commentaire (5–255 caractères)"/>
+                    <HBox spacing="8">
+                        <Button text="Publier" onAction="#handleComPublier"/>
+                        <Button text="Supprimer sélection (#id)" onAction="#handleComSupprimer"/>
+                    </HBox>
+                </VBox>
+            </Tab>
+        </TabPane>
+    </center>
+</BorderPane>

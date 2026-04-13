@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox alignment="CENTER_LEFT" spacing="0" style="-fx-background-color: white; -fx-padding: 15 20; -fx-border-color: transparent transparent #f0e8e0 transparent;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    <VBox prefWidth="180" spacing="2">
+        <Label fx:id="lblNomClient" text="Nom Client" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
+        <Label fx:id="lblResId" text="#RESRV-00" style="-fx-text-fill: #9e8e82; -fx-font-size: 10px;"/>
+    </VBox>
+    
+    <Label fx:id="lblPlaces" prefWidth="100" text="1 places" style="-fx-text-fill: #6b5b4f;"/>
+    
+    <Label fx:id="lblHeure" prefWidth="100" text="12:00" style="-fx-text-fill: #6b5b4f;"/>
+    
+    <VBox prefWidth="180" spacing="1">
+        <Label fx:id="lblEmail" text="client@email.com" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px;"/>
+        <Label fx:id="lblTel" text="N/A" style="-fx-text-fill: #9e8e82; -fx-font-size: 10px;"/>
+    </VBox>
+    
+    <Label fx:id="lblTotal" prefWidth="120" text="0.00 DT" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+    
+    <HBox alignment="CENTER" prefWidth="120">
+        <Label fx:id="lblStatus" text="Confirmé" style="-fx-background-color: #e6f7ef; -fx-text-fill: #2ecc71; -fx-background-radius: 15; -fx-padding: 4 12; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+    </HBox>
+    
+    <HBox alignment="CENTER_RIGHT" prefWidth="100" spacing="10">
+        <Button fx:id="btnConfirm" text="✓" style="-fx-background-color: #f1fcf6; -fx-text-fill: #2ecc71; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 15;"/>
+        <Button fx:id="btnDelete" text="✕" style="-fx-background-color: #fdf5f5; -fx-text-fill: #e74c3c; -fx-font-weight: bold; -fx-cursor: hand; -fx-background-radius: 15;"/>
+    </HBox>
+</HBox>

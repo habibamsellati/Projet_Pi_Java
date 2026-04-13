@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<HBox fx:id="rowRoot" alignment="CENTER_LEFT" spacing="0" styleClass="dashboard-row"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1">
+    <padding>
+        <Insets left="25" right="25" top="14" bottom="14"/>
+    </padding>
+
+    <!-- Client Info -->
+    <VBox prefWidth="240" spacing="2">
+        <Label fx:id="lblClientName" text="Nom du Client" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
+        <Label fx:id="lblClientEmail" text="client@example.com" style="-fx-text-fill: #9e8e82; -fx-font-size: 10px;"/>
+    </VBox>
+
+    <!-- Event Info -->
+    <VBox prefWidth="260" spacing="2">
+        <Label fx:id="lblEventTitle" text="Évènement" style="-fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
+        <Label fx:id="lblDate" text="12 Avr 2026" style="-fx-text-fill: #c4956a; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+    </VBox>
+
+    <!-- Places -->
+    <Label fx:id="lblPlaces" text="2" prefWidth="80" style="-fx-text-fill: #6b5b4f; -fx-font-weight: bold;"/>
+
+    <!-- Total -->
+    <Label fx:id="lblTotal" text="60.00 DT" prefWidth="100" style="-fx-text-fill: #2d2d2d; -fx-font-weight: bold;"/>
+
+    <Region HBox.hgrow="ALWAYS"/>
+
+    <!-- Status Badge -->
+    <StackPane fx:id="badgeContainer" style="-fx-padding: 5 15; -fx-background-radius: 20;">
+        <Label fx:id="lblStatus" text="CONFIRMÉ" style="-fx-font-size: 10px; -fx-font-weight: 900;"/>
+    </StackPane>
+</HBox>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="20" stylesheets="@/css/admin_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.AdminEventsController">
+    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+
+    <!-- Header Actions -->
+    <HBox spacing="15" alignment="CENTER_LEFT">
+        <TextField fx:id="tfSearch" promptText="Rechercher un événement..." prefWidth="350" styleClass="search-field"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="➕ Nouvel Événement" styleClass="btn-primary" onAction="#handleNewEvent"/>
+        <Button text="🔄 Actualiser" styleClass="btn-secondary" onAction="#loadData"/>
+    </HBox>
+
+    <!-- Table -->
+    <TableView fx:id="tvEvenements" VBox.vgrow="ALWAYS" styleClass="modern-table">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
+            <TableColumn fx:id="colNom" text="Événement" prefWidth="250"/>
+            <TableColumn fx:id="colDate" text="Date Début" prefWidth="150"/>
+            <TableColumn fx:id="colLieu" text="Lieu" prefWidth="150"/>
+            <TableColumn fx:id="colCapacite" text="Capacité" prefWidth="100"/>
+            <TableColumn fx:id="colPrix" text="Prix (DT)" prefWidth="100"/>
+            <TableColumn fx:id="colStatut" text="Statut" prefWidth="120"/>
+            <TableColumn fx:id="colActions" text="Actions" prefWidth="120"/>
+        </columns>
+    </TableView>
+
+</VBox>

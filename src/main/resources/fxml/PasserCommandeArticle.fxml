@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.PasserCommandeArticleController">
+    <VBox spacing="18" alignment="TOP_CENTER" style="-fx-padding: 35;">
+        <Label text="Passer une Commande (Article)" style="-fx-font-size: 30; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+        <Label text="Achat à l'unité, total calculé automatiquement" style="-fx-text-fill: #A1887F;"/>
+
+        <VBox spacing="14" style="-fx-max-width: 720; -fx-background-color: white; -fx-padding: 22; -fx-background-radius: 12;">
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="ID Article *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfArticleId" promptText="Ex: 1"/>
+                </VBox>
+                <VBox alignment="BOTTOM_LEFT">
+                    <Button text="Charger l'article" onAction="#handleChargerArticle"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Quantité * (unité)" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfQuantite" text="1" onAction="#handleRecalculer"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Adresse de livraison *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfAdresseLivraison" promptText="Rue, ville, code postal"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Téléphone *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfTelephone" promptText="Ex: 22111222"/>
+                </VBox>
+                <VBox alignment="BOTTOM_LEFT">
+                    <Button text="Recalculer total" onAction="#handleRecalculer"/>
+                </VBox>
+            </HBox>
+
+            <Separator/>
+
+            <Label text="Récapitulatif article" style="-fx-font-weight: bold; -fx-font-size: 15;"/>
+            <HBox spacing="18">
+                <ImageView fx:id="imageViewArticle" fitWidth="150" fitHeight="110" preserveRatio="true"
+                           style="-fx-background-color: #F2EEE8; -fx-border-color: #D7CCC8;"/>
+                <VBox spacing="8">
+                    <Label text="Titre :"/>
+                    <Label fx:id="lblTitre" text="-"/>
+                    <Label text="Image (colonne image) :"/>
+                    <Label fx:id="lblImage" text="-"/>
+                    <Label text="Prix unitaire :"/>
+                    <Label fx:id="lblPrixUnitaire" text="0.00 DT"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Label text="Total à payer :" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblTotal" text="0.00 DT" style="-fx-font-weight: bold; -fx-text-fill: #70554C;"/>
+            </HBox>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Valider la commande" styleClass="btn-publier" onAction="#handleValiderCommande"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>
+

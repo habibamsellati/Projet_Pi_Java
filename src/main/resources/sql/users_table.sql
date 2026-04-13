@@ -1,0 +1,25 @@
+-- Table centrale utilisateurs (évite le mot réservé MySQL "user")
+CREATE TABLE IF NOT EXISTS users (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nom VARCHAR(15) NOT NULL,
+    prenom VARCHAR(30) NOT NULL,
+    email VARCHAR(255) NOT NULL,
+    mot_de_passe_hash VARCHAR(255) NOT NULL,
+    telephone VARCHAR(8) NULL,
+    role VARCHAR(20) NOT NULL,
+    statut VARCHAR(20) NOT NULL DEFAULT 'actif',
+    deleted_at DATETIME NULL,
+    reset_token_hash VARCHAR(255) NULL,
+    reset_token_created_at DATETIME NULL,
+    reset_token_expires_at DATETIME NULL,
+    reset_token_request_ip VARCHAR(45) NULL,
+    oauth_provider VARCHAR(50) NULL,
+    oauth_provider_id VARCHAR(255) NULL,
+    sexe VARCHAR(10) NULL,
+    avatar VARCHAR(500) NULL,
+    created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE KEY uk_users_email (email),
+    CONSTRAINT chk_users_role CHECK (role IN ('CLIENT', 'ARTISANT', 'ADMIN', 'LIVREUR')),
+    CONSTRAINT chk_users_statut CHECK (statut IN ('actif', 'inactif')),
+    CONSTRAINT chk_users_sexe CHECK (sexe IS NULL OR sexe IN ('HOMME', 'FEMME', 'AUTRE'))
+);

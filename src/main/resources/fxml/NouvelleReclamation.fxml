@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.NouvelleReclamationController">
+    <VBox spacing="18" style="-fx-padding: 30;">
+        <Label text="Nouvelle réclamation" style="-fx-font-size: 28; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+
+        <VBox spacing="8" style="-fx-background-color: #F1EFEC; -fx-padding: 16; -fx-background-radius: 10;">
+            <Label text="Nom :">
+                <graphic>
+                    <Label fx:id="lblNom"/>
+                </graphic>
+            </Label>
+            <Label text="Prénom :">
+                <graphic>
+                    <Label fx:id="lblPrenom"/>
+                </graphic>
+            </Label>
+            <Label text="Date :">
+                <graphic>
+                    <Label fx:id="lblDate"/>
+                </graphic>
+            </Label>
+        </VBox>
+
+        <VBox spacing="10" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 10;">
+            <Label text="Type de réclamation" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="cbType" promptText="Selectionnez un type de reclamation" maxWidth="Infinity"/>
+
+            <Label text="Description (optionnelle)" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="taDescription" promptText="Décrivez votre problème en détail..." prefHeight="170"/>
+            <Label text="La description est optionnelle, mais doit faire 10 caractères minimum si renseignée." style="-fx-text-fill: #6A6A6A;"/>
+
+            <Label text="Image (optionnelle)" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Choisir un fichier" onAction="#handleChoisirFichier"/>
+                <Label fx:id="lblImageName" text="Aucun fichier choisi"/>
+            </HBox>
+
+            <Button text="Créer la réclamation" styleClass="btn-publier" onAction="#handleCreerReclamation" maxWidth="Infinity"/>
+        </VBox>
+    </VBox>
+</ScrollPane>
+

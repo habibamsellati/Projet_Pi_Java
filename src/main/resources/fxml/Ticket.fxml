@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+
+<HBox alignment="CENTER_LEFT" prefHeight="220" minWidth="800" spacing="0" style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 8);" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.TicketController">
+    
+    <!-- IMAGE DE L'EVENT (À GAUCHE) -->
+    <StackPane prefWidth="250" minWidth="250">
+        <ImageView fx:id="ivEvent" fitHeight="220" fitWidth="250" pickOnBounds="true" preserveRatio="false" style="-fx-background-radius: 20 0 0 20;"/>
+    </StackPane>
+
+    <!-- INFOS CENTRALES -->
+    <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-padding: 25;">
+        <Label text="CERTIFICATION DE PLACE" style="-fx-text-fill: #c47653; -fx-font-size: 10px; -fx-font-weight: bold; -fx-letter-spacing: 2px;"/>
+        
+        <Label fx:id="lblEvenementTitre" text="CERAMIQUE+" wrapText="true" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-text-fill: #2d2d2d; -fx-max-width: 450;"/>
+        
+        <Separator prefWidth="200" style="-fx-padding: 5 0;"/>
+        
+        <HBox spacing="15">
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="DATE &amp; HEURE" style="-fx-text-fill: #9e8e82; -fx-font-size: 8px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblDateHeure" text="13 April 2026 | 03:50" style="-fx-text-fill: #2d2d2d; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            </VBox>
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="EMPLACEMENT" style="-fx-text-fill: #9e8e82; -fx-font-size: 8px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblLieu" text="bejaa" style="-fx-text-fill: #2d2d2d; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            </VBox>
+            <VBox spacing="5" HBox.hgrow="ALWAYS">
+                <Label text="ADMISSION" style="-fx-text-fill: #9e8e82; -fx-font-size: 8px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblNbPlaces" text="1 Place" style="-fx-text-fill: #2d2d2d; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            </VBox>
+        </HBox>
+    </VBox>
+
+    <!-- PARTIE DROITE : PRIX & ACTION -->
+    <VBox alignment="CENTER_RIGHT" spacing="15" prefWidth="220" minWidth="220" style="-fx-padding: 25;">
+        <Label fx:id="lblPrix" text="30.00 TND" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+        
+        <Label fx:id="lblActionRequise" text="Action Requise" style="-fx-background-color: #fcece3; -fx-text-fill: #c47653; -fx-padding: 5 15; -fx-background-radius: 15; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblPaye" text="✓ Billet Payé" visible="false" managed="false" style="-fx-background-color: #e6f7ef; -fx-text-fill: #2ecc71; -fx-padding: 5 15; -fx-background-radius: 15; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+
+        <VBox fx:id="boxPaiement" alignment="CENTER_RIGHT" spacing="5">
+            <Label fx:id="lblExpiration" text="Expire dans 3:00:00" style="-fx-text-fill: #c47653; -fx-font-size: 9px;"/>
+            <Button fx:id="btnFinaliser" text="Payer" style="-fx-background-color: #1a1a1a; -fx-text-fill: white; -fx-background-radius: 15; -fx-padding: 8 20; -fx-font-size: 11px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+        </VBox>
+    </VBox>
+
+</HBox>
+
+</HBox>

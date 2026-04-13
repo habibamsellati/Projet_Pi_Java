@@ -1,0 +1,253 @@
+/* ============================================================
+   ADMIN STYLE - LIGHT ELEGANT THEME (inspired by Artisan Board)
+   ============================================================ */
+
+/* --- GLOBAL RESET --- */
+.root {
+    -fx-background-color: #f7f3f0;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+/* --- SIDEBAR --- */
+.sidebar {
+    -fx-background-color: #2d2d2d;
+    -fx-padding: 40 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.25), 15, 0, 5, 0);
+}
+
+.nav-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #b0b0b0;
+    -fx-font-size: 13px;
+    -fx-font-weight: normal;
+    -fx-padding: 15 30;
+    -fx-alignment: center-left;
+    -fx-cursor: hand;
+}
+
+.nav-button:hover {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(255, 255, 255, 0.07);
+}
+
+.nav-button-active {
+    -fx-text-fill: white;
+    -fx-background-color: rgba(196, 149, 106, 0.2);
+    -fx-border-color: transparent transparent transparent #c4956a;
+    -fx-border-width: 0 0 0 3;
+}
+
+/* --- HEADER --- */
+.header-bar {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #e8ddd4 transparent;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 10, 0, 0, 3);
+}
+
+/* --- GLASS PANE (search bar) --- */
+.glass-pane {
+    -fx-background-color: #f1ede9;
+    -fx-border-color: #e0d5cc;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+}
+
+/* --- STAT CARDS --- */
+.stat-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #f0e8e0;
+    -fx-border-radius: 16;
+    -fx-padding: 25;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 12, 0, 0, 4);
+}
+
+/* --- TABLE (modern-table) --- */
+.modern-table {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-border-color: #f0e8e0;
+    -fx-border-radius: 16;
+    -fx-table-cell-border-color: #f5f0eb;
+    -fx-padding: 0;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 12, 0, 0, 4);
+}
+
+.modern-table .column-header-background {
+    -fx-background-color: #faf7f5;
+    -fx-border-color: transparent transparent #ede5de transparent;
+}
+
+.modern-table .column-header {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-padding: 15 10;
+}
+
+.modern-table .column-header .label {
+    -fx-text-fill: #6b5b4f;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-alignment: center-left;
+}
+
+.modern-table .table-row-cell {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f5ede6 transparent;
+    -fx-text-fill: #2d2d2d;
+    -fx-padding: 5;
+}
+
+.modern-table .table-row-cell:hover {
+    -fx-background-color: #fdf8f5;
+}
+
+.modern-table .table-row-cell:selected {
+    -fx-background-color: #fcece3;
+}
+
+.modern-table .table-row-cell:selected .text {
+    -fx-fill: #2d2d2d;
+}
+
+/* --- BUTTONS --- */
+.btn-primary {
+    -fx-background-color: #2d2d2d;
+    -fx-text-fill: white;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #c4956a;
+}
+
+.btn-secondary {
+    -fx-background-color: white;
+    -fx-text-fill: #6b5b4f;
+    -fx-background-radius: 20;
+    -fx-border-color: #ddd0c4;
+    -fx-border-radius: 20;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #f7f3f0;
+    -fx-border-color: #c4956a;
+    -fx-text-fill: #c4956a;
+}
+
+.btn-danger {
+    -fx-background-color: #fff5f5;
+    -fx-text-fill: #e53e3e;
+    -fx-background-radius: 20;
+    -fx-border-color: #fed7d7;
+    -fx-border-radius: 20;
+    -fx-padding: 10 25;
+    -fx-cursor: hand;
+}
+
+/* --- TEXT FIELD --- */
+.text-field, .text-area {
+    -fx-background-color: white;
+    -fx-text-fill: #2d2d2d;
+    -fx-background-radius: 10;
+    -fx-border-color: #e0d5cc;
+    -fx-border-radius: 10;
+    -fx-padding: 10 15;
+    -fx-prompt-text-fill: #b0a09a;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #c4956a;
+    -fx-effect: dropshadow(gaussian, rgba(196,149,106,0.2), 8, 0, 0, 2);
+}
+
+/* --- COMBO BOX --- */
+.combo-box {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-border-color: #e0d5cc;
+    -fx-border-radius: 10;
+    -fx-padding: 2;
+}
+
+/* --- BADGES --- */
+.badge {
+    -fx-padding: 5 15;
+    -fx-background-radius: 20;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+}
+
+.badge-pending {
+    -fx-background-color: #fffbeb;
+    -fx-text-fill: #d97706;
+    -fx-border-color: #fde68a;
+    -fx-border-radius: 20;
+}
+
+.badge-confirmed {
+    -fx-background-color: #f0fdf4;
+    -fx-text-fill: #16a34a;
+    -fx-border-color: #bbf7d0;
+    -fx-border-radius: 20;
+}
+
+.badge-cancelled {
+    -fx-background-color: #fef2f2;
+    -fx-text-fill: #dc2626;
+    -fx-border-color: #fecaca;
+    -fx-border-radius: 20;
+}
+
+/* --- DASHBOARD ACTIVITY ROWS --- */
+.dashboard-row {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #f5ede6 transparent;
+}
+
+.dashboard-row:hover {
+    -fx-background-color: #fdf8f5;
+}
+
+/* --- SCROLL PANE --- */
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background: transparent;
+}
+
+.scroll-pane .viewport {
+    -fx-background-color: transparent;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 8;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #e0d5cc;
+    -fx-background-radius: 10;
+}
+
+/* --- PROGRESS BAR --- */
+.progress-bar {
+    -fx-pref-height: 6;
+    -fx-background-color: #f0e8e0;
+    -fx-background-radius: 10;
+}
+
+.progress-bar .bar {
+    -fx-background-color: #c4956a;
+    -fx-background-radius: 10;
+    -fx-background-insets: 0;
+}
+
+/* --- SEPARATOR --- */
+.separator .line {
+    -fx-border-color: #ede5de;
+}

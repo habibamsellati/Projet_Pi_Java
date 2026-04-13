@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="12" style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 10;"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controllers.CommentaireController">
+
+    <Label text="Ajouter un commentaire" style="-fx-font-size: 28; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Article ID"/>
+        <TextField fx:id="tfArticleId" promptText="Ex: 1" prefWidth="120"/>
+        <Button text="Charger" onAction="#handleChoisirArticle"/>
+    </HBox>
+
+    <VBox spacing="8">
+        <Label text="Votre commentaire"/>
+        <HBox spacing="8" alignment="CENTER_LEFT">
+            <ToggleButton fx:id="star1" text="★" onAction="#setStar1"/>
+            <ToggleButton fx:id="star2" text="★" onAction="#setStar2"/>
+            <ToggleButton fx:id="star3" text="★" onAction="#setStar3"/>
+            <ToggleButton fx:id="star4" text="★" onAction="#setStar4"/>
+            <ToggleButton fx:id="star5" text="★" onAction="#setStar5"/>
+            <Label fx:id="lblRating" text="Note: 5/5"/>
+        </HBox>
+        <TextField fx:id="tfContenu" promptText="Partagez votre avis (min 3 caractères)..."/>
+        <HBox spacing="10" alignment="CENTER_LEFT">
+            <Button text="Envoyer" styleClass="btn-publier" onAction="#handleEnvoyer"/>
+            <Button text="Supprimer sélection" styleClass="btn-annuler" onAction="#handleSupprimerSelection"/>
+        </HBox>
+    </VBox>
+
+    <Separator/>
+    <Label text="Commentaires existants"/>
+    <ListView fx:id="lvCommentaires" prefHeight="220"/>
+</VBox>
+

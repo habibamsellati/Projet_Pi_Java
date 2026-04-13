@@ -1,0 +1,201 @@
+/* ============================
+   AfkArt Admin Dashboard - JavaFX CSS
+   Reproduction fidèle du design web Symfony
+   ============================ */
+
+.main-container {
+    -fx-background-color: #f5f0eb;
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- Typographie (Labels) --- */
+.label {
+    -fx-text-fill: #2d2d2d;
+    -fx-font-family: 'Segoe UI', 'Inter', sans-serif;
+    -fx-font-size: 14px;
+}
+
+.title-label {
+    -fx-font-size: 28px;
+    -fx-font-weight: 700;
+    -fx-text-fill: #2d2d2d;
+}
+
+.subtitle-label {
+    -fx-font-size: 14px;
+    -fx-text-fill: #9e8e82;
+}
+
+/* --- Champs de saisie (Inputs) --- */
+.text-field, .text-area, .combo-box, .date-picker {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8ddd4;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-padding: 10 18;
+    -fx-font-size: 14px;
+    -fx-text-fill: #2d2d2d;
+}
+
+.text-field:focused, .text-area:focused, .combo-box:focused, .date-picker:focused {
+    -fx-border-color: #5c3d4a;
+    -fx-border-width: 2;
+    -fx-prompt-text-fill: #9e8e82;
+}
+
+/* --- Cartes et Conteneurs (Cards) --- */
+.form-card, .article-card, .data-table-card {
+    -fx-background-color: #ffffff;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(92, 61, 74, 0.08), 20, 0, 0, 4);
+    -fx-padding: 24;
+}
+
+/* --- Tabs (Pour se fondre avec l'environnement Admin) --- */
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tab-pane .tab {
+    -fx-background-color: transparent;
+    -fx-background-radius: 0;
+    -fx-padding: 8 20;
+    -fx-cursor: hand;
+}
+
+.tab-pane .tab-label {
+    -fx-text-fill: #6b5b4f;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+}
+
+.tab-pane .tab:selected {
+    -fx-border-color: transparent transparent #c4956a transparent;
+    -fx-border-width: 0 0 3 0;
+}
+
+.tab-pane .tab:selected .tab-label {
+    -fx-text-fill: #5c3d4a;
+}
+
+/* --- Boutons --- */
+.button {
+    -fx-cursor: hand;
+    -fx-font-family: 'Segoe UI', sans-serif;
+    -fx-font-weight: bold;
+}
+
+/* Boutons d'action principaux (Publish/Add) */
+.btn-publier, .btn-primary {
+    -fx-background-color: linear-gradient(to bottom, #5c3d4a 0%, #7a5568 100%);
+    -fx-text-fill: white;
+    -fx-background-radius: 25;
+    -fx-padding: 10 25;
+    -fx-font-size: 14px;
+}
+
+.btn-publier:hover, .btn-primary:hover {
+    -fx-background-color: #4a2f3b; /* Darker primary */
+    -fx-effect: dropshadow(three-pass-box, rgba(92, 61, 74, 0.2), 10, 0, 0, 4);
+}
+
+/* Bouton Annuler ou Secondaire */
+.btn-annuler, .btn-secondary {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e8ddd4;
+    -fx-border-radius: 25;
+    -fx-background-radius: 25;
+    -fx-text-fill: #6b5b4f;
+    -fx-padding: 10 25;
+    -fx-font-size: 14px;
+}
+
+.btn-annuler:hover, .btn-secondary:hover {
+    -fx-border-color: #5c3d4a;
+    -fx-text-fill: #5c3d4a;
+}
+
+/* Boutons Tableaux */
+.btn-supprimer {
+    -fx-background-color: rgba(244, 67, 54, 0.1);
+    -fx-text-fill: #f44336;
+    -fx-background-radius: 20;
+    -fx-padding: 6 15;
+    -fx-font-size: 12px;
+}
+
+.btn-supprimer:hover {
+    -fx-background-color: #f44336;
+    -fx-text-fill: white;
+}
+
+.btn-modifier {
+    -fx-background-color: rgba(196, 149, 106, 0.15);
+    -fx-text-fill: #c4956a;
+    -fx-background-radius: 20;
+    -fx-padding: 6 15;
+    -fx-font-size: 12px;
+}
+
+.btn-modifier:hover {
+    -fx-background-color: #c4956a;
+    -fx-text-fill: white;
+}
+
+/* --- Tableaux / DataTables --- */
+.table-view {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(92, 61, 74, 0.08), 20, 0, 0, 4);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #f5f0eb;
+    -fx-background-radius: 16 16 0 0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-border-bottom-color: #e8ddd4;
+    -fx-padding: 14 16;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #9e8e82;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+
+.table-row-cell {
+    -fx-background-color: #ffffff;
+    -fx-border-color: transparent transparent #f0e8e0 transparent;
+    -fx-padding: 5;
+}
+
+.table-row-cell:hover {
+    -fx-background-color: rgba(245, 240, 235, 0.5);
+}
+
+.table-row-cell:selected {
+    -fx-background-color: rgba(196, 149, 106, 0.1);
+    -fx-table-cell-border-color: transparent;
+}
+
+/* Zones spéciales Dash/Upload */
+.upload-box {
+    -fx-border-color: #5c3d4a;
+    -fx-border-width: 2;
+    -fx-border-style: segments(10, 10);
+    -fx-background-color: #ffffff;
+    -fx-border-radius: 16;
+    -fx-padding: 15;
+}

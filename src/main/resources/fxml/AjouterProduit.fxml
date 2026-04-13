@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.String?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.AjouterProduitController">
+    <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 40;">
+
+        <Label text="Ajouter un Produit Recyclable" style="-fx-font-size: 32; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+        <Label text="Valorisez vos matériaux avec une fiche claire et écologique" style="-fx-text-fill: #A1887F;"/>
+
+        <VBox spacing="10" alignment="CENTER" styleClass="upload-box" style="-fx-padding: 30;">
+            <Label text="📷" style="-fx-font-size: 40;"/>
+            <Label text="Cliquez pour choisir une image" style="-fx-font-weight: bold;"/>
+            <Label fx:id="lblImageName" text="Aucune image sélectionnée" style="-fx-text-fill: #8D6E63;"/>
+            <Button text="Choisir un fichier" onAction="#handleUploadImage"/>
+        </VBox>
+
+        <VBox spacing="15" style="-fx-max-width: 700;">
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Nom du matériau *" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbNom" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Plastique" />
+                                <String fx:value="Papier" />
+                                <String fx:value="Carton" />
+                                <String fx:value="Verre" />
+                                <String fx:value="Métal" />
+                                <String fx:value="Bois" />
+                                <String fx:value="Tissu" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Quantité *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfQuantite" promptText="Entier positif (max 999999)"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Type de matériau *" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbTypeMateriau" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Naturel" />
+                                <String fx:value="Durable" />
+                                <String fx:value="Écologique" />
+                                <String fx:value="Zéro déchet" />
+                                <String fx:value="Réutilisable" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="État *" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbEtat" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Bon" />
+                                <String fx:value="Moyen" />
+                                <String fx:value="Mauvais" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+            </HBox>
+
+            <Label text="Origine *" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="tfOrigine" promptText="Ex: Collecte locale, entreprise, particulier..."/>
+
+            <Label text="Description * (minimum 10 caractères)" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="taDescription" promptText="Décrivez le produit recyclable..." prefHeight="140"/>
+
+            <VBox spacing="8">
+                <Label text="Impact écologique (0 à 100) *" style="-fx-font-weight: bold;"/>
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Slider fx:id="sliderImpact" min="0" max="100" value="50" majorTickUnit="10" minorTickCount="4" showTickMarks="true" showTickLabels="true" blockIncrement="1" HBox.hgrow="ALWAYS"/>
+                    <Label fx:id="lblImpactValue" text="50"/>
+                </HBox>
+            </VBox>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Ajouter le Produit" styleClass="btn-publier" onAction="#handleAjouter"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>
+

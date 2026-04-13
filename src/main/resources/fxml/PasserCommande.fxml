@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.PasserCommandeController">
+    <VBox spacing="18" alignment="TOP_CENTER" style="-fx-padding: 35;">
+        <Label text="Passer une Commande" style="-fx-font-size: 30; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+        <Label text="Achetez un produit recyclable en toute sécurité" style="-fx-text-fill: #A1887F;"/>
+
+        <VBox spacing="14" style="-fx-max-width: 720; -fx-background-color: white; -fx-padding: 22; -fx-background-radius: 12;">
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="ID Produit *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfProduitId" promptText="Ex: 1"/>
+                </VBox>
+                <VBox alignment="BOTTOM_LEFT">
+                    <Button text="Charger le produit" onAction="#handleChargerProduit"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Quantité *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfQuantite" promptText="Entier positif"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Prix unitaire (DT) *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfPrixUnitaire" promptText="Ex: 12.5"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="16">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Adresse de livraison *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfAdresseLivraison" promptText="Ex: Rue, ville, code postal"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Téléphone *" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfTelephone" promptText="Ex: 22111222"/>
+                </VBox>
+            </HBox>
+
+            <VBox>
+                <Label text="Statut" style="-fx-font-weight: bold;"/>
+                <ComboBox fx:id="cbStatut" maxWidth="Infinity"/>
+            </VBox>
+
+            <Separator/>
+
+            <Label text="Récapitulatif produit" style="-fx-font-weight: bold; -fx-font-size: 15;"/>
+            <HBox spacing="18">
+                <ImageView fx:id="imageViewProduit" fitWidth="150" fitHeight="110" preserveRatio="true" style="-fx-background-color: #F2EEE8; -fx-border-color: #D7CCC8;"/>
+                <VBox spacing="8">
+                    <Label text="Nom :"/>
+                    <Label fx:id="lblProduitNom" text="-"/>
+                    <Label text="Image (colonne image) :"/>
+                    <Label fx:id="lblImage" text="-"/>
+                    <Label text="Stock disponible :"/>
+                    <Label fx:id="lblStock" text="-"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Button text="Calculer total" onAction="#handleCalculerTotal"/>
+                <Label text="Total :" style="-fx-font-weight: bold;"/>
+                <Label fx:id="lblTotalPreview" text="0.00 DT" style="-fx-font-weight: bold; -fx-text-fill: #70554C;"/>
+            </HBox>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Confirmer la commande" styleClass="btn-publier" onAction="#handlePasserCommande"/>
+            </HBox>
+
+            <Separator/>
+            <Label text="Actions commande / Backoffice" style="-fx-font-weight: bold; -fx-font-size: 15;"/>
+            <HBox spacing="12">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="ID Commande" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfCommandeId" promptText="Ex: 1"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Statut actuel" style="-fx-font-weight: bold;"/>
+                    <Label fx:id="lblCommandeStatut" text="-"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="12" alignment="CENTER_RIGHT">
+                <Button text="Annuler commande (client)" styleClass="btn-annuler" onAction="#handleAnnulerCommande"/>
+                <Button text="Mettre à jour statut" styleClass="btn-publier" onAction="#handleMettreAJourStatut"/>
+                <Button text="Afficher backoffice" onAction="#handleAfficherBackoffice"/>
+            </HBox>
+
+            <TextArea fx:id="taAdminCommandes" promptText="Liste des commandes (admin)..." prefHeight="180"/>
+        </VBox>
+    </VBox>
+</ScrollPane>
