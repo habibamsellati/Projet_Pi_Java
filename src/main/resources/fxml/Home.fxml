@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" 
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" 
+            fx:controller="org.example.controllers.HomeController">
+    <VBox spacing="0" style="-fx-background-color: #faf7f2;">
+        
+        <!-- HEADER / NAVBAR (SIMULATED) -->
+        <HBox alignment="CENTER_LEFT" spacing="30" style="-fx-padding: 20 50; -fx-background-color: rgba(250, 247, 242, 0.95); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);">
+            <Label text="AfkArt" style="-fx-font-family: 'Serif'; -fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #3D3229;">
+                <graphic>
+                    <Label text="." style="-fx-text-fill: #C4704B; -fx-font-size: 24px;"/>
+                </graphic>
+            </Label>
+            <Region HBox.hgrow="ALWAYS" />
+            <Region HBox.hgrow="ALWAYS" />
+            <Button fx:id="btnLogin" onAction="#handleGoToLogin" text="Connexion" style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 8 25; -fx-font-weight: bold; -fx-cursor: hand;"/>
+            <Button fx:id="btnLogout" onAction="#handleLogout" text="Déconnexion" style="-fx-background-color: transparent; -fx-text-fill: #e53e3e; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #fed7d7; -fx-border-radius: 15; -fx-background-radius: 15; -fx-padding: 8 25;"/>
+        </HBox>
+
+        <!-- HERO SECTION -->
+        <HBox alignment="CENTER" spacing="50" style="-fx-padding: 80 50;">
+            <VBox spacing="25" prefWidth="550">
+                <HBox alignment="CENTER_LEFT" spacing="10" style="-fx-background-color: #e2ece9; -fx-background-radius: 20; -fx-padding: 5 15; -fx-max-width: 250;">
+                    <Label text="🌿" />
+                    <Label text="Marketplace éco-responsable" style="-fx-font-size: 11px; -fx-text-fill: #3D3229; -fx-font-weight: bold;"/>
+                </HBox>
+                
+                <TextFlow>
+                    <Text text="L'art qui donne une&#10;" style="-fx-font-size: 56px; -fx-font-family: 'Serif'; -fx-fill: #3D3229;"/>
+                    <Text text="seconde vie" style="-fx-font-size: 56px; -fx-font-family: 'Serif'; -fx-fill: #C4704B;"/>
+                </TextFlow>
+                
+                <Label text="Découvrez des créations uniques réalisées par des artisans locaux à partir de matériaux recyclés. Chaque pièce raconte une histoire." 
+                       wrapText="true" style="-fx-font-size: 16px; -fx-text-fill: #5C4A3D; -fx-line-spacing: 5px;"/>
+                
+                <HBox spacing="15">
+                    <Button text="Explorer la galerie" onAction="#handleGoToCatalog" 
+                            style="-fx-background-color: #C4704B; -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 15 35; -fx-cursor: hand;"/>
+                    <Button text="Nos artisans" 
+                            style="-fx-background-color: transparent; -fx-text-fill: #3D3229; -fx-border-color: #3D3229; -fx-font-size: 14px; -fx-font-weight: bold; -fx-background-radius: 30; -fx-padding: 15 35; -fx-cursor: hand;"/>
+                </HBox>
+                
+                <HBox spacing="40" style="-fx-padding: 20 0 0 0;">
+                    <VBox alignment="CENTER">
+                        <Label text="150" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #C4704B;"/>
+                        <Label text="Artisans" style="-fx-font-size: 12px; -fx-text-fill: #9e8e82;"/>
+                    </VBox>
+                    <VBox alignment="CENTER">
+                        <Label text="2500" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #C4704B;"/>
+                        <Label text="Créations" style="-fx-font-size: 12px; -fx-text-fill: #9e8e82;"/>
+                    </VBox>
+                    <VBox alignment="CENTER">
+                        <Label text="98%" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #C4704B;"/>
+                        <Label text="Satisfaits" style="-fx-font-size: 12px; -fx-text-fill: #9e8e82;"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+            
+            <StackPane prefWidth="450">
+                <Rectangle width="400" height="500" arcWidth="30" arcHeight="30" fill="#e8ddd4" />
+                <ImageView fitWidth="380" fitHeight="480" preserveRatio="false" style="-fx-background-radius: 20;">
+                    <Image url="https://images.unsplash.com/photo-1565193566173-7a0ee3dbe261?w=800&amp;h=1000&amp;fit=crop" />
+                </ImageView>
+                <!-- Floating Card -->
+                <HBox spacing="10" alignment="CENTER_LEFT" 
+                      prefWidth="220" prefHeight="70" maxWidth="-Infinity" maxHeight="-Infinity"
+                      style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 15; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 20, 0, 0, 5);" 
+                      StackPane.alignment="BOTTOM_LEFT">
+                    <StackPane style="-fx-background-color: #e2ece9; -fx-background-radius: 50; -fx-min-width: 40; -fx-min-height: 40; -fx-max-width: 40; -fx-max-height: 40;">
+                        <Label text="★" style="-fx-text-fill: #48bb78; -fx-font-weight: bold; -fx-font-size: 18px;"/>
+                    </StackPane>
+                    <VBox alignment="CENTER_LEFT">
+                        <Label text="100% Local" style="-fx-font-weight: bold; -fx-text-fill: #3D3229; -fx-font-size: 14px;"/>
+                        <Label text="Artisans tunisiens" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82;"/>
+                    </VBox>
+                    <StackPane.margin>
+                        <Insets bottom="60" left="30" />
+                    </StackPane.margin>
+                </HBox>
+            </StackPane>
+        </HBox>
+
+        <!-- CATEGORIES SECTION -->
+        <VBox alignment="CENTER" spacing="40" style="-fx-padding: 50; -fx-background-color: white;">
+            <VBox alignment="CENTER" spacing="10">
+                <Label text="NOS VALEURS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #C4704B;"/>
+                <Label text="Pourquoi choisir AfkArt ?" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-text-fill: #3D3229;"/>
+            </VBox>
+            
+            <HBox spacing="30" alignment="CENTER">
+                <VBox spacing="15" alignment="CENTER" prefWidth="280" style="-fx-background-color: #faf7f2; -fx-padding: 30; -fx-background-radius: 20;">
+                    <StackPane style="-fx-background-color: #e2ece9; -fx-background-radius: 50; -fx-min-width: 70; -fx-min-height: 70;">
+                        <Label text="♻️" style="-fx-font-size: 24px;"/>
+                    </StackPane>
+                    <Label text="Œuvres Recyclées" style="-fx-font-size: 18px; -fx-font-family: 'Serif'; -fx-font-weight: bold;"/>
+                    <Label text="Des créations uniques fabriquées à partir de métaux récupérés." textAlignment="CENTER" wrapText="true" style="-fx-text-fill: #9e8e82; -fx-font-size: 13px;"/>
+                </VBox>
+                <VBox spacing="15" alignment="CENTER" prefWidth="280" style="-fx-background-color: #faf7f2; -fx-padding: 30; -fx-background-radius: 20;">
+                    <StackPane style="-fx-background-color: #e2ece9; -fx-background-radius: 50; -fx-min-width: 70; -fx-min-height: 70;">
+                        <Label text="🎨" style="-fx-font-size: 24px;"/>
+                    </StackPane>
+                    <Label text="Artisans Locaux" style="-fx-font-size: 18px; -fx-font-family: 'Serif'; -fx-font-weight: bold;"/>
+                    <Label text="Soutenez les créateurs de votre région et leur savoir-faire." textAlignment="CENTER" wrapText="true" style="-fx-text-fill: #9e8e82; -fx-font-size: 13px;"/>
+                </VBox>
+                <VBox spacing="15" alignment="CENTER" prefWidth="280" style="-fx-background-color: #faf7f2; -fx-padding: 30; -fx-background-radius: 20;">
+                    <StackPane style="-fx-background-color: #e2ece9; -fx-background-radius: 50; -fx-min-width: 70; -fx-min-height: 70;">
+                        <Label text="🌱" style="-fx-font-size: 24px;"/>
+                    </StackPane>
+                    <Label text="Valeurs Écologiques" style="-fx-font-size: 18px; -fx-font-family: 'Serif'; -fx-font-weight: bold;"/>
+                    <Label text="Chaque achat contribue à un mode de vie plus durable." textAlignment="CENTER" wrapText="true" style="-fx-text-fill: #9e8e82; -fx-font-size: 13px;"/>
+                </VBox>
+            </HBox>
+        </VBox>
+        
+        <!-- FOOTER -->
+        <VBox alignment="CENTER" spacing="20" style="-fx-background-color: #3D3229; -fx-padding: 50;">
+            <Label text="AfkArt" style="-fx-font-family: 'Serif'; -fx-font-size: 24px; -fx-text-fill: white;"/>
+            <Label text="© 2026 AfkArt. Tous droits réservés." style="-fx-text-fill: #9e8e82; -fx-font-size: 12px;"/>
+        </VBox>
+
+    </VBox>
+</ScrollPane>

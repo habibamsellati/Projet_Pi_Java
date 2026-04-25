@@ -1,225 +1,210 @@
 package org.example.controllers;
 
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.example.models.Evenement;
 import org.example.services.ServiceEvenement;
 
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.function.Consumer;
-
 public class AdminEventsController {
 
-    @FXML private TableView<Evenement> tvEvenements;
-    @FXML private TableColumn<Evenement, Integer> colId;
-    @FXML private TableColumn<Evenement, String> colNom, colLieu, colStatut;
-    @FXML private TableColumn<Evenement, LocalDateTime> colDate;
-    @FXML private TableColumn<Evenement, Integer> colCapacite;
-    @FXML private TableColumn<Evenement, Double> colPrix;
-    @FXML private TableColumn<Evenement, Void> colActions;
-    @FXML private TextField tfSearch;
+    @FXML
+    private Label lblTotalEvents, lblTotalCapacity, lblUpcoming;
+    @FXML
+    private ProgressBar pbActive, pbCapacity, pbUpcoming;
+    @FXML
+    private TextField tfSearch;
+    @FXML
+    private ComboBox<String> comboSort, comboOrder;
+    @FXML
+    private VBox vboxEvents;
 
-    private ObservableList<Evenement> evenements = FXCollections.observableArrayList();
-    private ServiceEvenement service = new ServiceEvenement();
+    private ServiceEvenement serviceEvenement = new ServiceEvenement();
+    private ObservableList<Evenement> allEvents = FXCollections.observableArrayList();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     @FXML
     public void initialize() {
-        setupTable();
+        comboSort.getItems().addAll("Date", "Nom", "Capacité", "Prix");
+        comboSort.setValue("Date");
+        comboOrder.getItems().addAll("ASC", "DESC");
+        comboOrder.setValue("ASC");
+
         loadData();
-    }
 
-    private void setupTable() {
-        tvEvenements.setFixedCellSize(60.0);
-        tvEvenements.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        // -- ID --
-        colId.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getId()));
-        colId.setCellFactory(col -> new TableCell<Evenement, Integer>() {
-            @Override protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else {
-                    setText("EVT-" + item);
-                    setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;");
-                }
-            }
-        });
-
-        // -- Nom --
-        colNom.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getNom()));
-        colNom.setCellFactory(col -> new TableCell<Evenement, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item); setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"); }
-            }
-        });
-
-        // -- Date --
-        colDate.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getDateDebut()));
-        colDate.setCellFactory(col -> new TableCell<Evenement, LocalDateTime>() {
-            @Override protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else {
-                    setText(item.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-                    setStyle("-fx-text-fill: #9e8e82; -fx-font-size: 11px;");
-                }
-            }
-        });
-
-        // -- Lieu --
-        colLieu.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getLieu()));
-        colLieu.setCellFactory(col -> new TableCell<Evenement, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item); setStyle("-fx-text-fill: #6b5b4f;"); }
-            }
-        });
-
-        // -- Capacité --
-        colCapacite.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getCapacite()));
-        colCapacite.setCellFactory(col -> new TableCell<Evenement, Integer>() {
-            @Override protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item + " pers."); setStyle("-fx-text-fill: #6b5b4f;"); }
-            }
-        });
-
-        // -- Prix --
-        colPrix.setCellValueFactory(p -> {
-            double pr = p.getValue().getPrix() != null ? p.getValue().getPrix().doubleValue() : 0.0;
-            return new javafx.beans.property.SimpleObjectProperty<>(pr);
-        });
-        colPrix.setCellFactory(col -> new TableCell<Evenement, Double>() {
-            @Override protected void updateItem(Double item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else {
-                    setText(String.format("%.2f DT", item));
-                    setStyle("-fx-font-weight: bold; -fx-text-fill: #c4956a; -fx-font-size: 13px;");
-                }
-            }
-        });
-
-        // -- Statut --
-        colStatut.setCellValueFactory(p -> new javafx.beans.property.SimpleStringProperty(p.getValue().getStatut()));
-        colStatut.setCellFactory(col -> new TableCell<Evenement, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setGraphic(null); setText(null); return; }
-                Label badge = new Label(item.toUpperCase());
-                badge.getStyleClass().add("badge");
-                if ("publie".equalsIgnoreCase(item)) badge.getStyleClass().add("badge-confirmed");
-                else if ("brouillon".equalsIgnoreCase(item)) badge.getStyleClass().add("badge-pending");
-                else badge.getStyleClass().add("badge-cancelled");
-                setText(null);
-                setGraphic(badge);
-            }
-        });
-
-        // -- Actions --
-        colActions.setCellFactory(col -> new TableCell<Evenement, Void>() {
-            private final Button btnEdit   = new Button("✎  Modifier");
-            private final Button btnDelete = new Button("✘  Suppr.");
-            private final HBox container   = new HBox(8, btnEdit, btnDelete);
-            {
-                btnEdit.setStyle("-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 15; -fx-font-size: 10px; -fx-padding: 5 12; -fx-cursor: hand;");
-                btnDelete.setStyle("-fx-background-color: #fff5f5; -fx-text-fill: #e53e3e; -fx-background-radius: 15; -fx-border-color: #fecaca; -fx-border-radius: 15; -fx-font-size: 10px; -fx-padding: 5 12; -fx-cursor: hand;");
-                container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                btnEdit.setOnAction(e -> handleEditEvent(getTableView().getItems().get(getIndex())));
-                btnDelete.setOnAction(e -> handleDeleteEvent(getTableView().getItems().get(getIndex())));
-            }
-            @Override protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                setGraphic(empty ? null : container);
-            }
-        });
+        tfSearch.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
     }
 
     @FXML
-    void loadData() {
+    public void loadData() {
         try {
-            List<Evenement> list = service.listerTousParDateDebutDesc();
-            evenements.setAll(list);
-            
-            final FilteredList<Evenement> filteredData = new FilteredList<Evenement>(evenements);
-            tfSearch.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    final String filter = (newValue == null) ? "" : newValue.toLowerCase();
-                    filteredData.setPredicate(new java.util.function.Predicate<Evenement>() {
-                        @Override
-                        public boolean test(Evenement ev) {
-                            if (filter.isEmpty()) return true;
-                            if (ev.getNom().toLowerCase().contains(filter)) return true;
-                            if (ev.getLieu().toLowerCase().contains(filter)) return true;
-                            return false;
-                        }
-                    });
-                }
-            });
-            tvEvenements.setItems(filteredData);
-            
+            allEvents.setAll(serviceEvenement.listerTousParDateDebutAsc());
+            loadStats();
+            applyFilters();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void loadStats() {
+        try {
+            int total = serviceEvenement.compterTotal();
+            int capacity = serviceEvenement.sommeCapaciteTotale();
+
+            lblTotalEvents.setText(String.valueOf(total));
+            lblTotalCapacity.setText(String.valueOf(capacity));
+            lblUpcoming.setText(String.valueOf(total));
+
+            pbActive.setProgress(1.0);
+            pbCapacity.setProgress(Math.min(1.0, (double) capacity / 1000.0));
+            pbUpcoming.setProgress(0.5);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
     @FXML
-    void handleNewEvent(ActionEvent event) {
+    private void handleSearch() {
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        vboxEvents.getChildren().clear();
+
+        String query = tfSearch.getText().toLowerCase();
+        String sortBy = comboSort.getValue();
+        boolean asc = "ASC".equals(comboOrder.getValue());
+
+        List<Evenement> filtered = allEvents.stream()
+                .filter(e -> {
+                    if (query.isEmpty())
+                        return true;
+                    return e.getNom().toLowerCase().contains(query) ||
+                            e.getLieu().toLowerCase().contains(query);
+                })
+                .sorted((e1, e2) -> {
+                    int res = 0;
+                    switch (sortBy != null ? sortBy : "Date") {
+                        case "Date":
+                            res = e1.getDateDebut().compareTo(e2.getDateDebut());
+                            break;
+                        case "Nom":
+                            res = e1.getNom().compareTo(e2.getNom());
+                            break;
+                        case "Capacité":
+                            res = Integer.compare(e1.getCapacite(), e2.getCapacite());
+                            break;
+                        case "Prix":
+                            res = Double.compare(e1.getPrix().doubleValue(), e2.getPrix().doubleValue());
+                            break;
+                    }
+                    return asc ? res : -res;
+                })
+                .collect(Collectors.toList());
+
+        for (Evenement e : filtered) {
+            addEventRow(e);
+        }
+    }
+
+    private void addEventRow(Evenement e) {
+        HBox row = new HBox(0);
+        row.getStyleClass().add("table-row");
+        row.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
+        row.setStyle(
+                "-fx-padding: 15 25; -fx-background-color: white; -fx-border-color: transparent transparent #ede5de transparent;");
+
+        Label lblId = new Label("#" + e.getId());
+        lblId.setPrefWidth(60);
+        lblId.setMinWidth(Region.USE_PREF_SIZE);
+        lblId.setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;");
+
+        Label lblNom = new Label(e.getNom());
+        lblNom.setPrefWidth(280);
+        lblNom.setMinWidth(Region.USE_PREF_SIZE);
+        lblNom.setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;");
+
+        Label lblDate = new Label(e.getDateDebut().format(formatter));
+        lblDate.setPrefWidth(180);
+        lblDate.setMinWidth(Region.USE_PREF_SIZE);
+        lblDate.setStyle("-fx-text-fill: #6b5b4f;");
+
+        Label lblLieu = new Label(e.getLieu());
+        lblLieu.setPrefWidth(150);
+        lblLieu.setMinWidth(Region.USE_PREF_SIZE);
+        lblLieu.setStyle("-fx-text-fill: #9e8e82;");
+
+        Label lblPrixLabel = new Label(String.format("%.2f DT", e.getPrix()));
+        lblPrixLabel.setPrefWidth(100);
+        lblPrixLabel.setMinWidth(Region.USE_PREF_SIZE);
+        lblPrixLabel.setStyle("-fx-font-weight: bold; -fx-text-fill: #c4956a;");
+
+        Region spacer = new Region();
+        HBox.setHgrow(spacer, Priority.ALWAYS);
+
+        HBox actions = new HBox(10);
+        actions.setAlignment(javafx.geometry.Pos.CENTER_RIGHT);
+        actions.setPrefWidth(150);
+        actions.setMinWidth(Region.USE_PREF_SIZE);
+
+        Button btnEdit = new Button("✏");
+        btnEdit.setStyle("-fx-background-color: transparent; -fx-text-fill: #8b5e4a; -fx-cursor: hand;");
+        btnEdit.setOnAction(ev -> handleEditEvent(e));
+
+        Button btnDelete = new Button("🗑");
+        btnDelete.setStyle("-fx-background-color: transparent; -fx-text-fill: #c62828; -fx-cursor: hand;");
+        btnDelete.setOnAction(ev -> handleDeleteEvent(e));
+
+        actions.getChildren().addAll(btnEdit, btnDelete);
+
+        row.getChildren().addAll(lblId, lblNom, lblDate, lblLieu, lblPrixLabel, spacer, actions);
+        vboxEvents.getChildren().add(row);
+    }
+
+    @FXML
+    private void handleNewEvent(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AjouterEvenement.fxml"));
-            Parent root = loader.load();
-            tvEvenements.getScene().setRoot(root);
-        } catch (Exception e) { e.printStackTrace(); }
+            Parent root = FXMLLoader.load(getClass().getResource("/fxml/AjouterEvenement.fxml"));
+            vboxEvents.getScene().setRoot(root);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void handleEditEvent(Evenement ev) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/AjouterEvenement.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModifierEvenement.fxml"));
             Parent root = loader.load();
-            AjouterEvenementController controller = loader.getController();
-            controller.setEvenementToEdit(ev);
-            tvEvenements.getScene().setRoot(root);
-        } catch (Exception e) { e.printStackTrace(); }
+            vboxEvents.getScene().setRoot(root);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
     }
 
     private void handleDeleteEvent(Evenement ev) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer l'événement '" + ev.getNom() + "' ?", ButtonType.YES, ButtonType.NO);
-        final Evenement toDelete = ev;
-        alert.showAndWait().ifPresent(new java.util.function.Consumer<ButtonType>() {
-            @Override
-            public void accept(ButtonType response) {
-                if (response == ButtonType.YES) {
-                    try {
-                        service.supprimer(toDelete.getId());
-                        loadData();
-                    } catch (SQLException e) { e.printStackTrace(); }
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Supprimer l'événement '" + ev.getNom() + "' ?",
+                ButtonType.YES, ButtonType.NO);
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.YES) {
+                try {
+                    serviceEvenement.supprimer(ev.getId());
+                    loadData();
+                } catch (SQLException ex) {
+                    ex.printStackTrace();
                 }
             }
         });

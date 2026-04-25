@@ -14,28 +14,43 @@
     <ScrollPane fx:id="mainScrollPane" fitToWidth="true" style="-fx-background-color: #faf7f2;">
         <VBox spacing="40" style="-fx-padding: 20 50 50 50; -fx-alignment: top-center; -fx-background-color: #faf7f2;">
             
-            <!-- SIMULATEUR DE ROLE -->
-            <HBox alignment="TOP_RIGHT" spacing="10">
-                <Label text="Simulation (Évaluation) :" style="-fx-text-fill: #9e8e82; -fx-padding: 5 0 0 0; -fx-font-size: 11px;"/>
-                <ComboBox fx:id="cbRole" prefWidth="150" style="-fx-background-color: white; -fx-border-color: #e8ddd4; -fx-border-radius: 15; -fx-background-radius: 15;"/>
+            <!-- HEADER / NAVBAR (SIMULATED) -->
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10 0; -fx-background-color: transparent;">
+                <Label text="AfkArt" style="-fx-font-family: 'Serif'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #3D3229;">
+                    <graphic>
+                        <Label text="." style="-fx-text-fill: #C4704B; -fx-font-size: 20px;"/>
+                    </graphic>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="Accueil" onAction="#handleGoToHome" style="-fx-background-color: transparent; -fx-text-fill: #5C4A3D; -fx-cursor: hand;"/>
+                    <Button text="Événements" style="-fx-background-color: transparent; -fx-text-fill: #C4704B; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="btnLogin" onAction="#handleGoToLogin" text="Connexion" 
+                            style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 15; -fx-padding: 5 15; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    <Button fx:id="btnLogout" onAction="#handleLogout" text="Déconnexion" 
+                            style="-fx-background-color: transparent; -fx-text-fill: #e53e3e; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #fed7d7; -fx-border-radius: 15; -fx-background-radius: 15; -fx-padding: 5 15;"/>
+                </HBox>
             </HBox>
 
             <!-- EN-TETE / HEADER (Matching Image 1) -->
             <VBox alignment="CENTER" spacing="10">
-                <Label text="L'EXCELLENCE ARTISANALE" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #c4956a; -fx-letter-spacing: 2px;"/>
+                <Label text="L'EXCELLENCE ARTISANALE" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #C4704B; -fx-letter-spacing: 2px;"/>
                 <TextFlow textAlignment="CENTER">
-                    <Text text="S'inspirer de nos&#10;" style="-fx-font-size: 42px; -fx-font-family: 'Serif'; -fx-fill: #2d2d2d;"/>
-                    <Text text="Événements" style="-fx-font-size: 42px; -fx-font-family: 'Serif'; -fx-fill: #c4956a;"/>
+                    <Text text="S'inspirer de nos&#10;" style="-fx-font-size: 42px; -fx-font-family: 'Serif'; -fx-fill: #3D3229;"/>
+                    <Text text="Événements" style="-fx-font-size: 42px; -fx-font-family: 'Serif'; -fx-fill: #C4704B;"/>
                 </TextFlow>
                 <!-- Ligne de séparation orange fine -->
-                <Region style="-fx-background-color: #c4956a; -fx-pref-width: 50; -fx-pref-height: 2; -fx-max-width: 50;"/>
+                <Region style="-fx-background-color: #C4704B; -fx-pref-width: 50; -fx-pref-height: 2; -fx-max-width: 50;"/>
                 
                 <Label text="Découvrez une sélection exclusive d'événements créés par nos artisans&#10;passionnés. Réservez votre place pour une expérience immersive." 
-                       textAlignment="CENTER" style="-fx-text-fill: #6b5b4f; -fx-padding: 20 0 0 0;"/>
+                       textAlignment="CENTER" style="-fx-text-fill: #5C4A3D; -fx-padding: 20 0 0 0;"/>
                 
                 <HBox alignment="CENTER" spacing="15" style="-fx-padding: 20 0 0 0;">
-                    <Button fx:id="btnMesReservations" text="🎟️ Mes Réservations" style="-fx-background-color: white; -fx-text-fill: #2d2d2d; -fx-border-color: #e8ddd4; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 20; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#handleGoToReservations"/>
-                    <Button fx:id="btnNouvelEvenement" text="+ Nouvel Événement" style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 8 20; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#handleGoToNouvelEvenement"/>
+                    <Button fx:id="btnMesReservations" text="🎟️ Mes Réservations" style="-fx-background-color: white; -fx-text-fill: #3D3229; -fx-border-color: #e8ddd4; -fx-border-radius: 20; -fx-background-radius: 20; -fx-padding: 8 20; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#handleGoToReservations"/>
+                    <Button fx:id="btnNouvelEvenement" text="+ Nouvel Événement" style="-fx-background-color: #C4704B; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 8 20; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#handleGoToNouvelEvenement"/>
                 </HBox>
             </VBox>
 
@@ -95,10 +110,10 @@
                             <Label fx:id="lblPopupPlaces" text="60 restantes" style="-fx-font-size: 11px; -fx-text-fill: #2d2d2d;"/>
                         </VBox>
                         
-                        <Button fx:id="btnReserver" text="Réserver ma place" style="-fx-background-color: #c47653; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10; -fx-pref-width: 250; -fx-cursor: hand;" onAction="#handleReserverDepuisPopup"/>
+                        <Button fx:id="btnReserver" text="Réserver ma place" style="-fx-background-color: #C4704B; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10; -fx-pref-width: 250; -fx-cursor: hand;" onAction="#handleReserverDepuisPopup"/>
                         
                         <VBox fx:id="boxActionsArtisan" spacing="10">
-                            <Button text="✏️ Modifier l'événement" style="-fx-background-color: rgba(196, 149, 106, 0.15); -fx-text-fill: #c4956a; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10; -fx-pref-width: 250; -fx-cursor: hand;" onAction="#handleModifierEvenement"/>
+                            <Button text="✏️ Modifier l'événement" style="-fx-background-color: rgba(196, 112, 75, 0.15); -fx-text-fill: #C4704B; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10; -fx-pref-width: 250; -fx-cursor: hand;" onAction="#handleModifierEvenement"/>
                             <Button text="🗑 Supprimer" style="-fx-background-color: rgba(244, 67, 54, 0.1); -fx-text-fill: #f44336; -fx-font-weight: bold; -fx-background-radius: 5; -fx-padding: 10; -fx-pref-width: 250; -fx-cursor: hand;" onAction="#handleSupprimerEvenement"/>
                         </VBox>
                     </VBox>
@@ -107,6 +122,18 @@
                     <Button text="Fermer" style="-fx-background-color: transparent; -fx-text-fill: #9e8e82; -fx-cursor: hand; -fx-underline: true;" onAction="#handleFermerPopup"/>
                 </HBox>
             </VBox>
+        </VBox>
+    </StackPane>
+
+    <!-- FLOATING AI ASSISTANT -->
+    <StackPane mouseTransparent="false" pickOnBounds="false">
+        <VBox alignment="BOTTOM_RIGHT" pickOnBounds="false">
+            <padding>
+                <javafx.geometry.Insets bottom="30" right="30"/>
+            </padding>
+            <Button onAction="#handleAIChat" 
+                    style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 30; -fx-min-width: 60; -fx-min-height: 60; -fx-font-size: 24px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5); -fx-cursor: hand;" 
+                    text="💬"/>
         </VBox>
     </StackPane>
 

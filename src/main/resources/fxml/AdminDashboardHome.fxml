@@ -1,123 +1,82 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.chart.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="30" alignment="TOP_CENTER" stylesheets="@/css/admin_style.css"
-      style="-fx-background-color: #f7f3f0; -fx-padding: 30;"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="org.example.controllers.AdminDashboardHomeController">
+<ScrollPane fitToWidth="true" stylesheets="@/css/admin_style.css"
+            style="-fx-background-color: #f7f3f0; -fx-padding: 0;"
+            xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.AdminDashboardHomeController">
 
-    <!-- STATS CARDS -->
-    <HBox spacing="20" alignment="CENTER">
+    <VBox spacing="25" style="-fx-padding: 30; -fx-background-color: #f7f3f0;">
 
-        <!-- CARD 1: EVENTS -->
-        <VBox spacing="12" prefWidth="250" styleClass="stat-card">
-            <HBox alignment="CENTER_LEFT" spacing="15">
-                <StackPane style="-fx-background-color: #fcece3; -fx-background-radius: 12;" prefWidth="50" prefHeight="50">
-                    <Label text="📅" style="-fx-font-size: 22px;"/>
-                </StackPane>
-                <VBox>
-                    <Label fx:id="lblTotalEvents" text="--" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
-                    <Label text="Événements" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
-                </VBox>
-            </HBox>
-            <ProgressBar fx:id="pbEvents" progress="0.0" maxWidth="Infinity"/>
-            <Label text="+12% ce mois" style="-fx-font-size: 10px; -fx-text-fill: #16a34a;"/>
-        </VBox>
-
-        <!-- CARD 2: RESERVATIONS -->
-        <VBox spacing="12" prefWidth="250" styleClass="stat-card">
-            <HBox alignment="CENTER_LEFT" spacing="15">
-                <StackPane style="-fx-background-color: #f0fdf4; -fx-background-radius: 12;" prefWidth="50" prefHeight="50">
-                    <Label text="🎟️" style="-fx-font-size: 22px;"/>
-                </StackPane>
-                <VBox>
-                    <Label fx:id="lblTotalReservations" text="--" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
-                    <Label text="Réservations" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
-                </VBox>
-            </HBox>
-            <ProgressBar fx:id="pbReservations" progress="0.0" maxWidth="Infinity"/>
-            <Label text="+8.5% conversion" style="-fx-font-size: 10px; -fx-text-fill: #16a34a;"/>
-        </VBox>
-
-        <!-- CARD 3: OCCUPATION -->
-        <VBox spacing="12" prefWidth="250" styleClass="stat-card">
-            <HBox alignment="CENTER_LEFT" spacing="15">
-                <StackPane style="-fx-background-color: #fffbeb; -fx-background-radius: 12;" prefWidth="50" prefHeight="50">
-                    <Label text="📊" style="-fx-font-size: 22px;"/>
-                </StackPane>
-                <VBox>
-                    <Label fx:id="lblOccupationRate" text="--" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
-                    <Label text="Taux d'Occupation" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
-                </VBox>
-            </HBox>
-            <ProgressBar fx:id="pbOccupation" progress="0.0" maxWidth="Infinity"/>
-            <Label text="En bonne voie" style="-fx-font-size: 10px; -fx-text-fill: #d97706;"/>
-        </VBox>
-
-        <!-- CARD 4: REVENUE -->
-        <VBox spacing="12" prefWidth="250" styleClass="stat-card">
-            <HBox alignment="CENTER_LEFT" spacing="15">
-                <StackPane style="-fx-background-color: #fef9e7; -fx-background-radius: 12;" prefWidth="50" prefHeight="50">
-                    <Label text="💰" style="-fx-font-size: 22px;"/>
-                </StackPane>
-                <VBox>
-                    <Label fx:id="lblTotalRevenue" text="--" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
-                    <Label text="Revenus Estimés" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
-                </VBox>
-            </HBox>
-            <ProgressBar fx:id="pbRevenue" progress="0.0" maxWidth="Infinity"/>
-            <Label text="Record du mois" style="-fx-font-size: 10px; -fx-text-fill: #16a34a;"/>
-        </VBox>
-
-    </HBox>
-
-    <!-- BOTTOM: ACTIVITY TABLE + TOP EVENTS -->
-    <HBox spacing="25" VBox.vgrow="ALWAYS">
-
-        <!-- LATEST ACTIVITY TABLE -->
-        <VBox spacing="0" HBox.hgrow="ALWAYS" styleClass="stat-card" style="-fx-padding: 0;">
-
-            <!-- Card Header (dark, like Artisan Board) -->
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 20 25; -fx-background-color: #2d2d2d; -fx-background-radius: 16 16 0 0;">
-                <VBox spacing="3">
-                    <Label text="Activité Récente" style="-fx-font-weight: 900; -fx-font-size: 18px; -fx-text-fill: white;"/>
-                    <Label text="Flux des dernières réservations" style="-fx-text-fill: #9e8e82; -fx-font-size: 11px;"/>
-                </VBox>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Button text="Voir tout →" styleClass="btn-secondary"
-                        style="-fx-font-size: 11px; -fx-padding: 6 16; -fx-background-color: rgba(255,255,255,0.1); -fx-text-fill: #c4956a; -fx-border-color: #c4956a; -fx-border-radius: 20; -fx-background-radius: 20;"/>
-            </HBox>
-
-            <!-- Table column headers -->
-            <HBox spacing="0" style="-fx-padding: 10 25; -fx-background-color: #faf7f5; -fx-border-color: transparent transparent #ede5de transparent;">
-                <Label text="CLIENT" prefWidth="240" style="-fx-text-fill: #6b5b4f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-                <Label text="ÉVÉNEMENT" prefWidth="260" style="-fx-text-fill: #6b5b4f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-                <Label text="PLACES" prefWidth="80" style="-fx-text-fill: #6b5b4f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-                <Label text="TOTAL" prefWidth="100" style="-fx-text-fill: #6b5b4f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-                <Region HBox.hgrow="ALWAYS"/>
-                <Label text="STATUT" style="-fx-text-fill: #6b5b4f; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-            </HBox>
-
-            <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
-                <VBox fx:id="vboxRecentActivity" spacing="0">
-                    <!-- Rows injected here -->
-                </VBox>
-            </ScrollPane>
-        </VBox>
-
-        <!-- TOP EVENTS BOARD -->
-        <VBox spacing="0" prefWidth="360" styleClass="stat-card" style="-fx-padding: 0;">
-            <HBox alignment="CENTER_LEFT" style="-fx-padding: 20 25; -fx-background-color: #2d2d2d; -fx-background-radius: 16 16 0 0;">
-                <Label text="Événements Vedettes" style="-fx-font-weight: 900; -fx-font-size: 16px; -fx-text-fill: white;"/>
-            </HBox>
-            <VBox fx:id="vboxTopEvents" spacing="0" style="-fx-padding: 15;">
-                <!-- Event mini cards here -->
+        <!-- Global Performance Section -->
+        <HBox spacing="15" alignment="CENTER">
+            <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="Évènements Totaux" style="-fx-text-fill: #9e8e82; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="+12%" style="-fx-text-fill: #4CAF50; -fx-font-size: 10px;"/>
+                </HBox>
+                <Label fx:id="lblTotalEvents" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+                <ProgressBar fx:id="pbEvents" progress="0.4" maxWidth="Infinity"/>
             </VBox>
-        </VBox>
 
-    </HBox>
+            <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+                <Label text="Réservations" style="-fx-text-fill: #9e8e82; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblTotalReservations" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+                <ProgressBar fx:id="pbReservations" progress="0.7" maxWidth="Infinity" style="-fx-accent: #c4956a;"/>
+            </VBox>
 
-</VBox>
+            <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+                <Label text="Taux d'Occupation" style="-fx-text-fill: #9e8e82; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblOccupationRate" text="0%" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+                <ProgressBar fx:id="pbOccupation" progress="0.85" maxWidth="Infinity" style="-fx-accent: #8b5e4a;"/>
+            </VBox>
+
+            <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+                <Label text="Revenu Total (DT)" style="-fx-text-fill: #9e8e82; -fx-font-size: 12px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblTotalRevenue" text="0 DT" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+                <ProgressBar fx:id="pbRevenue" progress="0.3" maxWidth="Infinity" style="-fx-accent: #2d2d2d;"/>
+            </VBox>
+        </HBox>
+
+        <!-- Charts Section -->
+        <HBox spacing="20" prefHeight="400">
+            <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="15">
+                <Label text="Activité de la Plateforme (Inscriptions vs Réservations)" style="-fx-font-weight: bold; -fx-text-fill: #6b5b4f;"/>
+                <LineChart fx:id="lineChart" legendSide="BOTTOM" createSymbols="true">
+                    <xAxis><CategoryAxis side="BOTTOM"/></xAxis>
+                    <yAxis><NumberAxis side="LEFT"/></yAxis>
+                </LineChart>
+            </VBox>
+            <VBox prefWidth="350" styleClass="stat-card" spacing="15">
+                <Label text="Distribution des Rôles" style="-fx-font-weight: bold; -fx-text-fill: #6b5b4f;"/>
+                <PieChart fx:id="pieChart" labelsVisible="true"/>
+            </VBox>
+        </HBox>
+
+        <!-- Bottom Lists (Summaries) -->
+        <HBox spacing="20">
+            <VBox HBox.hgrow="ALWAYS" styleClass="stat-card" spacing="15">
+                <HBox alignment="CENTER_LEFT">
+                    <Label text="Réservations Récentes" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 16px;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Voir Tout" styleClass="btn-secondary" style="-fx-font-size: 10px;"/>
+                </HBox>
+                <VBox fx:id="vboxRecentActivity" spacing="10">
+                    <!-- Summary rows here -->
+                </VBox>
+            </VBox>
+
+            <VBox prefWidth="350" styleClass="stat-card" spacing="15">
+                <Label text="Evenements à la Une" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 16px;"/>
+                <VBox fx:id="vboxTopEvents" spacing="12">
+                    <!-- Cards here -->
+                </VBox>
+            </VBox>
+        </HBox>
+
+    </VBox>
+</ScrollPane>

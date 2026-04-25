@@ -1,217 +1,244 @@
 package org.example.controllers;
 
-import javafx.beans.property.SimpleStringProperty;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.collections.transformation.FilteredList;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
-import javafx.util.Callback;
-import org.example.models.Evenement;
+import javafx.scene.layout.StackPane;
+import javafx.stage.FileChooser;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.sql.SQLException;
+import java.time.format.DateTimeFormatter;
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import com.itextpdf.text.*;
+import com.itextpdf.text.pdf.PdfPTable;
+import com.itextpdf.text.pdf.PdfWriter;
+
 import org.example.models.Reservation;
+import org.example.models.Evenement;
+import org.example.models.User;
 import org.example.services.ServiceEvenement;
 import org.example.services.ServiceReservation;
-
-import java.sql.SQLException;
-import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import org.example.services.ServiceUser;
 
 public class AdminReservationsController {
 
-    @FXML private TableView<Reservation> tvReservations;
-    @FXML private TableColumn<Reservation, Integer> colId;
-    @FXML private TableColumn<Reservation, String> colEventName, colUser, colStatut;
-    @FXML private TableColumn<Reservation, LocalDateTime> colDate;
-    @FXML private TableColumn<Reservation, Integer> colPlaces;
-    @FXML private TableColumn<Reservation, String> colTotal;
-    @FXML private TableColumn<Reservation, Void> colActions;
-    @FXML private TextField tfSearch;
+    @FXML
+    private Label lblTotalReservations, lblPending, lblConfirmed, lblCanceled;
+    @FXML
+    private ProgressBar pbTotal, pbPending, pbConfirmed, pbCanceled;
+    @FXML
+    private TextField tfSearch;
+    @FXML
+    private ComboBox<String> comboSort, comboOrder;
+    @FXML
+    private VBox vboxReservations;
 
-    private ObservableList<Reservation> reservations = FXCollections.observableArrayList();
-    private ServiceReservation service = new ServiceReservation();
-    private Map<Integer, Evenement> evenementMap = new HashMap<>();
+    private ServiceEvenement serviceEvenement = new ServiceEvenement();
+    private ServiceReservation serviceReservation = new ServiceReservation();
+    private ServiceUser serviceUser = new ServiceUser();
+
+    private ObservableList<Reservation> allReservations = FXCollections.observableArrayList();
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
 
     @FXML
     public void initialize() {
-        setupTable();
-        loadData();
+        // Init ComboBoxes
+        comboSort.getItems().addAll("Date", "Statut", "Événement", "ID");
+        comboSort.setValue("Date");
+        comboOrder.getItems().addAll("ASC", "DESC");
+        comboOrder.setValue("DESC");
+
+        loadStats();
+        loadReservations();
+
+        // Real-time search listener
+        tfSearch.textProperty().addListener((obs, oldVal, newVal) -> applyFilters());
     }
 
-    private void setupTable() {
-        tvReservations.setFixedCellSize(60.0);
-        tvReservations.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
-
-        // -- ID --
-        colId.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getId()));
-        colId.setCellFactory(col -> new TableCell<Reservation, Integer>() {
-            @Override protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText("RESV-" + item); setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"); }
-            }
-        });
-
-        // -- Nom Événement --
-        colEventName.setCellValueFactory(cellData -> {
-            int eid = cellData.getValue().getEvenementId();
-            Evenement ev = evenementMap.get(eid);
-            return new SimpleStringProperty(ev != null ? ev.getNom() : "ID: " + eid);
-        });
-        colEventName.setCellFactory(col -> new TableCell<Reservation, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item); setStyle("-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"); }
-            }
-        });
-
-        // -- Client --
-        colUser.setCellValueFactory(cellData -> {
-            Integer uid = cellData.getValue().getUserId();
-            return new SimpleStringProperty(uid != null ? "Client #" + uid : "Anonyme");
-        });
-        colUser.setCellFactory(col -> new TableCell<Reservation, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item); setStyle("-fx-text-fill: #6b5b4f;"); }
-            }
-        });
-
-        // -- Date --
-        colDate.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getDateReservation()));
-        colDate.setCellFactory(col -> new TableCell<Reservation, LocalDateTime>() {
-            @Override protected void updateItem(LocalDateTime item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else {
-                    setText(item.format(java.time.format.DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm")));
-                    setStyle("-fx-text-fill: #9e8e82; -fx-font-size: 11px;");
-                }
-            }
-        });
-
-        // -- Places --
-        colPlaces.setCellValueFactory(p -> new javafx.beans.property.SimpleObjectProperty<>(p.getValue().getNbPlaces()));
-        colPlaces.setCellFactory(col -> new TableCell<Reservation, Integer>() {
-            @Override protected void updateItem(Integer item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item + " places"); setStyle("-fx-text-fill: #6b5b4f; -fx-font-weight: bold;"); }
-            }
-        });
-
-        // -- Total --
-        colTotal.setCellValueFactory(cellData -> {
-            Reservation r = cellData.getValue();
-            Evenement ev = evenementMap.get(r.getEvenementId());
-            double prix = (ev != null && ev.getPrix() != null) ? ev.getPrix().doubleValue() : 0.0;
-            return new SimpleStringProperty(String.format("%.2f DT", r.getNbPlaces() * prix));
-        });
-        colTotal.setCellFactory(col -> new TableCell<Reservation, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setText(null); }
-                else { setText(item); setStyle("-fx-font-weight: bold; -fx-text-fill: #c4956a; -fx-font-size: 13px;"); }
-            }
-        });
-
-        // -- Statut --
-        colStatut.setCellValueFactory(cellData -> new SimpleStringProperty(cellData.getValue().getStatut()));
-        colStatut.setCellFactory(col -> new TableCell<Reservation, String>() {
-            @Override protected void updateItem(String item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                if (empty || item == null) { setGraphic(null); setText(null); return; }
-                Label badge = new Label(item.toUpperCase());
-                badge.getStyleClass().add("badge");
-                if ("confirme".equalsIgnoreCase(item)) badge.getStyleClass().add("badge-confirmed");
-                else if ("annule".equalsIgnoreCase(item)) badge.getStyleClass().add("badge-cancelled");
-                else badge.getStyleClass().add("badge-pending");
-                setText(null);
-                setGraphic(badge);
-            }
-        });
-
-        // -- Actions --
-        colActions.setCellFactory(col -> new TableCell<Reservation, Void>() {
-            private final Button btnCheck  = new Button("✔  Valider");
-            private final Button btnCancel = new Button("✘  Annuler");
-            private final HBox container   = new HBox(8, btnCheck, btnCancel);
-            {
-                btnCheck.setStyle("-fx-background-color: #f0fdf4; -fx-text-fill: #16a34a; -fx-background-radius: 15; -fx-border-color: #bbf7d0; -fx-border-radius: 15; -fx-font-size: 10px; -fx-padding: 5 12; -fx-cursor: hand;");
-                btnCancel.setStyle("-fx-background-color: #fff5f5; -fx-text-fill: #e53e3e; -fx-background-radius: 15; -fx-border-color: #fecaca; -fx-border-radius: 15; -fx-font-size: 10px; -fx-padding: 5 12; -fx-cursor: hand;");
-                container.setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                btnCheck.setOnAction(e -> handleUpdateStatut(getTableView().getItems().get(getIndex()), "confirme"));
-                btnCancel.setOnAction(e -> handleUpdateStatut(getTableView().getItems().get(getIndex()), "annule"));
-            }
-            @Override protected void updateItem(Void item, boolean empty) {
-                super.updateItem(item, empty);
-                setAlignment(javafx.geometry.Pos.CENTER_LEFT);
-                setGraphic(empty ? null : container);
-            }
-        });
-    }
-
-    @FXML
-    void loadData() {
+    private void loadStats() {
         try {
-            // Load events first for mapping
-            ServiceEvenement se = new ServiceEvenement();
-            List<Evenement> evs = se.listerTousParDateDebutAsc();
-            evenementMap.clear();
-            for (Evenement e : evs) evenementMap.put(e.getId(), e);
+            int total = serviceReservation.compterTotal();
+            int pending = serviceReservation.compterParStatut("en_attente");
+            int confirmed = serviceReservation.compterParStatut("confirme");
+            int canceled = serviceReservation.compterParStatut("annule");
 
-            // Load reservations
-            List<Reservation> list = service.listerTous();
-            reservations.setAll(list);
-            
-            final FilteredList<Reservation> filteredData = new FilteredList<Reservation>(reservations);
-            tfSearch.textProperty().addListener(new ChangeListener<String>() {
-                @Override
-                public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-                    final String filter = (newValue == null) ? "" : newValue.toLowerCase();
-                    filteredData.setPredicate(new java.util.function.Predicate<Reservation>() {
-                        @Override
-                        public boolean test(final Reservation res) {
-                            if (filter.isEmpty()) return true;
-                            
-                            Evenement ev = evenementMap.get(res.getEvenementId());
-                            if (ev != null && ev.getNom().toLowerCase().contains(filter)) return true;
-                            if (String.valueOf(res.getId()).contains(filter)) return true;
-                            return false;
-                        }
-                    });
-                }
-            });
-            tvReservations.setItems(filteredData);
-            
+            lblTotalReservations.setText(String.valueOf(total));
+            lblPending.setText(String.valueOf(pending));
+            lblConfirmed.setText(String.valueOf(confirmed));
+            lblCanceled.setText(String.valueOf(canceled));
+
+            pbTotal.setProgress(1.0);
+            pbPending.setProgress(total > 0 ? (double) pending / total : 0);
+            pbConfirmed.setProgress(total > 0 ? (double) confirmed / total : 0);
+            pbCanceled.setProgress(total > 0 ? (double) canceled / total : 0);
+
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    private void handleUpdateStatut(Reservation r, String newStatut) {
+    @FXML
+    public void loadData() {
+        loadReservations();
+        loadStats();
+    }
+
+    private void loadReservations() {
         try {
-            service.mettreAJourStatut(r.getId(), newStatut);
-            loadData();
+            allReservations.setAll(serviceReservation.listerTous());
+            applyFilters();
         } catch (SQLException e) {
             e.printStackTrace();
-            new Alert(Alert.AlertType.ERROR, "Erreur lors de la mise à jour: " + e.getMessage()).show();
+        }
+    }
+
+    @FXML
+    private void handleSearch() {
+        applyFilters();
+    }
+
+    private void applyFilters() {
+        vboxReservations.getChildren().clear();
+
+        String query = tfSearch.getText() != null ? tfSearch.getText().toLowerCase() : "";
+        String sortBy = comboSort.getValue();
+        boolean asc = "ASC".equals(comboOrder.getValue());
+
+        List<Reservation> filtered = allReservations.stream()
+                .filter(r -> {
+                    if (query.isEmpty())
+                        return true;
+                    return String.valueOf(r.getId()).contains(query) ||
+                            r.getStatut().toLowerCase().contains(query);
+                })
+                .sorted((r1, r2) -> {
+                    int res = 0;
+                    switch (sortBy != null ? sortBy : "Date") {
+                        case "Date":
+                            res = r1.getCreatedAt().compareTo(r2.getCreatedAt());
+                            break;
+                        case "Statut":
+                            res = r1.getStatut().compareTo(r2.getStatut());
+                            break;
+                        case "ID":
+                            res = Integer.compare(r1.getId(), r2.getId());
+                            break;
+                        case "Événement":
+                            res = Integer.compare(r1.getEvenementId(), r2.getEvenementId());
+                            break;
+                    }
+                    return asc ? res : -res;
+                })
+                .collect(Collectors.toList());
+
+        for (Reservation r : filtered) {
+            addReservationRow(r);
+        }
+    }
+
+    private void addReservationRow(Reservation r) {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                    getClass().getResource("/fxml/AdminDashboardRow.fxml"));
+            HBox row = loader.load();
+
+            Label lblId = (Label) row.lookup("#lblId");
+            if (lblId != null)
+                lblId.setText("#" + r.getId());
+
+            Evenement evt = serviceEvenement.trouverParId(r.getEvenementId());
+            Label lblEvent = (Label) row.lookup("#lblEventTitle");
+            if (lblEvent != null)
+                lblEvent.setText(evt != null ? evt.getNom() : "Événement #" + r.getEvenementId());
+
+            Label lblDate = (Label) row.lookup("#lblDate");
+            if (lblDate != null)
+                lblDate.setText(r.getCreatedAt() != null ? r.getCreatedAt().format(formatter) : "---");
+
+            StackPane badge = (StackPane) row.lookup("#badgeContainer");
+            Label lblStatus = (Label) row.lookup("#lblStatus");
+            if (lblStatus != null)
+                lblStatus.setText(r.getStatut().toUpperCase());
+
+            if (badge != null) {
+                badge.getStyleClass().removeAll("badge-confirmed", "badge-pending", "badge-cancelled");
+                if (r.getStatut().contains("confirme"))
+                    badge.getStyleClass().add("badge-confirmed");
+                else if (r.getStatut().contains("attente"))
+                    badge.getStyleClass().add("badge-pending");
+                else
+                    badge.getStyleClass().add("badge-cancelled");
+            }
+
+            vboxReservations.getChildren().add(row);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void handleExportPDF() {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Enregistrer le rapport PDF");
+        fileChooser.setInitialFileName("Rapport_Reservations_AfkArt.pdf");
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("PDF Files", "*.pdf"));
+
+        File file = fileChooser.showSaveDialog(null);
+        if (file != null) {
+            exportToPDF(file);
+        }
+    }
+
+    private void exportToPDF(File file) {
+        Document document = new Document();
+        try {
+            PdfWriter.getInstance(document, new FileOutputStream(file));
+            document.open();
+
+            Font titleFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 18, BaseColor.DARK_GRAY);
+            Font headerFont = FontFactory.getFont(FontFactory.HELVETICA_BOLD, 10, BaseColor.WHITE);
+
+            Paragraph title = new Paragraph("GESTION DES RÉSERVATIONS - RAPPORT ADMIN", titleFont);
+            title.setAlignment(Element.ALIGN_CENTER);
+            title.setSpacingAfter(20);
+            document.add(title);
+
+            PdfPTable table = new PdfPTable(5);
+            table.setWidthPercentage(100);
+
+            String[] headers = { "ID", "Événement", "Utilisateur", "Date", "Statut" };
+            for (String h : headers) {
+                com.itextpdf.text.pdf.PdfPCell cell = new com.itextpdf.text.pdf.PdfPCell(new Phrase(h, headerFont));
+                cell.setBackgroundColor(new BaseColor(139, 94, 74));
+                cell.setPadding(5);
+                table.addCell(cell);
+            }
+
+            for (Reservation r : allReservations) {
+                table.addCell("#" + r.getId());
+                Evenement e = serviceEvenement.trouverParId(r.getEvenementId());
+                table.addCell(e != null ? e.getNom() : "ID: " + r.getEvenementId());
+                table.addCell("User ID: " + r.getUserId());
+                table.addCell(r.getCreatedAt() != null ? r.getCreatedAt().format(formatter) : "---");
+                table.addCell(r.getStatut());
+            }
+
+            document.add(table);
+            document.close();
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "Le rapport PDF a été généré avec succès !");
+            alert.showAndWait();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            new Alert(Alert.AlertType.ERROR, "Impossible de générer le PDF : " + e.getMessage()).show();
         }
     }
 }

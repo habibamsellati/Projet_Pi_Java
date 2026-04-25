@@ -35,7 +35,8 @@ public class AjouterEvenementController {
 
     // Validation Labels
     @FXML
-    private Label lblErrNom, lblErrDescription, lblErrDebut, lblErrFin, lblErrLieu, lblErrCapacite, lblErrPrix, lblImage;
+    private Label lblErrNom, lblErrDescription, lblErrDebut, lblErrFin, lblErrLieu, lblErrCapacite, lblErrPrix,
+            lblImage;
 
     @FXML
     private Button btnSubmit;
@@ -47,8 +48,7 @@ public class AjouterEvenementController {
     public void initialize() {
         // Populate Art Categories
         cbTypeArt.setItems(javafx.collections.FXCollections.observableArrayList(
-            "Peinture", "Sculpture", "Artisanat", "Céramique", "Décoration", "Mix artistique"
-        ));
+                "Peinture", "Sculpture", "Artisanat", "Céramique", "Décoration", "Mix artistique"));
 
         // Defaults
         dpDateDebut.setValue(LocalDate.now().plusDays(7));
@@ -56,39 +56,68 @@ public class AjouterEvenementController {
         tfHeureDebut.setText("10:00");
         tfHeureFin.setText("12:00");
 
-        // Real-time validation listeners (Remplacement de Lambda par Classes Anonymes pour compatibilité)
+        // Real-time validation listeners (Remplacement de Lambda par Classes Anonymes
+        // pour compatibilité)
         tfNom.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerNom(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerNom();
+            }
         });
         taDescription.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerDescription(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerDescription();
+            }
         });
         tfLieu.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerLieu(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerLieu();
+            }
         });
         tfCapacite.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerCapacite(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerCapacite();
+            }
         });
         tfPrix.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerPrix(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerPrix();
+            }
         });
-        
+
         dpDateDebut.valueProperty().addListener(new ChangeListener<LocalDate>() {
-            @Override public void changed(ObservableValue<? extends LocalDate> obs, LocalDate oldVal, LocalDate newVal) { validerDates(); }
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> obs, LocalDate oldVal, LocalDate newVal) {
+                validerDates();
+            }
         });
         dpDateFin.valueProperty().addListener(new ChangeListener<LocalDate>() {
-            @Override public void changed(ObservableValue<? extends LocalDate> obs, LocalDate oldVal, LocalDate newVal) { validerDates(); }
+            @Override
+            public void changed(ObservableValue<? extends LocalDate> obs, LocalDate oldVal, LocalDate newVal) {
+                validerDates();
+            }
         });
         tfHeureDebut.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerDates(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerDates();
+            }
         });
         tfHeureFin.textProperty().addListener(new ChangeListener<String>() {
-            @Override public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) { validerDates(); }
+            @Override
+            public void changed(ObservableValue<? extends String> obs, String oldVal, String newVal) {
+                validerDates();
+            }
         });
     }
 
     public void setEvenementToEdit(Evenement e) {
-        if (e == null) return;
+        if (e == null)
+            return;
         editingEvenementId = e.getId();
         tfNom.setText(e.getNom());
         cbTypeArt.setValue(e.getTypeArt());
@@ -96,8 +125,9 @@ public class AjouterEvenementController {
         taDescription.setText(e.getDescription());
         tfLieu.setText(e.getLieu());
         tfCapacite.setText(String.valueOf(e.getCapacite()));
-        if (e.getPrix() != null) tfPrix.setText(e.getPrix().toPlainString());
-        
+        if (e.getPrix() != null)
+            tfPrix.setText(e.getPrix().toPlainString());
+
         if (e.getDateDebut() != null) {
             dpDateDebut.setValue(e.getDateDebut().toLocalDate());
             tfHeureDebut.setText(String.format("%02d:%02d", e.getDateDebut().getHour(), e.getDateDebut().getMinute()));
@@ -114,12 +144,33 @@ public class AjouterEvenementController {
     }
 
     @FXML
+    void handleGenerateAIDesc(ActionEvent event) {
+        String title = tfNom.getText();
+        if (title == null || title.isBlank()) {
+            new Alert(Alert.AlertType.WARNING, "Veuillez d'abord saisir un titre pour que l'IA puisse s'en inspirer.")
+                    .show();
+            return;
+        }
+        org.example.services.AIService ai = new org.example.services.AIService();
+        String magicDesc = ai.generateDescription(title, cbTypeArt.getValue(), tfTheme.getText());
+        taDescription.setText(magicDesc);
+    }
+
+    @FXML
+    void handleSuggestPrice(ActionEvent event) {
+        org.example.services.AIService ai = new org.example.services.AIService();
+        double price = ai.suggestPricing(cbTypeArt.getValue());
+        tfPrix.setText(String.format("%.2f", price));
+        new Alert(Alert.AlertType.INFORMATION, "L'IA suggère un prix de " + price + " TND basé sur le type d'art.")
+                .show();
+    }
+
+    @FXML
     void handleChoisirImage(ActionEvent event) {
         javafx.stage.FileChooser fileChooser = new javafx.stage.FileChooser();
         fileChooser.setTitle("Choisir l'affiche de l'événement");
         fileChooser.getExtensionFilters().addAll(
-            new javafx.stage.FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif")
-        );
+                new javafx.stage.FileChooser.ExtensionFilter("Images", "*.png", "*.jpg", "*.jpeg", "*.gif"));
         java.io.File file = fileChooser.showOpenDialog(((Node) event.getSource()).getScene().getWindow());
         if (file != null) {
             imagePath = file.getAbsolutePath();
@@ -130,34 +181,41 @@ public class AjouterEvenementController {
     @FXML
     void handleCreerEvenement(ActionEvent event) {
         if (!validerSaisie()) {
-            new Alert(Alert.AlertType.WARNING, "Veuillez corriger les erreurs indiquées en rouge dans le formulaire.").show();
+            new Alert(Alert.AlertType.WARNING, "Veuillez corriger les erreurs indiquées en rouge dans le formulaire.")
+                    .show();
             return; // Saisie invalide
         }
-        
+
         try {
             Evenement e = new Evenement();
             e.setNom(tfNom.getText().trim());
-            e.setArtisan("Artisan Pro"); // Valeur par défaut pour éviter les erreurs NOT NULL en DB
+            // Utilisation du nom réel de l'artisan connecté
+            String artisanName = "Artisan";
+            if (org.example.utils.SessionStore.isConnected()) {
+                artisanName = org.example.utils.SessionStore.getCurrentUser().getNom() + " " +
+                        org.example.utils.SessionStore.getCurrentUser().getPrenom();
+            }
+            e.setArtisan(artisanName);
             e.setDescription(taDescription.getText().trim());
             e.setLieu(tfLieu.getText().trim());
             e.setCapacite(Integer.parseInt(tfCapacite.getText().trim()));
-            
+
             String tArt = cbTypeArt.getValue();
             e.setTypeArt(tArt != null && !tArt.isBlank() ? tArt.trim() : null);
-            
+
             String tTheme = tfTheme.getText();
             e.setTheme(tTheme != null && !tTheme.isBlank() ? tTheme.trim() : null);
-            
+
             String px = tfPrix.getText();
             if (px != null && !px.isBlank()) {
                 e.setPrix(new BigDecimal(px.replace(",", ".").trim()));
             }
-            
+
             e.setDateDebut(LocalDateTime.of(dpDateDebut.getValue(), LocalTime.parse(tfHeureDebut.getText().trim())));
             e.setDateFin(LocalDateTime.of(dpDateFin.getValue(), LocalTime.parse(tfHeureFin.getText().trim())));
             e.setStatut("publie"); // Statut par défaut
             e.setImage(imagePath);
-            
+
             ServiceEvenement service = new ServiceEvenement();
             if (editingEvenementId != null) {
                 e.setId(editingEvenementId);
@@ -165,13 +223,15 @@ public class AjouterEvenementController {
             } else {
                 service.ajouter(e);
             }
-            
-            System.out.println("DEBUG: Evenement " + (editingEvenementId != null ? "modifié" : "ajouté") + " avec succès ! ID: " + e.getId());
-            new Alert(Alert.AlertType.INFORMATION, "Félicitations ! L'événement a été " + (editingEvenementId != null ? "mis à jour" : "créé") + " avec succès.").showAndWait();
-            
+
+            System.out.println("DEBUG: Evenement " + (editingEvenementId != null ? "modifié" : "ajouté")
+                    + " avec succès ! ID: " + e.getId());
+            new Alert(Alert.AlertType.INFORMATION, "Félicitations ! L'événement a été "
+                    + (editingEvenementId != null ? "mis à jour" : "créé") + " avec succès.").showAndWait();
+
             // Back to dashboard
             handleGoBack(event);
-            
+
         } catch (Exception ex) {
             new Alert(Alert.AlertType.ERROR, "Erreur lors de l'enregistrement: " + ex.getMessage()).show();
         }
@@ -184,7 +244,7 @@ public class AjouterEvenementController {
         boolean vCap = validerCapacite();
         boolean vPrix = validerPrix();
         boolean vDates = validerDates();
-        
+
         return vNom && vDesc && vLieu && vCap && vPrix && vDates;
     }
 
@@ -239,7 +299,8 @@ public class AjouterEvenementController {
     private boolean validerCapacite() {
         try {
             int cap = Integer.parseInt(tfCapacite.getText().trim());
-            if (cap < 1 || cap > 10000) throw new NumberFormatException();
+            if (cap < 1 || cap > 10000)
+                throw new NumberFormatException();
             lblErrCapacite.setVisible(false);
             lblErrCapacite.setManaged(false);
             tfCapacite.setStyle("-fx-border-color: #2ecc71; -fx-border-width: 1px; -fx-background-radius: 5;");
@@ -257,11 +318,12 @@ public class AjouterEvenementController {
         String px = tfPrix.getText();
         if (px == null || px.isBlank()) {
             tfPrix.setStyle("");
-            return true; 
+            return true;
         }
         try {
             BigDecimal val = new BigDecimal(px.replace(",", ".").trim());
-            if (val.compareTo(BigDecimal.ZERO) < 0) throw new Exception();
+            if (val.compareTo(BigDecimal.ZERO) < 0)
+                throw new Exception();
             lblErrPrix.setVisible(false);
             lblErrPrix.setManaged(false);
             tfPrix.setStyle("-fx-border-color: #2ecc71; -fx-border-width: 1px; -fx-background-radius: 5;");
@@ -281,7 +343,8 @@ public class AjouterEvenementController {
         LocalTime hDebut = null;
         try {
             hDebut = LocalTime.parse(tfHeureDebut.getText().trim());
-            if (dDebut == null) throw new Exception();
+            if (dDebut == null)
+                throw new Exception();
             lblErrDebut.setVisible(false);
             lblErrDebut.setManaged(false);
             tfHeureDebut.setStyle("-fx-border-color: #2ecc71;");
@@ -297,7 +360,8 @@ public class AjouterEvenementController {
         LocalTime hFin = null;
         try {
             hFin = LocalTime.parse(tfHeureFin.getText().trim());
-            if (dFin == null) throw new Exception();
+            if (dFin == null)
+                throw new Exception();
             lblErrFin.setVisible(false);
             lblErrFin.setManaged(false);
             tfHeureFin.setStyle("-fx-border-color: #2ecc71;");
@@ -308,11 +372,11 @@ public class AjouterEvenementController {
             tfHeureFin.setStyle("-fx-border-color: #e74c3c; -fx-border-width: 2px;");
             valid = false;
         }
-        
+
         if (valid && hDebut != null && hFin != null && dDebut != null && dFin != null) {
             LocalDateTime dtDebut = LocalDateTime.of(dDebut, hDebut);
             LocalDateTime dtFin = LocalDateTime.of(dFin, hFin);
-            
+
             if (dtDebut.isBefore(LocalDateTime.now().plusDays(1))) {
                 lblErrDebut.setText("L'événement doit être planifié 24h à l'avance.");
                 lblErrDebut.setVisible(true);
@@ -335,7 +399,13 @@ public class AjouterEvenementController {
     @FXML
     void handleGoBack(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModuleEvenementReservation.fxml"));
+            String fxml = "/fxml/ModuleEvenementReservation.fxml"; // Default
+            if (org.example.utils.SessionStore.isAdmin()) {
+                fxml = "/fxml/AdminLayout.fxml";
+            } else if (org.example.utils.SessionStore.isArtisan()) {
+                fxml = "/fxml/ModuleEvenementReservation.fxml";
+            }
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxml));
             Parent root = loader.load();
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.getScene().setRoot(root);

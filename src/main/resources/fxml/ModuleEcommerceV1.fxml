@@ -3,114 +3,171 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.controllers.ModuleEcommerceV1Controller">
+            fx:controller="org.example.controllers.ModuleEcommerceV1Controller"
+            stylesheets="@/css/admin_style.css"
+            style="-fx-background-color: #f7f3f0;">
     <top>
-        <Label text="E-commerce V1 — CRUD (données brutes)" style="-fx-font-size: 16px; -fx-font-weight: bold;"
-               BorderPane.alignment="CENTER">
-            <padding>
-                <Insets top="10" bottom="8"/>
-            </padding>
-        </Label>
+        <VBox spacing="0" style="-fx-background-color: rgba(250, 247, 242, 0.95); -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.05), 10, 0, 0, 2);">
+            <!-- NAVBAR -->
+            <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-padding: 10 50;">
+                <Label text="AfkArt" style="-fx-font-family: 'Serif'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #3D3229;">
+                    <graphic>
+                        <Label text="." style="-fx-text-fill: #C4704B; -fx-font-size: 20px;"/>
+                    </graphic>
+                </Label>
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox spacing="20" alignment="CENTER">
+                    <Button text="Accueil" onAction="#handleGoToHome" style="-fx-background-color: transparent; -fx-text-fill: #5C4A3D; -fx-cursor: hand;"/>
+                    <Button text="Événements" onAction="#handleGoToEvents" style="-fx-background-color: transparent; -fx-text-fill: #5C4A3D; -fx-cursor: hand;"/>
+                    <Button text="Articles" style="-fx-background-color: transparent; -fx-text-fill: #C4704B; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    <Button text="À Propos" style="-fx-background-color: transparent; -fx-text-fill: #5C4A3D; -fx-cursor: hand;"/>
+                </HBox>
+                <Region HBox.hgrow="ALWAYS" />
+                <HBox spacing="10" alignment="CENTER">
+                    <Button fx:id="btnLogin" onAction="#handleGoToLogin" text="Connexion" 
+                            style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 15; -fx-padding: 5 15; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    <Button fx:id="btnLogout" onAction="#handleLogout" text="Déconnexion" 
+                            style="-fx-background-color: transparent; -fx-text-fill: #e53e3e; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #fed7d7; -fx-border-radius: 15; -fx-background-radius: 15; -fx-padding: 5 15;"/>
+                </HBox>
+            </HBox>
+            
+            <!-- MODULE TITLE (Small) -->
+            <VBox alignment="CENTER" spacing="5" style="-fx-padding: 10 0; -fx-background-color: #f7f3f0;">
+                <Label text="BOUTIQUE ARTISANALE" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #C4704B; -fx-letter-spacing: 2px;"/>
+                <Label text="Gestion du Catalogue &amp; Commandes" style="-fx-font-family: 'Serif'; -fx-font-size: 20px; -fx-text-fill: #2d2d2d;"/>
+            </VBox>
+        </VBox>
     </top>
     <center>
-        <TabPane tabClosingPolicy="UNAVAILABLE">
-            <Tab text="Articles">
-                <VBox spacing="8">
-                    <padding>
-                        <Insets top="10" right="12" bottom="12" left="12"/>
-                    </padding>
-                    <TableView fx:id="tvArticles" prefHeight="220">
-                        <columns>
-                            <TableColumn fx:id="colArtId" text="ID" prefWidth="50"/>
-                            <TableColumn fx:id="colTitre" text="Titre" prefWidth="200"/>
-                            <TableColumn fx:id="colPrix" text="Prix" prefWidth="80"/>
-                            <TableColumn fx:id="colCat" text="Catégorie" prefWidth="120"/>
-                            <TableColumn fx:id="colDate" text="Date" prefWidth="140"/>
-                        </columns>
-                    </TableView>
-                    <GridPane hgap="8" vgap="6">
-                        <Label text="Titre" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="tfArtTitre" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="400"/>
-                        <Label text="Contenu (≥10)" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextArea fx:id="taArtContenu" GridPane.columnIndex="1" GridPane.rowIndex="1" prefRowCount="3"
-                                  wrapText="true"/>
-                        <Label text="Prix" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <TextField fx:id="tfArtPrix" GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="120"/>
-                        <Label text="Catégorie" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
-                        <TextField fx:id="tfArtCat" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
-                        <Label text="Artisan user id" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-                        <TextField fx:id="tfArtisanId" text="1" GridPane.columnIndex="1" GridPane.rowIndex="4"
-                                   prefWidth="80"/>
-                    </GridPane>
-                    <HBox spacing="8">
-                        <Button text="Rafraîchir catalogue" onAction="#handleArticlesRefresh"/>
-                        <Button text="Ajouter" onAction="#handleArticleAjouter"/>
-                        <Button text="Modifier (sélection)" onAction="#handleArticleModifier"/>
-                        <Button text="Supprimer (sélection)" onAction="#handleArticleSupprimer"/>
+        <TabPane tabClosingPolicy="UNAVAILABLE" style="-fx-background-color: transparent;">
+            
+            <!-- SECTION ARTICLES -->
+            <Tab text="✨ ARTICLES &amp; CATALOGUE">
+                <VBox spacing="20" style="-fx-padding: 30;">
+                    <VBox spacing="15" styleClass="stat-card">
+                        <Label text="Liste des Articles Exposés" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                        <TableView fx:id="tvArticles" prefHeight="300" styleClass="modern-table">
+                            <columns>
+                                <TableColumn fx:id="colArtId" text="ID" prefWidth="60"/>
+                                <TableColumn fx:id="colTitre" text="Titre de l'Œuvre" prefWidth="250"/>
+                                <TableColumn fx:id="colPrix" text="Prix (TND)" prefWidth="100"/>
+                                <TableColumn fx:id="colCat" text="Catégorie" prefWidth="150"/>
+                                <TableColumn fx:id="colDate" text="Date d'Exposition" prefWidth="180"/>
+                            </columns>
+                        </TableView>
+                    </VBox>
+
+                    <HBox spacing="25">
+                        <!-- FORMULAIRE AJOUT/MODIF -->
+                        <VBox spacing="15" styleClass="stat-card" HBox.hgrow="ALWAYS">
+                            <Label text="Détails de l'Article" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                            <GridPane hgap="15" vgap="12">
+                                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                                    <Label text="TITRE" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                                    <TextField fx:id="tfArtTitre" promptText="Ex: Vase en Céramique" prefWidth="300"/>
+                                </VBox>
+                                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="0">
+                                    <Label text="PRIX" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                                    <TextField fx:id="tfArtPrix" promptText="0.00"/>
+                                </VBox>
+                                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="1" GridPane.columnSpan="2">
+                                    <Label text="DESCRIPTION / CONTENU" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                                    <TextArea fx:id="taArtContenu" prefRowCount="3" wrapText="true" promptText="Décrivez l'œuvre..."/>
+                                </VBox>
+                                <VBox spacing="5" GridPane.columnIndex="0" GridPane.rowIndex="2">
+                                    <Label text="CATÉGORIE" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                                    <TextField fx:id="tfArtCat" promptText="Ex: Décoration"/>
+                                </VBox>
+                                <VBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="2" visible="false" managed="false">
+                                    <Label text="ARTISAN ID" style="-fx-font-size: 9px; -fx-font-weight: bold;"/>
+                                    <TextField fx:id="tfArtisanId" text="1"/>
+                                </VBox>
+                            </GridPane>
+                        </VBox>
+
+                        <!-- ACTIONS -->
+                        <VBox spacing="10" alignment="CENTER" prefWidth="250">
+                            <Button text="🔄 ACTUALISER" onAction="#handleArticlesRefresh" styleClass="btn-secondary" maxWidth="Infinity"/>
+                            <Button text="➕ PUBLIER L'ARTICLE" onAction="#handleArticleAjouter" styleClass="btn-primary" maxWidth="Infinity"/>
+                            <Button text="✏️ APPLIQUER MODIFS" onAction="#handleArticleModifier" styleClass="btn-secondary" maxWidth="Infinity"/>
+                            <Button text="🗑 SUPPRIMER" onAction="#handleArticleSupprimer" styleClass="btn-danger" maxWidth="Infinity"/>
+                        </VBox>
                     </HBox>
                 </VBox>
             </Tab>
-            <Tab text="Commandes (panier)">
-                <VBox spacing="8">
-                    <padding>
-                        <Insets top="10" right="12" bottom="12" left="12"/>
-                    </padding>
-                    <HBox spacing="12">
-                        <VBox spacing="4">
-                            <Label text="Client user id"/>
-                            <TextField fx:id="tfCmdClientId" text="3" prefWidth="80"/>
+
+            <!-- SECTION COMMANDES -->
+            <Tab text="📦 GESTION DES COMMANDES">
+                <VBox spacing="20" style="-fx-padding: 30;">
+                    <HBox spacing="25">
+                        <!-- PANIER SIMULATION -->
+                        <VBox spacing="15" styleClass="stat-card" prefWidth="400">
+                            <Label text="Simulation de Panier" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                            <VBox spacing="5">
+                                <Label text="Lignes : ID_ARTICLE, QUANTITÉ (une par ligne)" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                                <TextArea fx:id="taPanierLignes" prefRowCount="4" promptText="Ex:&#10;1,2&#10;5,1" style="-fx-font-family: 'Monospaced';"/>
+                            </VBox>
+                            <VBox spacing="10">
+                                <TextField fx:id="tfCmdAdresse" promptText="📍 Adresse de livraison complète"/>
+                                <HBox spacing="10">
+                                    <TextField fx:id="tfCmdTel" promptText="📞 Téléphone" HBox.hgrow="ALWAYS"/>
+                                    <TextField fx:id="tfCmdMode" text="Carte Bancaire" promptText="Paiement" prefWidth="120"/>
+                                </HBox>
+                                <Button text="🚀 VALIDER LA COMMANDE" onAction="#handleCommandeCreer" styleClass="btn-primary" maxWidth="Infinity"/>
+                                <HBox visible="false" managed="false">
+                                     <TextField fx:id="tfCmdClientId" text="3"/>
+                                     <TextField fx:id="tfCmdArtisanId" text="1"/>
+                                </HBox>
+                            </VBox>
                         </VBox>
-                        <VBox spacing="4">
-                            <Label text="Artisan user id (liste reçue)"/>
-                            <TextField fx:id="tfCmdArtisanId" text="1" prefWidth="80"/>
+
+                        <!-- CLIENT/ARTISAN LISTS -->
+                        <VBox spacing="15" HBox.hgrow="ALWAYS">
+                            <VBox spacing="15" styleClass="stat-card" VBox.vgrow="ALWAYS">
+                                <HBox alignment="CENTER_LEFT" spacing="15">
+                                    <Label text="Historique des Commandes" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="CÔTÉ CLIENT" onAction="#handleCommandeListerClient" styleClass="btn-secondary" style="-fx-font-size: 10px;"/>
+                                    <Button text="CÔTÉ ARTISAN" onAction="#handleCommandeListerArtisan" styleClass="btn-secondary" style="-fx-font-size: 10px;"/>
+                                </HBox>
+                                <SplitPane dividerPositions="0.5" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0;">
+                                    <TextArea fx:id="taCmdClient" editable="false" wrapText="true" promptText="Flux client..."/>
+                                    <TextArea fx:id="taCmdArtisan" editable="false" wrapText="true" promptText="Flux artisan..."/>
+                                </SplitPane>
+                                <HBox spacing="10" alignment="CENTER">
+                                    <TextField fx:id="tfCmdIdStatut" promptText="ID Commande" prefWidth="120"/>
+                                    <TextField fx:id="tfCmdNouveauStatut" promptText="Nouveau Statut" prefWidth="180"/>
+                                    <Button text="MAJ STATUT" onAction="#handleCommandeStatut" styleClass="btn-primary"/>
+                                    <Button text="❌ ANNULER" onAction="#handleCommandeAnnuler" styleClass="btn-danger"/>
+                                </HBox>
+                            </VBox>
                         </VBox>
                     </HBox>
-                    <Label text="Panier : une ligne par article « idArticle,quantité »"/>
-                    <TextArea fx:id="taPanierLignes" prefRowCount="4" promptText="Ex:&#10;1,2&#10;5,1"/>
-                    <GridPane hgap="8" vgap="4">
-                        <Label text="Adresse livraison" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
-                        <TextField fx:id="tfCmdAdresse" GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="400"/>
-                        <Label text="Mode paiement" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-                        <TextField fx:id="tfCmdMode" text="carte" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
-                        <Label text="Téléphone" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-                        <TextField fx:id="tfCmdTel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-                    </GridPane>
-                    <HBox spacing="8">
-                        <Button text="Créer commande (panier)" onAction="#handleCommandeCreer"/>
-                        <Button text="Lister client" onAction="#handleCommandeListerClient"/>
-                        <Button text="Lister artisan" onAction="#handleCommandeListerArtisan"/>
-                    </HBox>
-                    <Label text="Commande id + nouveau statut (ex: Expédiée, confirmée, livrée)"/>
-                    <HBox spacing="8">
-                        <TextField fx:id="tfCmdIdStatut" promptText="id commande" prefWidth="100"/>
-                        <TextField fx:id="tfCmdNouveauStatut" promptText="statut" prefWidth="160"/>
-                        <Button text="MAJ statut" onAction="#handleCommandeStatut"/>
-                        <Button text="Annuler commande (client)" onAction="#handleCommandeAnnuler"/>
-                    </HBox>
-                    <SplitPane dividerPositions="0.5" prefHeight="220">
-                        <TextArea fx:id="taCmdClient" editable="false" wrapText="true"/>
-                        <TextArea fx:id="taCmdArtisan" editable="false" wrapText="true"/>
-                    </SplitPane>
                 </VBox>
             </Tab>
-            <Tab text="Commentaires">
-                <VBox spacing="8">
-                    <padding>
-                        <Insets top="10" right="12" bottom="12" left="12"/>
-                    </padding>
-                    <HBox spacing="8">
-                        <Label text="Article id"/>
-                        <TextField fx:id="tfComArticleId" prefWidth="80"/>
-                        <Button text="Charger" onAction="#handleComCharger"/>
-                    </HBox>
-                    <ListView fx:id="lvCom" prefHeight="200"/>
-                    <TextArea fx:id="taComContenu" prefRowCount="3" promptText="Commentaire (5–255 caractères)"/>
-                    <HBox spacing="8">
-                        <Button text="Publier" onAction="#handleComPublier"/>
-                        <Button text="Supprimer sélection (#id)" onAction="#handleComSupprimer"/>
-                    </HBox>
+
+            <!-- SECTION COMMENTAIRES -->
+            <Tab text="💬 COMMENTAIRES &amp; AVIS">
+                <VBox spacing="20" style="-fx-padding: 30;">
+                    <VBox spacing="15" styleClass="stat-card">
+                        <HBox alignment="CENTER_LEFT" spacing="15">
+                            <Label text="Gestion des Avis par Article" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <TextField fx:id="tfComArticleId" promptText="ID Article" prefWidth="100"/>
+                            <Button text="🔍 CHARGER" onAction="#handleComCharger" styleClass="btn-primary"/>
+                        </HBox>
+                        <ListView fx:id="lvCom" prefHeight="250" style="-fx-background-radius: 10; -fx-border-color: #ede5de; -fx-border-radius: 10;"/>
+                        <VBox spacing="10">
+                            <TextArea fx:id="taComContenu" prefRowCount="3" wrapText="true" promptText="Rédigez votre avis ici (5-255 caractères)..."/>
+                            <HBox spacing="10" alignment="CENTER_RIGHT">
+                                <Button text="🗑 SUPPRIMER LA SÉLECTION" onAction="#handleComSupprimer" styleClass="btn-danger"/>
+                                <Button text="✉️ PUBLIER L'AVIS" onAction="#handleComPublier" styleClass="btn-primary"/>
+                            </HBox>
+                        </VBox>
+                    </VBox>
                 </VBox>
             </Tab>
         </TabPane>

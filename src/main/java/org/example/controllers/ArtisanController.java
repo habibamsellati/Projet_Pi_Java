@@ -9,10 +9,12 @@ import javafx.scene.Scene;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.example.utils.SessionStore;
+import org.example.models.User;
 
 import java.io.IOException;
 
-public class AdminController {
+public class ArtisanController {
 
     @FXML
     private StackPane contentArea;
@@ -23,10 +25,10 @@ public class AdminController {
 
     @FXML
     public void initialize() {
-        if (org.example.utils.SessionStore.isConnected()) {
-            org.example.models.User u = org.example.utils.SessionStore.getCurrentUser();
+        if (SessionStore.isConnected()) {
+            User u = SessionStore.getCurrentUser();
             lblAdminName.setText(u.getNom() + " " + u.getPrenom());
-            lblAdminRole.setText(u.getRole().toUpperCase());
+            lblAdminRole.setText("Artisan Certifié");
 
             String initials = "";
             if (u.getNom() != null && !u.getNom().isEmpty())
@@ -35,40 +37,33 @@ public class AdminController {
                 initials += u.getPrenom().charAt(0);
             lblAdminInitials.setText(initials.toUpperCase());
         }
-        showDashboardView();
-    }
-
-    @FXML
-    void showDashboardView() {
-        lblViewTitle.setText("Dashboard");
-        lblViewSubtitle.setText("Aperçu de l'activité globale");
-        loadView("/fxml/AdminDashboardHome.fxml");
+        showEvenementsView();
     }
 
     @FXML
     void showEvenementsView() {
-        lblViewTitle.setText("Gestion des Événements");
-        lblViewSubtitle.setText("Catalogue complet de vos manifestations culturelles");
+        lblViewTitle.setText("Mes Événements");
+        lblViewSubtitle.setText("Gérez vos ateliers et expositions");
         loadView("/fxml/AdminEvents.fxml");
     }
 
     @FXML
     void showReservationsView() {
-        lblViewTitle.setText("Gestion des Réservations");
-        lblViewSubtitle.setText("Billets, confirmations et suivi des places");
+        lblViewTitle.setText("Mes Réservations");
+        lblViewSubtitle.setText("Suivi des participants et validation");
         loadView("/fxml/AdminReservations.fxml");
     }
 
     @FXML
-    void showCommandesView() {
-        lblViewTitle.setText("Gestion des Commandes");
-        lblViewSubtitle.setText("Administration des transactions clients");
-        loadView("/fxml/AdminCommandes.fxml");
+    void showArticlesView() {
+        lblViewTitle.setText("Mon E-commerce");
+        lblViewSubtitle.setText("Ventes d'articles et inventaire");
+        loadView("/fxml/ModuleEcommerceV1.fxml");
     }
 
     @FXML
     void handleLogout(ActionEvent event) {
-        org.example.utils.SessionStore.logout();
+        SessionStore.logout();
         try {
             Parent root = FXMLLoader.load(getClass().getResource("/fxml/Login.fxml"));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
@@ -76,11 +71,6 @@ public class AdminController {
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-
-    @FXML
-    void unsupportedFeature() {
-        System.out.println("Fonctionnalité non implémentée (Articles/Réclamations).");
     }
 
     private void loadView(String fxmlPath) {

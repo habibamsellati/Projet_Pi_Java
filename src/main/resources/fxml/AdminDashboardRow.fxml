@@ -9,28 +9,26 @@
         <Insets left="25" right="25" top="14" bottom="14"/>
     </padding>
 
-    <!-- Client Info -->
-    <VBox prefWidth="240" spacing="2">
-        <Label fx:id="lblClientName" text="Nom du Client" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
-        <Label fx:id="lblClientEmail" text="client@example.com" style="-fx-text-fill: #9e8e82; -fx-font-size: 10px;"/>
-    </VBox>
+    <!-- ID -->
+    <Label fx:id="lblId" text="#83" prefWidth="80" minWidth="-Infinity" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
 
     <!-- Event Info -->
-    <VBox prefWidth="260" spacing="2">
-        <Label fx:id="lblEventTitle" text="Évènement" style="-fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
-        <Label fx:id="lblDate" text="12 Avr 2026" style="-fx-text-fill: #c4956a; -fx-font-size: 10px; -fx-font-weight: bold;"/>
-    </VBox>
+    <Label fx:id="lblEventTitle" text="Nom de l'Événement" prefWidth="300" minWidth="-Infinity" style="-fx-text-fill: #2d2d2d; -fx-font-size: 13px;"/>
 
-    <!-- Places -->
-    <Label fx:id="lblPlaces" text="2" prefWidth="80" style="-fx-text-fill: #6b5b4f; -fx-font-weight: bold;"/>
+    <!-- Date -->
+    <Label fx:id="lblDate" text="12/04/2026 14:30" prefWidth="200" minWidth="-Infinity" style="-fx-text-fill: #8b5e4a; -fx-font-size: 12px; -fx-font-weight: bold;"/>
 
-    <!-- Total -->
-    <Label fx:id="lblTotal" text="60.00 DT" prefWidth="100" style="-fx-text-fill: #2d2d2d; -fx-font-weight: bold;"/>
+    <!-- Status Badge -->
+    <StackPane fx:id="badgeContainer" minWidth="-Infinity" style="-fx-padding: 5 10; -fx-background-radius: 20;">
+        <Label fx:id="lblStatus" text="CONFIRMÉ" minWidth="-Infinity" style="-fx-font-size: 10px; -fx-font-weight: 900;"/>
+    </StackPane>
 
     <Region HBox.hgrow="ALWAYS"/>
 
-    <!-- Status Badge -->
-    <StackPane fx:id="badgeContainer" style="-fx-padding: 5 15; -fx-background-radius: 20;">
-        <Label fx:id="lblStatus" text="CONFIRMÉ" style="-fx-font-size: 10px; -fx-font-weight: 900;"/>
-    </StackPane>
+    <!-- Actions -->
+    <HBox spacing="10" alignment="CENTER_RIGHT" prefWidth="150" minWidth="-Infinity">
+        <Button text="👁" style="-fx-background-color: transparent; -fx-text-fill: #8b5e4a; -fx-cursor: hand; -fx-font-size: 14px;"/>
+        <Button text="✏️" style="-fx-background-color: transparent; -fx-text-fill: #c4956a; -fx-cursor: hand; -fx-font-size: 14px;"/>
+        <Button text="🗑" style="-fx-background-color: transparent; -fx-text-fill: #c62828; -fx-cursor: hand; -fx-font-size: 14px;"/>
+    </HBox>
 </HBox>

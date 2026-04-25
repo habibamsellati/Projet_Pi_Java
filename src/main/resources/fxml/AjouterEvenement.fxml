@@ -43,7 +43,12 @@
                 </HBox>
                 
                 <VBox spacing="5">
-                    <Label text="PARCOURS &amp; VISION (DESCRIPTION) *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="PARCOURS &amp; VISION (DESCRIPTION) *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="✨ Générer par IA" onAction="#handleGenerateAIDesc" 
+                                style="-fx-background-color: transparent; -fx-text-fill: #c4956a; -fx-font-size: 9px; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #c4956a; -fx-border-radius: 5;"/>
+                    </HBox>
                     <TextArea fx:id="taDescription" promptText="Décrivez l'expérience que vous proposez..." prefHeight="100" wrapText="true" styleClass="text-area"/>
                     <Label fx:id="lblErrDescription" textFill="red" visible="false" managed="false"/>
                 </VBox>
@@ -100,7 +105,12 @@
                         <Label fx:id="lblErrCapacite" textFill="red" visible="false" managed="false"/>
                     </VBox>
                     <VBox HBox.hgrow="ALWAYS" spacing="5">
-                        <Label text="CONTRIBUTION (TND)" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="CONTRIBUTION (TND)" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="💡 IA Suggest" onAction="#handleSuggestPrice" 
+                                    style="-fx-background-color: transparent; -fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </HBox>
                         <TextField fx:id="tfPrix" promptText="Ex: 25.00" styleClass="text-field"/>
                         <Label fx:id="lblErrPrix" textFill="red" visible="false" managed="false"/>
                     </VBox>

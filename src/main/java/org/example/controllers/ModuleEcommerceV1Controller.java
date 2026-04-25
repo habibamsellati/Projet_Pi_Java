@@ -14,12 +14,22 @@ import org.example.services.ServiceArticle;
 import org.example.services.ServiceCommandeEcommerce;
 import org.example.services.ServiceCommentaire;
 
+import javafx.event.ActionEvent;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ModuleEcommerceV1Controller {
+
+    @FXML
+    private Button btnLogin, btnLogout;
 
     @FXML
     private TableView<Article> tvArticles;
@@ -92,11 +102,59 @@ public class ModuleEcommerceV1Controller {
             var d = c.getValue().getDatePublication();
             return new ReadOnlyStringWrapper(d == null ? "-" : d.format(DF));
         });
-        Platform.runLater(() -> ensureServices());
+        Platform.runLater(() -> {
+            ensureServices();
+            updateLoginStatus();
+        });
+    }
+
+    private void updateLoginStatus() {
+        boolean connected = org.example.utils.SessionStore.isConnected();
+        if (btnLogin != null) {
+            btnLogin.setVisible(!connected);
+            btnLogin.setManaged(!connected);
+        }
+        if (btnLogout != null) {
+            btnLogout.setVisible(connected);
+            btnLogout.setManaged(connected);
+        }
+    }
+
+    @FXML
+    void handleLogout(ActionEvent event) {
+        org.example.utils.SessionStore.logout();
+        handleGoToHome(event);
+    }
+
+    @FXML
+    void handleGoToHome(ActionEvent event) {
+        navigate(event, "/fxml/Home.fxml");
+    }
+
+    @FXML
+    void handleGoToEvents(ActionEvent event) {
+        navigate(event, "/fxml/ModuleEvenementReservation.fxml");
+    }
+
+    @FXML
+    void handleGoToLogin(ActionEvent event) {
+        navigate(event, "/fxml/Login.fxml");
+    }
+
+    private void navigate(ActionEvent event, String fxmlPath) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            stage.getScene().setRoot(root);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     /**
-     * Initialise les services au premier usage. Réessaie à chaque clic si MySQL n’était pas prêt.
+     * Initialise les services au premier usage. Réessaie à chaque clic si MySQL
+     * n’était pas prêt.
      */
     private boolean ensureServices() {
         if (servicesReady) {
@@ -151,16 +209,16 @@ public class ModuleEcommerceV1Controller {
             return;
         }
         try {
-            int aid = parseInt(tfArtisanId.getText(), "Artisan user id");
+            int artisanUid = org.example.utils.SessionStore.getUserId();
             Article a = new Article();
             a.setTitre(tfArtTitre.getText());
             a.setContenu(taArtContenu.getText());
             a.setPrix(Double.parseDouble(tfArtPrix.getText().trim().replace(',', '.')));
             a.setCategorie(tfArtCat.getText());
-            a.setArtisanId(aid);
-            a.setUserId(aid);
+            a.setArtisanId(artisanUid);
+            a.setUserId(artisanUid);
             serviceArticle.ajouter(a);
-            alert(Alert.AlertType.INFORMATION, "Article créé (id=" + a.getId() + ").");
+            alert(Alert.AlertType.INFORMATION, "Article d'art créé avec succès (id=" + a.getId() + ").");
             handleArticlesRefresh();
         } catch (Exception e) {
             alert(Alert.AlertType.ERROR, e.getMessage());
@@ -178,7 +236,7 @@ public class ModuleEcommerceV1Controller {
             return;
         }
         try {
-            int artisanUid = parseInt(tfArtisanId.getText(), "Artisan user id");
+            int artisanUid = org.example.utils.SessionStore.getUserId();
             Article a = new Article();
             a.setId(sel.getId());
             a.setTitre(tfArtTitre.getText());
@@ -188,7 +246,7 @@ public class ModuleEcommerceV1Controller {
             a.setArtisanId(artisanUid);
             a.setUserId(artisanUid);
             serviceArticle.modifier(a, artisanUid);
-            alert(Alert.AlertType.INFORMATION, "Article mis à jour.");
+            alert(Alert.AlertType.INFORMATION, "Article mis à jour avec succès.");
             handleArticlesRefresh();
         } catch (Exception e) {
             alert(Alert.AlertType.ERROR, e.getMessage());
@@ -229,10 +287,10 @@ public class ModuleEcommerceV1Controller {
                     tfCmdAdresse.getText(),
                     tfCmdMode.getText(),
                     tfCmdTel.getText(),
-                    lignes
-            );
+                    lignes);
             alert(Alert.AlertType.INFORMATION,
-                    "Commande " + c.getId() + " — total " + String.format("%.2f", c.getTotal()) + " — N° " + c.getNumero());
+                    "Commande " + c.getId() + " — total " + String.format("%.2f", c.getTotal()) + " — N° "
+                            + c.getNumero());
             handleCommandeListerClient();
         } catch (Exception e) {
             alert(Alert.AlertType.ERROR, e.getMessage());
@@ -245,7 +303,7 @@ public class ModuleEcommerceV1Controller {
             return;
         }
         try {
-            int client = parseInt(tfCmdClientId.getText(), "Client id");
+            int client = org.example.utils.SessionStore.getUserId();
             StringBuilder sb = new StringBuilder();
             for (Commande c : serviceCommande.listerPourClient(client)) {
                 sb.append(formatCommande(c)).append("\n");
@@ -262,7 +320,7 @@ public class ModuleEcommerceV1Controller {
             return;
         }
         try {
-            int artisan = parseInt(tfCmdArtisanId.getText(), "Artisan id");
+            int artisan = org.example.utils.SessionStore.getUserId();
             StringBuilder sb = new StringBuilder();
             for (Commande c : serviceCommande.listerPourArtisan(artisan)) {
                 sb.append(formatCommande(c)).append("\n");
@@ -326,14 +384,18 @@ public class ModuleEcommerceV1Controller {
         }
         try {
             int articleId = parseInt(tfComArticleId.getText(), "Article id");
+            String content = taComContenu.getText();
+            if (content == null || content.length() < 5) {
+                throw new IllegalArgumentException("Le commentaire doit contenir au moins 5 caractères.");
+            }
             Commentaire c = new Commentaire();
             c.setArticleId(articleId);
-            c.setUserId(DEMO_USER_COMMENT);
-            c.setContenu(taComContenu.getText());
+            c.setUserId(org.example.utils.SessionStore.getUserId());
+            c.setContenu(content);
             serviceCommentaire.ajouter(c);
             taComContenu.clear();
             rafraichirCommentaires();
-            alert(Alert.AlertType.INFORMATION, "Commentaire publié.");
+            alert(Alert.AlertType.INFORMATION, "Votre avis a été publié !");
         } catch (Exception e) {
             alert(Alert.AlertType.ERROR, e.getMessage());
         }
@@ -366,8 +428,7 @@ public class ModuleEcommerceV1Controller {
                 list.stream().map(c -> {
                     String d = c.getDatePub() == null ? "-" : c.getDatePub().format(DF);
                     return "#" + c.getId() + "  u" + c.getUserId() + "  " + d + "  —  " + c.getContenu();
-                }).toList()
-        ));
+                }).toList()));
     }
 
     private static String formatCommande(Commande c) {

@@ -20,10 +20,23 @@ public class ServiceReservation {
         if (connection == null) {
             throw new IllegalStateException("Connexion MySQL non disponible.");
         }
+        // Auto-clean expired pending reservations
+        annulerReservationsExpirees();
+    }
+
+    public void annulerReservationsExpirees() {
+        String sql = "UPDATE reservation SET statut = ? WHERE statut = ? AND TIMESTAMPDIFF(HOUR, created_at, NOW()) >= 3";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, STATUT_ANNULE);
+            ps.setString(2, STATUT_EN_ATTENTE);
+            ps.executeUpdate();
+        } catch (SQLException ignore) {
+        }
     }
 
     /**
-     * Règle métier : somme(nb_places) pour en_attente + confirme + nouvelle demande <= capacité événement.
+     * Règle métier : somme(nb_places) pour en_attente + confirme + nouvelle demande
+     * <= capacité événement.
      */
     public void ajouter(Reservation r) throws SQLException {
         validerChamps(r);
@@ -48,8 +61,7 @@ public class ServiceReservation {
             if (placesPrises + r.getNbPlaces() > capacite) {
                 throw new IllegalStateException(
                         "Capacité insuffisante. Places déjà réservées (en attente / confirmées): " + placesPrises
-                                + ", capacité: " + capacite + "."
-                );
+                                + ", capacité: " + capacite + ".");
             }
 
             String sql = "INSERT INTO reservation (evenement_id, user_id, date_reservation, nb_places, statut, created_at) VALUES (?, ?, ?, ?, ?, NOW())";
@@ -68,7 +80,8 @@ public class ServiceReservation {
             connection.commit();
         } catch (Exception e) {
             connection.rollback();
-            if (e instanceof SQLException sqlEx) throw sqlEx;
+            if (e instanceof SQLException sqlEx)
+                throw sqlEx;
             throw new SQLException(e.getMessage(), e);
         } finally {
             connection.setAutoCommit(previousAutoCommit);
@@ -83,7 +96,8 @@ public class ServiceReservation {
             ps.setString(2, STATUT_EN_ATTENTE);
             ps.setString(3, STATUT_CONFIRME);
             try (ResultSet rs = ps.executeQuery()) {
-                if (rs.next()) return rs.getInt("s");
+                if (rs.next())
+                    return rs.getInt("s");
                 return 0;
             }
         }
@@ -96,11 +110,15 @@ public class ServiceReservation {
             ps.setString(1, normalized);
             ps.setInt(2, reservationId);
             int n = ps.executeUpdate();
-            if (n == 0) throw new IllegalArgumentException("Réservation introuvable.");
+            if (n == 0)
+                throw new IllegalArgumentException("Réservation introuvable.");
         }
     }
 
-    /** Annulation client : passe en statut annule (libère les places pour le calcul). */
+    /**
+     * Annulation client : passe en statut annule (libère les places pour le
+     * calcul).
+     */
     public void annulerParClient(int reservationId, int userId) throws SQLException {
         String sql = "UPDATE reservation SET statut = ? WHERE id = ? AND user_id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
@@ -143,7 +161,8 @@ public class ServiceReservation {
         String sql = "SELECT * FROM reservation ORDER BY created_at DESC";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(map(rs));
+                while (rs.next())
+                    list.add(map(rs));
             }
         }
         return list;
@@ -155,7 +174,8 @@ public class ServiceReservation {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, userId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(map(rs));
+                while (rs.next())
+                    list.add(map(rs));
             }
         }
         return list;
@@ -164,8 +184,21 @@ public class ServiceReservation {
     public int compterTotal() throws SQLException {
         String sql = "SELECT COUNT(*) FROM reservation";
         try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            if (rs.next()) return rs.getInt(1);
+                ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next())
+                return rs.getInt(1);
+        }
+        return 0;
+    }
+
+    public int compterParStatut(String statut) throws SQLException {
+        String sql = "SELECT COUNT(*) FROM reservation WHERE statut = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, statut);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next())
+                    return rs.getInt(1);
+            }
         }
         return 0;
     }
@@ -173,19 +206,21 @@ public class ServiceReservation {
     public int sommePlacesReserveesTotales() throws SQLException {
         String sql = "SELECT SUM(nb_places) FROM reservation WHERE statut != 'annule'";
         try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            if (rs.next()) return rs.getInt(1);
+                ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next())
+                return rs.getInt(1);
         }
         return 0;
     }
 
     public double calculerRevenuTotal() throws SQLException {
         String sql = "SELECT SUM(r.nb_places * e.prix) FROM reservation r " +
-                     "JOIN evenement e ON r.evenement_id = e.id " +
-                     "WHERE r.statut = 'confirme'";
+                "JOIN evenement e ON r.evenement_id = e.id " +
+                "WHERE r.statut = 'confirme'";
         try (Statement st = connection.createStatement();
-             ResultSet rs = st.executeQuery(sql)) {
-            if (rs.next()) return rs.getDouble(1);
+                ResultSet rs = st.executeQuery(sql)) {
+            if (rs.next())
+                return rs.getDouble(1);
         }
         return 0;
     }
@@ -196,7 +231,8 @@ public class ServiceReservation {
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, evenementId);
             try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) list.add(map(rs));
+                while (rs.next())
+                    list.add(map(rs));
             }
         }
         return list;
@@ -209,11 +245,13 @@ public class ServiceReservation {
         int uid = rs.getInt("user_id");
         r.setUserId(rs.wasNull() ? null : uid);
         Timestamp ts = rs.getTimestamp("date_reservation");
-        if (ts != null) r.setDateReservation(ts.toLocalDateTime());
+        if (ts != null)
+            r.setDateReservation(ts.toLocalDateTime());
         r.setNbPlaces(rs.getInt("nb_places"));
         r.setStatut(rs.getString("statut"));
         ts = rs.getTimestamp("created_at");
-        if (ts != null) r.setCreatedAt(ts.toLocalDateTime());
+        if (ts != null)
+            r.setCreatedAt(ts.toLocalDateTime());
         return r;
     }
 
@@ -233,7 +271,8 @@ public class ServiceReservation {
     }
 
     private String normalizeStatut(String statut) {
-        if (statut == null || statut.isBlank()) return STATUT_EN_ATTENTE;
+        if (statut == null || statut.isBlank())
+            return STATUT_EN_ATTENTE;
         String s = statut.trim().toLowerCase();
         if (!s.equals(STATUT_EN_ATTENTE) && !s.equals(STATUT_CONFIRME) && !s.equals(STATUT_ANNULE)) {
             throw new IllegalArgumentException("Statut invalide. Valeurs: en_attente, confirme, annule.");

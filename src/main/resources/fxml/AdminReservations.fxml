@@ -1,31 +1,75 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.geometry.Insets?>
 
-<VBox spacing="20" stylesheets="@/css/admin_style.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.AdminReservationsController">
-    <padding><Insets top="20" right="30" bottom="20" left="30"/></padding>
+<VBox spacing="25" alignment="TOP_CENTER" stylesheets="@/css/admin_style.css"
+      style="-fx-background-color: #f7f3f0; -fx-padding: 30;"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.AdminReservationsController">
 
-    <!-- Header Actions -->
-    <HBox spacing="15" alignment="CENTER_LEFT">
-        <TextField fx:id="tfSearch" promptText="Rechercher une réservation..." prefWidth="350" styleClass="search-field"/>
-        <Region HBox.hgrow="ALWAYS"/>
-        <Button text="🔄 Actualiser" styleClass="btn-secondary" onAction="#loadData"/>
+    <!-- HEADER: Title & Global Actions -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Gestion des Réservations" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+            <Label text="Liste de toutes les réservations du système" style="-fx-font-size: 13px; -fx-text-fill: #9e8e82;"/>
+        </VBox>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="📄 EXPORT PDF" onAction="#handleExportPDF" styleClass="btn-danger" 
+                    style="-fx-background-color: #c62828; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="🔄 Actualiser" onAction="#loadData" styleClass="btn-secondary"/>
+        </HBox>
     </HBox>
 
-    <!-- Table -->
-    <TableView fx:id="tvReservations" VBox.vgrow="ALWAYS" styleClass="modern-table">
-        <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="60"/>
-            <TableColumn fx:id="colEventName" text="Événement" prefWidth="250"/>
-            <TableColumn fx:id="colUser" text="Client" prefWidth="150"/>
-            <TableColumn fx:id="colDate" text="Date Res." prefWidth="150"/>
-            <TableColumn fx:id="colPlaces" text="Places" prefWidth="80"/>
-            <TableColumn fx:id="colTotal" text="Total (DT)" prefWidth="100"/>
-            <TableColumn fx:id="colStatut" text="Statut" prefWidth="120"/>
-            <TableColumn fx:id="colActions" text="Actions" prefWidth="150"/>
-        </columns>
-    </TableView>
+    <!-- STATS CARDS -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox spacing="10" prefWidth="240" styleClass="stat-card">
+            <Label text="TOTAL" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalReservations" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+            <ProgressBar fx:id="pbTotal" progress="1.0" maxWidth="Infinity" style="-fx-accent: #2d2d2d;"/>
+        </VBox>
+        <VBox spacing="10" prefWidth="240" styleClass="stat-card">
+            <Label text="EN ATTENTE" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblPending" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #FF9800;"/>
+            <ProgressBar fx:id="pbPending" progress="0.0" maxWidth="Infinity" style="-fx-accent: #FF9800;"/>
+        </VBox>
+        <VBox spacing="10" prefWidth="240" styleClass="stat-card">
+            <Label text="CONFIRMÉ" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblConfirmed" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #4CAF50;"/>
+            <ProgressBar fx:id="pbConfirmed" progress="0.0" maxWidth="Infinity" style="-fx-accent: #4CAF50;"/>
+        </VBox>
+        <VBox spacing="10" prefWidth="240" styleClass="stat-card">
+            <Label text="ANNULÉ" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblCanceled" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #F44336;"/>
+            <ProgressBar fx:id="pbCanceled" progress="0.0" maxWidth="Infinity" style="-fx-accent: #F44336;"/>
+        </VBox>
+    </HBox>
+
+    <!-- SEARCH & FILTER BAR -->
+    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-padding: 15 25;">
+        <TextField fx:id="tfSearch" promptText="Rechercher une réservation..." prefWidth="300" styleClass="search-field"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Trier par:" style="-fx-text-fill: #6b5b4f; -fx-font-size: 12px;"/>
+        <ComboBox fx:id="comboSort" prefWidth="150" promptText="Champ"/>
+        <ComboBox fx:id="comboOrder" prefWidth="100" promptText="Ordre"/>
+    </HBox>
+
+    <!-- MAIN TABLE AREA -->
+    <VBox spacing="0" VBox.vgrow="ALWAYS" styleClass="stat-card" style="-fx-padding: 0;">
+        <HBox spacing="0" style="-fx-padding: 15 25; -fx-background-color: #faf7f5; -fx-border-color: transparent transparent #ede5de transparent; -fx-background-radius: 16 16 0 0;">
+            <Label text="ID" prefWidth="80" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="ÉVÉNEMENT" prefWidth="300" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="DATE" prefWidth="200" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="STATUT" prefWidth="150" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="ACTIONS" prefWidth="150" minWidth="-Infinity" alignment="CENTER_RIGHT" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <VBox fx:id="vboxReservations" spacing="0" style="-fx-background-color: white;">
+                <!-- Rows injected dynamically -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
 
 </VBox>

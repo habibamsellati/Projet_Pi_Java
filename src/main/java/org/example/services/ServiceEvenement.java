@@ -53,7 +53,7 @@ public class ServiceEvenement {
 
     public void modifier(Evenement e) throws SQLException {
         if (e.getId() <= 0) throw new IllegalArgumentException("ID événement invalide.");
-        valider(e, true);
+        valider(e, false);
         String sql = "UPDATE evenement SET nom=?, artisan=?, description=?, date_debut=?, date_fin=?, lieu=?, capacite=?, type_art=?, theme=?, prix=?, image=?, statut=? WHERE id=?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setString(1, e.getNom().trim());

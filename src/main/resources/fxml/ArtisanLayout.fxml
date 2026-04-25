@@ -1,5 +1,4 @@
 <?xml version="1.0" encoding="UTF-8"?>
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.shape.*?>
@@ -8,7 +7,7 @@
 <?import java.lang.String?>
 
 <BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="org.example.controllers.AdminController"
+            fx:controller="org.example.controllers.ArtisanController"
             stylesheets="@/css/admin_style.css"
             prefHeight="800.0" prefWidth="1200.0">
 
@@ -19,25 +18,25 @@
             <VBox alignment="CENTER" spacing="10" style="-fx-padding: 0 0 40 0;">
                 <HBox alignment="CENTER" spacing="12" style="-fx-padding: 0 30;">
                     <StackPane style="-fx-background-color: #c4956a; -fx-background-radius: 12; -fx-padding: 10;">
-                        <Label text="🎨" style="-fx-font-size: 22px;"/>
+                        <Label text="⚒️" style="-fx-font-size: 22px;"/>
                     </StackPane>
                     <VBox alignment="CENTER_LEFT">
                         <Label text="AFK'ART" style="-fx-text-fill: white; -fx-font-size: 20px; -fx-font-weight: 900;"/>
-                        <Label text="PORTAIL ADMIN" style="-fx-text-fill: #c4956a; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+                        <Label text="ESPACE ARTISAN" style="-fx-text-fill: #c4956a; -fx-font-size: 9px; -fx-font-weight: bold;"/>
                     </VBox>
                 </HBox>
             </VBox>
 
-            <Label text="NAVIGATION" style="-fx-text-fill: #6b6b6b; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 30 15 30;"/>
+            <Label text="MON ACTIVITÉ" style="-fx-text-fill: #6b6b6b; -fx-font-size: 10px; -fx-font-weight: bold; -fx-padding: 0 30 15 30;"/>
 
-            <Button fx:id="btnNavDashboard" text="📊  Dashboard" maxWidth="Infinity" onAction="#showDashboardView">
+            <Button fx:id="btnNavEvenements" text="📅  Mes Événements" maxWidth="Infinity" onAction="#showEvenementsView">
                 <styleClass>
                     <String fx:value="nav-button"/>
                     <String fx:value="nav-button-active"/>
                 </styleClass>
             </Button>
-            <Button fx:id="btnNavEvenements" text="📅  Événements" maxWidth="Infinity" styleClass="nav-button" onAction="#showEvenementsView"/>
-            <Button fx:id="btnNavReservations" text="🎟️  Réservations" maxWidth="Infinity" styleClass="nav-button" onAction="#showReservationsView"/>
+            <Button fx:id="btnNavReservations" text="🎟️  Mes Réservations" maxWidth="Infinity" styleClass="nav-button" onAction="#showReservationsView"/>
+            <Button fx:id="btnNavArticles" text="📦  Mon E-commerce" maxWidth="Infinity" styleClass="nav-button" onAction="#showArticlesView"/>
 
             <Region VBox.vgrow="ALWAYS"/>
 
@@ -57,29 +56,22 @@
             <HBox alignment="CENTER_LEFT" spacing="25" styleClass="header-bar"
                   style="-fx-padding: 20 40;">
                 <VBox>
-                    <Label fx:id="lblViewTitle" text="Dashboard" style="-fx-font-size: 24px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+                    <Label fx:id="lblViewTitle" text="Gestion Événements" style="-fx-font-size: 24px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
                     <HBox spacing="5" alignment="CENTER_LEFT">
                         <Circle radius="3" fill="#c4956a"/>
-                        <Label fx:id="lblViewSubtitle" text="Overview &amp; Analytics" style="-fx-font-size: 12px; -fx-text-fill: #9e8e82;"/>
+                        <Label fx:id="lblViewSubtitle" text="Gérez vos manifestations artisanales" style="-fx-font-size: 12px; -fx-text-fill: #9e8e82;"/>
                     </HBox>
                 </VBox>
 
                 <Region HBox.hgrow="ALWAYS"/>
 
-                <HBox spacing="10" alignment="CENTER_RIGHT" styleClass="glass-pane" style="-fx-padding: 8 20;">
-                    <Label text="🔍" style="-fx-opacity: 0.5;"/>
-                    <TextField promptText="Rechercher..." style="-fx-background-color: transparent; -fx-padding: 0; -fx-pref-width: 180; -fx-border-color: transparent; -fx-background-radius: 0;"/>
-                </HBox>
-
-                <Separator orientation="VERTICAL" prefHeight="30" style="-fx-opacity: 0.3;"/>
-
                 <HBox alignment="CENTER" spacing="12">
                     <VBox alignment="CENTER_RIGHT">
-                        <Label fx:id="lblAdminName" text="Admin User" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2d2d2d;"/>
-                        <Label fx:id="lblAdminRole" text="Administrateur" style="-fx-font-size: 10px; -fx-text-fill: #c4956a;"/>
+                        <Label fx:id="lblAdminName" text="Nom Artisan" style="-fx-font-weight: bold; -fx-font-size: 13px; -fx-text-fill: #2d2d2d;"/>
+                        <Label fx:id="lblAdminRole" text="Artisan Certifié" style="-fx-font-size: 10px; -fx-text-fill: #c4956a;"/>
                     </VBox>
                     <StackPane style="-fx-background-color: #c4956a; -fx-background-radius: 25; -fx-min-width: 42; -fx-min-height: 42;">
-                        <Label fx:id="lblAdminInitials" text="AD" style="-fx-text-fill: white; -fx-font-weight: 900; -fx-font-size: 12px;"/>
+                        <Label fx:id="lblAdminInitials" text="AR" style="-fx-text-fill: white; -fx-font-weight: 900; -fx-font-size: 12px;"/>
                     </StackPane>
                 </HBox>
             </HBox>

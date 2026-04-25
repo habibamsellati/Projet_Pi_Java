@@ -88,7 +88,7 @@
     -fx-text-fill: #6b5b4f;
     -fx-font-weight: bold;
     -fx-font-size: 12px;
-    -fx-alignment: center-left;
+    -fx-alignment: center;
 }
 
 .modern-table .table-row-cell {
@@ -185,23 +185,29 @@
 
 .badge-pending {
     -fx-background-color: #fffbeb;
-    -fx-text-fill: #d97706;
     -fx-border-color: #fde68a;
     -fx-border-radius: 20;
+}
+.badge-pending .label {
+    -fx-text-fill: #d97706;
 }
 
 .badge-confirmed {
     -fx-background-color: #f0fdf4;
-    -fx-text-fill: #16a34a;
     -fx-border-color: #bbf7d0;
     -fx-border-radius: 20;
+}
+.badge-confirmed .label {
+    -fx-text-fill: #16a34a;
 }
 
 .badge-cancelled {
     -fx-background-color: #fef2f2;
-    -fx-text-fill: #dc2626;
     -fx-border-color: #fecaca;
     -fx-border-radius: 20;
+}
+.badge-cancelled .label {
+    -fx-text-fill: #dc2626;
 }
 
 /* --- DASHBOARD ACTIVITY ROWS --- */

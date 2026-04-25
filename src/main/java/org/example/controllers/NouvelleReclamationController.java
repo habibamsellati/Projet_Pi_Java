@@ -26,10 +26,15 @@ public class NouvelleReclamationController {
 
     @FXML
     public void initialize() {
-        lblNom.setText("issra");
-        lblPrenom.setText("benghrib");
+        if (org.example.utils.SessionStore.isConnected()) {
+            lblNom.setText(org.example.utils.SessionStore.getCurrentUser().getNom());
+            lblPrenom.setText(org.example.utils.SessionStore.getCurrentUser().getPrenom());
+        } else {
+            lblNom.setText("Utilisateur");
+            lblPrenom.setText("Anonyme");
+        }
         lblDate.setText(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd/MM/yyyy 'à' HH:mm")));
-        cbType.getItems().addAll("Reclamation technique", "Probleme de commande", "Autre");
+        cbType.getItems().addAll("Réclamation technique", "Problème de commande", "Autre");
     }
 
     @FXML
@@ -55,12 +60,11 @@ public class NouvelleReclamationController {
             }
 
             Reclamation r = new Reclamation(
-                    3,
+                    org.example.utils.SessionStore.getUserId(),
                     titre,
                     desc,
                     selectedImageName,
-                    ServiceReclamation.STATUT_EN_ATTENTE
-            );
+                    ServiceReclamation.STATUT_EN_ATTENTE);
             ServiceReclamation service = new ServiceReclamation();
             service.ajouter(r);
             new Alert(Alert.AlertType.INFORMATION, "Réclamation créée avec succès.").show();
@@ -78,4 +82,3 @@ public class NouvelleReclamationController {
         lblImageName.setText("Aucun fichier choisi");
     }
 }
-

@@ -28,13 +28,20 @@ import java.util.List;
 
 public class NouvelleReservationController {
 
-    @FXML private ComboBox<Evenement> cbEvenement;
-    @FXML private DatePicker dpDateReservation;
-    @FXML private TextField tfNbPlaces;
-    @FXML private RadioButton rbAttente, rbConfirme;
-    @FXML private ImageView ivRecapImage;
-    @FXML private Label lblRecapTitre, lblRecapLieu, lblRecapTag, lblRecapPrixUnitaire, lblRecapTotal;
-    @FXML private Label lblErrEvenement, lblErrDate, lblErrPlaces;
+    @FXML
+    private ComboBox<Evenement> cbEvenement;
+    @FXML
+    private DatePicker dpDateReservation;
+    @FXML
+    private TextField tfNbPlaces;
+    @FXML
+    private RadioButton rbAttente, rbConfirme;
+    @FXML
+    private ImageView ivRecapImage;
+    @FXML
+    private Label lblRecapTitre, lblRecapLieu, lblRecapTag, lblRecapPrixUnitaire, lblRecapTotal;
+    @FXML
+    private Label lblErrEvenement, lblErrDate, lblErrPlaces;
 
     @FXML
     public void initialize() {
@@ -43,18 +50,27 @@ public class NouvelleReservationController {
             ServiceEvenement se = new ServiceEvenement();
             List<Evenement> events = se.listerTousParDateDebutAsc();
             cbEvenement.setItems(FXCollections.observableArrayList(events));
-            
+
             cbEvenement.setConverter(new StringConverter<Evenement>() {
-                @Override public String toString(Evenement e) { return e == null ? "" : e.getNom(); }
-                @Override public Evenement fromString(String string) { return null; }
+                @Override
+                public String toString(Evenement e) {
+                    return e == null ? "" : e.getNom();
+                }
+
+                @Override
+                public Evenement fromString(String string) {
+                    return null;
+                }
             });
-            
-        } catch(Exception ex) {}
+
+        } catch (Exception ex) {
+        }
 
         dpDateReservation.setValue(LocalDate.now().plusDays(1));
         tfNbPlaces.setText("1");
 
-        // Listeners for dynamic updates and validation (Classes Anonymes pour compatibilité)
+        // Listeners for dynamic updates and validation (Classes Anonymes pour
+        // compatibilité)
         cbEvenement.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Evenement>() {
             @Override
             public void changed(ObservableValue<? extends Evenement> obs, Evenement oldV, Evenement newV) {
@@ -62,7 +78,7 @@ public class NouvelleReservationController {
                 validerEvenement();
             }
         });
-        
+
         tfNbPlaces.textProperty().addListener(new ChangeListener<String>() {
             @Override
             public void changed(ObservableValue<? extends String> obs, String oldV, String newV) {
@@ -103,14 +119,15 @@ public class NouvelleReservationController {
         lblRecapTitre.setText(e.getNom());
         lblRecapLieu.setText("📍 " + (e.getLieu() != null ? e.getLieu() : "N/A"));
         lblRecapTag.setText(e.getTypeArt() != null ? e.getTypeArt() : "Général");
-        
+
         double prix = e.getPrix() != null ? e.getPrix().doubleValue() : 0.0;
         lblRecapPrixUnitaire.setText(String.format("%.2f TND", prix));
 
         if (e.getImage() != null && !e.getImage().isEmpty()) {
             try {
                 ivRecapImage.setImage(new Image(new File(e.getImage()).toURI().toString()));
-            } catch(Exception ex) {}
+            } catch (Exception ex) {
+            }
         } else {
             ivRecapImage.setImage(null);
         }
@@ -119,49 +136,57 @@ public class NouvelleReservationController {
             int nb = Integer.parseInt(tfNbPlaces.getText().trim());
             double total = nb * prix;
             lblRecapTotal.setText(String.format("%.2f TND", total));
-        } catch(Exception ex) {
+        } catch (Exception ex) {
             lblRecapTotal.setText("0.00 TND");
         }
     }
 
     @FXML
     void handleCreerReservation(ActionEvent event) {
-        if (!validerSaisie()) return;
+        if (!validerSaisie())
+            return;
 
         Evenement evt = cbEvenement.getValue();
         int nbPlaces = Integer.parseInt(tfNbPlaces.getText().trim());
 
         try {
             LocalDateTime dt = LocalDateTime.of(dpDateReservation.getValue(), LocalTime.NOON);
-            String statut = rbConfirme.isSelected() ? ServiceReservation.STATUT_CONFIRME : ServiceReservation.STATUT_EN_ATTENTE;
-            
-            // Logique de Session Réelle et Dynamique (Fix bug list empty)
+            boolean paiementImmediat = rbConfirme.isSelected();
+            String statut = paiementImmediat ? ServiceReservation.STATUT_CONFIRME
+                    : ServiceReservation.STATUT_EN_ATTENTE;
+
             int userId = org.example.utils.SessionStore.getUserId();
-            
             Reservation r = new Reservation(evt.getId(), userId, dt, nbPlaces, statut);
 
-            ServiceReservation service = new ServiceReservation();
-            service.ajouter(r);
-            
-            // Message de succès (Urgent demandé par l'utilisateur)
-            Alert success = new Alert(Alert.AlertType.INFORMATION);
-            success.setTitle("Succès");
-            success.setHeaderText(null);
-            success.setContentText("Réservation faite avec succès !");
-            success.showAndWait();
+            if (paiementImmediat) {
+                // Redirection vers le formulaire de paiement
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/PaiementReservation.fxml"));
+                Parent root = loader.load();
+                PaiementReservationController controller = loader.getController();
+                controller.setReservationData(r, evt);
 
-            // Redirection vers le catalogue d'accueil (ModuleEvenementReservation)
-            try {
+                Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                stage.getScene().setRoot(root);
+            } else {
+                // Réservation en attente : Enregistrement direct
+                ServiceReservation service = new ServiceReservation();
+                service.ajouter(r);
+
+                Alert success = new Alert(Alert.AlertType.INFORMATION);
+                success.setTitle("Succès");
+                success.setHeaderText(null);
+                success.setContentText(
+                        "Réservation mise en attente avec succès ! Vous avez 3 heures pour la confirmer.");
+                success.showAndWait();
+
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ModuleEvenementReservation.fxml"));
                 Parent root = loader.load();
                 Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
                 stage.getScene().setRoot(root);
-            } catch (IOException ex) {
-                ex.printStackTrace();
             }
-            
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, "Erreur: " + e.getMessage()).show();
+            e.printStackTrace();
         }
     }
 
@@ -169,7 +194,7 @@ public class NouvelleReservationController {
         boolean vEvt = validerEvenement();
         boolean vDate = validerDate();
         boolean vPlaces = validerPlaces();
-        
+
         return vEvt && vDate && vPlaces;
     }
 
@@ -212,15 +237,16 @@ public class NouvelleReservationController {
     private boolean validerPlaces() {
         try {
             int nb = Integer.parseInt(tfNbPlaces.getText().trim());
-            if (nb < 1) throw new NumberFormatException();
-            
+            if (nb < 1)
+                throw new NumberFormatException();
+
             // Vérification capacité si événement sélectionné
             if (cbEvenement.getValue() != null) {
                 Evenement e = cbEvenement.getValue();
                 ServiceReservation sr = new ServiceReservation();
                 int placesPrises = sr.sommePlacesReserveesActives(e.getId());
                 int restantes = e.getCapacite() - placesPrises;
-                
+
                 if (nb > restantes) {
                     lblErrPlaces.setText("Plus assez de places ! (Reste: " + restantes + ")");
                     lblErrPlaces.setVisible(true);
@@ -250,10 +276,10 @@ public class NouvelleReservationController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Ticket.fxml"));
             Parent root = loader.load();
-            
+
             TicketController controller = loader.getController();
             controller.setReservationData(r, e);
-            
+
             Stage stage = new Stage();
             stage.setTitle("Billet Artisanal - " + e.getNom());
             stage.setScene(new Scene(root));
