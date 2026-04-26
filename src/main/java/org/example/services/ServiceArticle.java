@@ -107,6 +107,66 @@ public class ServiceArticle {
         return articles;
     }
 
+    /**
+     * Retourne jusqu'à 3 articles similaires à l'article donné.
+     * Critères : même catégorie, article exclu, triés par date desc.
+     * Si moins de 3 résultats, complète avec d'autres articles récents.
+     */
+    public List<Article> getSimilarArticles(Article article, int limit) throws SQLException {
+        List<Article> similaires = new ArrayList<>();
+        if (article == null) return similaires;
+
+        // Priorité 1 : même catégorie, exclu l'article courant
+        if (article.getCategorie() != null && !article.getCategorie().isBlank()) {
+            String sql = "SELECT * FROM article WHERE categorie = ? AND id != ? ORDER BY date DESC LIMIT ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setString(1, article.getCategorie());
+                ps.setInt(2, article.getId());
+                ps.setInt(3, limit);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) similaires.add(mapArticle(rs));
+                }
+            }
+        }
+
+        // Priorité 2 : compléter avec articles récents si pas assez
+        if (similaires.size() < limit) {
+            int reste = limit - similaires.size();
+            List<Integer> exclus = new ArrayList<>();
+            exclus.add(article.getId());
+            similaires.forEach(a -> exclus.add(a.getId()));
+
+            String placeholders = exclus.stream().map(i -> "?").collect(java.util.stream.Collectors.joining(","));
+            String sql = "SELECT * FROM article WHERE id NOT IN (" + placeholders + ") ORDER BY date DESC LIMIT ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                int idx = 1;
+                for (int id : exclus) ps.setInt(idx++, id);
+                ps.setInt(idx, reste);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) similaires.add(mapArticle(rs));
+                }
+            }
+        }
+
+        return similaires;
+    }
+
+    private Article mapArticle(ResultSet rs) throws SQLException {
+        Article a = new Article();
+        a.setId(rs.getInt("id"));
+        a.setTitre(rs.getString("titre"));
+        a.setContenu(rs.getString("contenu"));
+        a.setDatePublication(rs.getTimestamp("date"));
+        a.setCategorie(rs.getString("categorie"));
+        Object prix = rs.getObject("prix");
+        a.setPrix(prix == null ? null : ((Number) prix).doubleValue());
+        a.setImageUrl(rs.getString("image"));
+        a.setArtisanId(rs.getInt("artisan_id"));
+        a.setLikes(rs.getInt("likes"));
+        try { a.setDislikes(rs.getInt("dislikes")); } catch (Exception ignored) {}
+        return a;
+    }
+
     private void validerArticle(Article a) {
         if (a == null) {
             throw new IllegalArgumentException("Article invalide.");

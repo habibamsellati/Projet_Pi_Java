@@ -2,6 +2,7 @@ package org.example.controllers;
 
 import javafx.fxml.FXML;
 import javafx.geometry.NodeOrientation;
+import javafx.geometry.Insets;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -12,13 +13,17 @@ import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextInputDialog;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.Tooltip;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.shape.Rectangle;
 import org.example.models.Article;
 import org.example.models.Commentaire;
 import org.example.models.User;
+import org.example.services.ServiceArticle;
 import org.example.services.ServiceCommentaire;
 import org.example.services.CommentTranslationService;
 import org.example.services.ServiceReactionArticle;
@@ -26,13 +31,16 @@ import org.example.services.ServiceReactionCommentaire;
 import org.example.utils.I18nManager;
 import org.example.utils.SessionManager;
 
+import java.io.File;
 import java.sql.SQLException;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
-import java.util.Map;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentHashMap;
 
 public class ArticleCommentairesController {
@@ -56,21 +64,27 @@ public class ArticleCommentairesController {
     @FXML private ComboBox<String> langCombo;
 
     // â”€â”€ Styles boutons article â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
-    private static final String STYLE_INACTIF   = "-fx-background-color:#f5f5f5;-fx-text-fill:#555;-fx-background-radius:22;-fx-padding:9 20;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:#ddd;-fx-border-radius:22;";
-    private static final String STYLE_LIKE_ON   = "-fx-background-color:#fce4ec;-fx-text-fill:#c62828;-fx-background-radius:22;-fx-padding:9 20;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:#c62828;-fx-border-radius:22;-fx-font-weight:bold;";
-    private static final String STYLE_DISLIKE_ON= "-fx-background-color:#e3f2fd;-fx-text-fill:#1565c0;-fx-background-radius:22;-fx-padding:9 20;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:#1565c0;-fx-border-radius:22;-fx-font-weight:bold;";
-    private static final String EMOJI_LIKE = "\u2764\uFE0F";
-    private static final String EMOJI_DISLIKE = "\uD83D\uDC4E";
-    private static final String CHECK_MARK = "\u2713";
-    private static final String[] COMMENT_EMOJIS = {
-            "\uD83D\uDE0A", // 😊
-            "\uD83D\uDE04", // 😄
-            "\uD83D\uDE0D", // 😍
-            "\u2764\uFE0F", // ❤️
-            "\uD83D\uDC4D", // 👍
-            "\uD83D\uDC4F", // 👏
-            "\uD83E\uDD29", // 🤩
-            "\uD83D\uDE21"  // 😡
+    private static final String STYLE_INACTIF    = "-fx-background-color:#ffffff;-fx-text-fill:#666;-fx-background-radius:20;-fx-padding:8 18;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:#e0e0e0;-fx-border-radius:20;-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.06),4,0,0,1);";
+    private static final String STYLE_LIKE_ON    = "-fx-background-color:linear-gradient(to right,#ff6b6b,#ee5a24);-fx-text-fill:#fff;-fx-background-radius:20;-fx-padding:8 18;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:transparent;-fx-border-radius:20;-fx-font-weight:bold;-fx-effect:dropshadow(three-pass-box,rgba(238,90,36,0.35),6,0,0,2);";
+    private static final String STYLE_DISLIKE_ON = "-fx-background-color:linear-gradient(to right,#4facfe,#00f2fe);-fx-text-fill:#fff;-fx-background-radius:20;-fx-padding:8 18;-fx-font-size:13;-fx-cursor:hand;-fx-border-color:transparent;-fx-border-radius:20;-fx-font-weight:bold;-fx-effect:dropshadow(three-pass-box,rgba(79,172,254,0.35),6,0,0,2);";
+    private static final String EMOJI_LIKE    = "\u2764\uFE0F";   // ❤️
+    private static final String EMOJI_DISLIKE = "\uD83D\uDC94";   // 💔
+    private static final String CHECK_MARK    = "\u2713";
+
+    // Emojis professionnels et expressifs pour les commentaires
+    private static final String[][] COMMENT_EMOJIS = {
+        {"\uD83D\uDE0D", "Adorable"},      // 😍
+        {"\uD83D\uDE04", "Super"},         // 😄
+        {"\uD83E\uDD29", "Incroyable"},    // 🤩
+        {"\uD83D\uDC4F", "Bravo"},         // 👏
+        {"\uD83D\uDC4D", "J'approuve"},    // 👍
+        {"\u2764\uFE0F", "J'adore"},       // ❤️
+        {"\uD83D\uDD25", "Chaud"},         // 🔥
+        {"\uD83C\uDF1F", "Excellent"},     // 🌟
+        {"\uD83D\uDCAF", "Parfait"},       // 💯
+        {"\uD83E\uDD14", "Intéressant"},   // 🤔
+        {"\uD83D\uDE22", "Triste"},        // 😢
+        {"\uD83D\uDE21", "Déçu"},          // 😡
     };
 
     // â”€â”€ Services â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -78,6 +92,7 @@ public class ArticleCommentairesController {
     private final CommentTranslationService  commentTranslationService  = new CommentTranslationService();
     private final ServiceReactionArticle     serviceReaction            = new ServiceReactionArticle();
     private final ServiceReactionCommentaire serviceReactionCommentaire = new ServiceReactionCommentaire();
+    private final ServiceArticle             serviceArticle             = new ServiceArticle();
 
     // Cache simple: commentaireId|lang -> texte traduit
     private final Map<String, String> commentTranslationCache = new ConcurrentHashMap<>();
@@ -105,6 +120,7 @@ public class ArticleCommentairesController {
         rafraichirEntete();
         rafraichirReactions();
         rafraichirCommentaires();
+        afficherArticlesSimilaires();
     }
 
     // â”€â”€â”€ Changement de langue â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
@@ -146,15 +162,53 @@ public class ArticleCommentairesController {
 
     private void initialiserEmojiBar() {
         if (emojiBar == null) return;
-
         emojiBar.getChildren().clear();
-        for (String emoji : COMMENT_EMOJIS) {
-            Button emojiButton = new Button(emoji);
-            emojiButton.setFocusTraversable(false);
-            emojiButton.setTooltip(new Tooltip(I18nManager.get("comment.emoji.insert")));
-            emojiButton.setStyle("-fx-background-color:#fff8f0;-fx-text-fill:#5D4037;-fx-background-radius:14;-fx-padding:6 10;-fx-font-size:16;-fx-cursor:hand;-fx-border-color:#e6d5c3;-fx-border-radius:14;");
-            emojiButton.setOnAction(event -> insererEmojiDansCommentaire(emoji));
-            emojiBar.getChildren().add(emojiButton);
+        emojiBar.setHgap(6);
+        emojiBar.setVgap(6);
+
+        for (String[] entry : COMMENT_EMOJIS) {
+            String emoji = entry[0];
+            String label = entry[1];
+
+            Button btn = new Button(emoji);
+            btn.setFocusTraversable(false);
+            btn.setTooltip(new Tooltip(label));
+            btn.setStyle(
+                "-fx-background-color:#ffffff;" +
+                "-fx-background-radius:12;" +
+                "-fx-border-color:#ede8e3;" +
+                "-fx-border-radius:12;" +
+                "-fx-padding:6 10;" +
+                "-fx-font-size:18;" +
+                "-fx-cursor:hand;" +
+                "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.07),3,0,0,1);"
+            );
+
+            // Hover : légère élévation
+            btn.setOnMouseEntered(e -> btn.setStyle(
+                "-fx-background-color:#fff8f2;" +
+                "-fx-background-radius:12;" +
+                "-fx-border-color:#c8a882;" +
+                "-fx-border-radius:12;" +
+                "-fx-padding:6 10;" +
+                "-fx-font-size:18;" +
+                "-fx-cursor:hand;" +
+                "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.15),6,0,0,2);" +
+                "-fx-scale-x:1.15;-fx-scale-y:1.15;"
+            ));
+            btn.setOnMouseExited(e -> btn.setStyle(
+                "-fx-background-color:#ffffff;" +
+                "-fx-background-radius:12;" +
+                "-fx-border-color:#ede8e3;" +
+                "-fx-border-radius:12;" +
+                "-fx-padding:6 10;" +
+                "-fx-font-size:18;" +
+                "-fx-cursor:hand;" +
+                "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.07),3,0,0,1);"
+            ));
+
+            btn.setOnAction(ev -> insererEmojiDansCommentaire(emoji));
+            emojiBar.getChildren().add(btn);
         }
     }
 
@@ -232,18 +286,18 @@ public class ArticleCommentairesController {
 
         if ("like".equals(reactionActuelle)) {
             btnLike.setStyle(STYLE_LIKE_ON);
-            btnLike.setText(I18nManager.get("btn.like.active", likes));
+            btnLike.setText(EMOJI_LIKE + "  J'aime  " + likes + "  " + CHECK_MARK);
         } else {
             btnLike.setStyle(STYLE_INACTIF);
-            btnLike.setText(I18nManager.get("btn.like", likes));
+            btnLike.setText(EMOJI_LIKE + "  J'aime  " + likes);
         }
 
         if ("dislike".equals(reactionActuelle)) {
             btnDislike.setStyle(STYLE_DISLIKE_ON);
-            btnDislike.setText(I18nManager.get("btn.dislike.active", dislikes));
+            btnDislike.setText(EMOJI_DISLIKE + "  Je n'aime pas  " + dislikes + "  " + CHECK_MARK);
         } else {
             btnDislike.setStyle(STYLE_INACTIF);
-            btnDislike.setText(I18nManager.get("btn.dislike", dislikes));
+            btnDislike.setText(EMOJI_DISLIKE + "  Je n'aime pas  " + dislikes);
         }
     }
 
@@ -355,9 +409,9 @@ public class ArticleCommentairesController {
 
         // â”€â”€ Boutons rÃ©action commentaire â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
         HBox reactions = new HBox(8);
-        String styleBase     = "-fx-background-color:#f5f5f5;-fx-text-fill:#666;-fx-background-radius:14;-fx-padding:4 12;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:#e0e0e0;-fx-border-radius:14;";
-        String styleLikeOn   = "-fx-background-color:#fce4ec;-fx-text-fill:#c62828;-fx-background-radius:14;-fx-padding:4 12;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:#c62828;-fx-border-radius:14;-fx-font-weight:bold;";
-        String styleDislikeOn= "-fx-background-color:#e3f2fd;-fx-text-fill:#1565c0;-fx-background-radius:14;-fx-padding:4 12;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:#1565c0;-fx-border-radius:14;-fx-font-weight:bold;";
+        String styleBase      = "-fx-background-color:#ffffff;-fx-text-fill:#666;-fx-background-radius:16;-fx-padding:5 14;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:#e0e0e0;-fx-border-radius:16;-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.05),3,0,0,1);";
+        String styleLikeOn    = "-fx-background-color:linear-gradient(to right,#ff6b6b,#ee5a24);-fx-text-fill:#fff;-fx-background-radius:16;-fx-padding:5 14;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:transparent;-fx-border-radius:16;-fx-font-weight:bold;-fx-effect:dropshadow(three-pass-box,rgba(238,90,36,0.3),5,0,0,2);";
+        String styleDislikeOn = "-fx-background-color:linear-gradient(to right,#4facfe,#00f2fe);-fx-text-fill:#fff;-fx-background-radius:16;-fx-padding:5 14;-fx-font-size:12;-fx-cursor:hand;-fx-border-color:transparent;-fx-border-radius:16;-fx-font-weight:bold;-fx-effect:dropshadow(three-pass-box,rgba(79,172,254,0.3),5,0,0,2);";
 
         Button btnCLike    = new Button(EMOJI_LIKE + " " + commentaire.getLikes());
         Button btnCDislike = new Button(EMOJI_DISLIKE + " " + commentaire.getDislikes());
@@ -464,14 +518,20 @@ public class ArticleCommentairesController {
                                                int likes, int dislikes,
                                                String styleBase, String styleLikeOn, String styleDislikeOn) {
         if ("like".equals(reaction)) {
-            btnCLike.setStyle(styleLikeOn);   btnCLike.setText(EMOJI_LIKE + " " + likes + " " + CHECK_MARK);
-            btnCDislike.setStyle(styleBase);  btnCDislike.setText(EMOJI_DISLIKE + " " + dislikes);
+            btnCLike.setStyle(styleLikeOn);
+            btnCLike.setText(EMOJI_LIKE + "  " + likes + "  " + CHECK_MARK);
+            btnCDislike.setStyle(styleBase);
+            btnCDislike.setText(EMOJI_DISLIKE + "  " + dislikes);
         } else if ("dislike".equals(reaction)) {
-            btnCLike.setStyle(styleBase);     btnCLike.setText(EMOJI_LIKE + " " + likes);
-            btnCDislike.setStyle(styleDislikeOn); btnCDislike.setText(EMOJI_DISLIKE + " " + dislikes + " " + CHECK_MARK);
+            btnCLike.setStyle(styleBase);
+            btnCLike.setText(EMOJI_LIKE + "  " + likes);
+            btnCDislike.setStyle(styleDislikeOn);
+            btnCDislike.setText(EMOJI_DISLIKE + "  " + dislikes + "  " + CHECK_MARK);
         } else {
-            btnCLike.setStyle(styleBase);     btnCLike.setText(EMOJI_LIKE + " " + likes);
-            btnCDislike.setStyle(styleBase);  btnCDislike.setText(EMOJI_DISLIKE + " " + dislikes);
+            btnCLike.setStyle(styleBase);
+            btnCLike.setText(EMOJI_LIKE + "  " + likes);
+            btnCDislike.setStyle(styleBase);
+            btnCDislike.setText(EMOJI_DISLIKE + "  " + dislikes);
         }
     }
 
@@ -523,6 +583,114 @@ public class ArticleCommentairesController {
     }
 
     // â”€â”€â”€ Alertes helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+
+    // ── Articles similaires ───────────────────────────────────────────────────
+
+    private void afficherArticlesSimilaires() {
+        if (article == null || vboxScroll == null) return;
+
+        try {
+            List<Article> similaires = serviceArticle.getSimilarArticles(article, 3);
+            if (similaires.isEmpty()) return;
+
+            Label titre = new Label("Articles similaires");
+            titre.setStyle("-fx-font-size:16;-fx-font-weight:bold;-fx-text-fill:#5D4037;-fx-padding:18 0 8 0;");
+            titre.setId("similaires-titre");
+
+            HBox cartes = new HBox(12);
+            cartes.setPadding(new Insets(0, 0, 16, 0));
+            cartes.setId("similaires-cartes");
+
+            for (Article sim : similaires) {
+                cartes.getChildren().add(buildSimilaireCard(sim));
+            }
+
+            // Supprimer l'ancienne section si elle existe déjà (rechargement)
+            vboxScroll.getChildren().removeIf(n ->
+                    "similaires-titre".equals(n.getId()) || "similaires-cartes".equals(n.getId()));
+
+            vboxScroll.getChildren().addAll(titre, cartes);
+
+        } catch (SQLException e) {
+            System.err.println("[ArticlesSimilaires] Erreur: " + e.getMessage());
+        }
+    }
+
+    private VBox buildSimilaireCard(Article sim) {
+        VBox card = new VBox(6);
+        card.setPadding(new Insets(10));
+        card.setPrefWidth(200);
+        card.setStyle("-fx-background-color:#FFF8F0;-fx-background-radius:10;-fx-border-color:#E6D5C3;-fx-border-radius:10;-fx-cursor:hand;");
+
+        // Image
+        ImageView iv = new ImageView();
+        iv.setFitWidth(180);
+        iv.setFitHeight(110);
+        iv.setPreserveRatio(false);
+        iv.setSmooth(true);
+        Image img = loadImageSafely(sim.getImageUrl());
+        if (img != null) iv.setImage(img);
+        Rectangle clip = new Rectangle(180, 110);
+        clip.setArcWidth(8); clip.setArcHeight(8);
+        iv.setClip(clip);
+
+        // Catégorie
+        Label lblCat = new Label(sim.getCategorie() != null ? sim.getCategorie() : "");
+        lblCat.setStyle("-fx-font-size:11;-fx-text-fill:#A1887F;-fx-background-color:#F3E5DC;-fx-background-radius:6;-fx-padding:2 6;");
+
+        // Titre
+        Label lblTitre = new Label(sim.getTitre());
+        lblTitre.setWrapText(true);
+        lblTitre.setMaxWidth(180);
+        lblTitre.setStyle("-fx-font-weight:bold;-fx-font-size:13;-fx-text-fill:#4E342E;");
+
+        // Prix
+        Label lblPrix = new Label(sim.getPrix() == null ? "" : String.format("%.2f DT", sim.getPrix()));
+        lblPrix.setStyle("-fx-font-size:12;-fx-text-fill:#8D5E3C;-fx-font-weight:bold;");
+
+        card.getChildren().addAll(iv, lblCat, lblTitre, lblPrix);
+
+        // Clic → ouvrir la page détail de cet article similaire
+        card.setOnMouseClicked(e -> {
+            try {
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(
+                        getClass().getResource("/fxml/ArticleCommentairesView.fxml"));
+                javafx.scene.Parent root = loader.load();
+                ArticleCommentairesController ctrl = loader.getController();
+                ctrl.setArticle(sim);
+                javafx.stage.Stage stage = new javafx.stage.Stage();
+                stage.setTitle(sim.getTitre());
+                stage.setScene(new javafx.scene.Scene(root, 920, 700));
+                stage.show();
+            } catch (Exception ex) {
+                showError("Impossible d'ouvrir l'article : " + ex.getMessage());
+            }
+        });
+
+        // Hover
+        card.setOnMouseEntered(e -> card.setStyle("-fx-background-color:#F3E5DC;-fx-background-radius:10;-fx-border-color:#8D5E3C;-fx-border-radius:10;-fx-cursor:hand;"));
+        card.setOnMouseExited(e  -> card.setStyle("-fx-background-color:#FFF8F0;-fx-background-radius:10;-fx-border-color:#E6D5C3;-fx-border-radius:10;-fx-cursor:hand;"));
+
+        return card;
+    }
+
+    private Image loadImageSafely(String imagePath) {
+        if (imagePath == null || imagePath.isBlank()) return null;
+        List<String> candidates = new ArrayList<>();
+        String raw = imagePath.trim();
+        if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("file:") || raw.startsWith("jar:"))
+            candidates.add(raw);
+        File f = new File(raw);
+        if (f.exists()) candidates.add(f.toURI().toString());
+        String cp = raw.startsWith("/") ? raw : "/" + raw;
+        java.net.URL res = getClass().getResource(cp);
+        if (res != null) candidates.add(res.toExternalForm());
+        for (String c : candidates) {
+            try { Image img = new Image(c, false); if (!img.isError()) return img; }
+            catch (Exception ignored) {}
+        }
+        return null;
+    }
 
     private void showError(String msg) { new Alert(Alert.AlertType.ERROR,   msg).showAndWait(); }
     private void showWarn(String msg)  { new Alert(Alert.AlertType.WARNING, msg).showAndWait(); }
