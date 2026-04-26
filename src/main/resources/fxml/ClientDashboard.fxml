@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="18" alignment="CENTER" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.ClientDashboardController">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="Espace Client" styleClass="title-label"/>
+    <Label fx:id="lblBienvenue" text="Bienvenue Client"/>
+    <Label text="Consultez les articles et gérez vos commandes." style="-fx-text-fill: #A1887F;"/>
+
+    <VBox spacing="12" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-max-width: 420; -fx-min-width: 420;">
+        <Button text="🎨  Voir le Blog" onAction="#handleVoirArticles" maxWidth="Infinity"
+                style="-fx-background-color: #D7CCC8; -fx-text-fill: #5D4037; -fx-background-radius: 10; -fx-padding: 12 25;"/>
+        <Button text="🛍️  Parcourir le Catalogue" onAction="#handleVoirCatalogue" maxWidth="Infinity"
+                style="-fx-background-color: #C5A98A; -fx-text-fill: white; -fx-background-radius: 10; -fx-font-weight: bold; -fx-padding: 12 25;"/>
+        <Button text="🛒  Mon Panier" styleClass="btn-publier" onAction="#handleNouvelleCommande" maxWidth="Infinity"/>
+        <Button text="⏱️  Mes Commandes" onAction="#handleMesCommandes" maxWidth="Infinity"
+                style="-fx-background-color: #A5C8A0; -fx-text-fill: #2E5E2A; -fx-background-radius: 10; -fx-font-weight: bold; -fx-padding: 12 25;"/>
+        <Button text="Déconnexion" styleClass="btn-annuler" onAction="#handleLogout" maxWidth="Infinity"/>
+    </VBox>
+</VBox>
+

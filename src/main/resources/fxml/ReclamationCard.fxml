@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<HBox styleClass="reclamation-card"
+      spacing="15"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.ReclamationCardController"
+      stylesheets="@/css/reclamations-style.css"
+      style="-fx-padding: 15;">
+
+
+    <VBox spacing="8" HBox.hgrow="ALWAYS">
+        <!-- Titre et Statut -->
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label fx:id="lblTitre"
+                   text="Titre de la réclamation"
+                   style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+            <Region HBox.hgrow="ALWAYS" />
+            <Label fx:id="lblStatut"
+                   text="En attente"
+                   styleClass="status-badge, status-en-attente"/>
+        </HBox>
+
+        <!-- Date -->
+        <Label fx:id="lblDate"
+               text="23/02/2026 à 14:30"
+               style="-fx-text-fill: #999; -fx-font-size: 11;"/>
+
+        <!-- Description -->
+        <Label fx:id="lblDescription"
+               text="Description de la réclamation..."
+               wrapText="true"
+               style="-fx-text-fill: #555; -fx-font-size: 12;"/>
+
+        <!-- Boutons d'actions -->
+        <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+            <Button text="Voir"
+                   onAction="#handleVoir"
+                   styleClass="btn-view"
+                   style="-fx-padding: 8 15;"/>
+            <Button fx:id="btnModifier"
+                   text="Modifier"
+                   onAction="#handleModifier"
+                   styleClass="btn-edit"
+                   style="-fx-padding: 8 15;"/>
+            <Button fx:id="btnSupprimer"
+                   text="Supprimer"
+                   onAction="#handleSupprimer"
+                   styleClass="btn-delete"
+                   style="-fx-padding: 8 15;"/>
+        </HBox>
+    </VBox>
+</HBox>
+

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.AjouterProduitController">
+    <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+
+        <Label text="Publier un Produit Recyclable" styleClass="title-label" style="-fx-font-size: 28;"/>
+
+        <VBox spacing="15" style="-fx-max-width: 700; -fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15;">
+
+            <Label text="Matériau *" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="cbNom" maxWidth="Infinity" promptText="Choisir le matériau">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Plastique" /><String fx:value="Papier" />
+                        <String fx:value="Carton" /><String fx:value="Verre" />
+                        <String fx:value="Métal" /><String fx:value="Bois" /><String fx:value="Tissu" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS" spacing="10">
+                    <Label text="Qualité Environnementale" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbType" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Naturel" /><String fx:value="Durable" />
+                                <String fx:value="Écologique" /><String fx:value="Zéro déchet" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="10">
+                    <Label text="État du produit" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbEtat" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Bon" /><String fx:value="Moyen" /><String fx:value="Mauvais" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS" spacing="5">
+                    <Label text="Quantité (0-999 999)" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfQuantite" promptText="Ex: 50"/>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS" spacing="5">
+                    <Label text="Origine" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfOrigine" promptText="Ex: Tunis, Ariana..."/>
+                </VBox>
+            </HBox>
+
+            <Label text="Impact Écologique (Bénéfice environnemental)" style="-fx-font-weight: bold;"/>
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <Slider fx:id="sldImpact" min="0" max="100" value="50" showTickLabels="true" HBox.hgrow="ALWAYS"/>
+                <Label fx:id="lblImpactValue" text="50" style="-fx-font-weight: bold; -fx-text-fill: #8D6E63;"/>
+            </HBox>
+
+            <Label text="Description détaillée (min 10 caractères) *" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="taDescription" prefHeight="100" promptText="Décrivez l'origine et l'usage possible..."/>
+
+            <Button text="Sélectionner une Image" onAction="#handleUploadImage" styleClass="btn-annuler" maxWidth="Infinity"/>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Mettre en vente" styleClass="btn-publier" onAction="#handleAjouterProduit"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

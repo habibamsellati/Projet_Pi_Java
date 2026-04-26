@@ -1,0 +1,503 @@
+/* ═══════════════════════════════════════════════
+   admin-dashboard.css  –  afk'art Backoffice
+═══════════════════════════════════════════════ */
+
+/* ── Global ── */
+.root {
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+    -fx-background-color: #f5f0eb;
+}
+
+/* ═══════════ SIDEBAR ═══════════ */
+.sidebar {
+    -fx-background-color: #4a1e2e;
+    -fx-pref-width: 240;
+    -fx-min-width: 240;
+    -fx-max-width: 240;
+}
+
+.logo-box {
+    -fx-padding: 22 20 18 20;
+    -fx-border-color: transparent transparent rgba(255,255,255,0.08) transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.logo-icon {
+    -fx-background-color: #c8763a;
+    -fx-background-radius: 10;
+    -fx-min-width: 38;
+    -fx-min-height: 38;
+    -fx-max-width: 38;
+    -fx-max-height: 38;
+    -fx-font-size: 18;
+    -fx-alignment: CENTER;
+    -fx-text-fill: white;
+}
+
+.logo-text {
+    -fx-text-fill: white;
+    -fx-font-size: 17;
+    -fx-font-weight: bold;
+}
+
+.nav-section-lbl {
+    -fx-padding: 18 20 6 20;
+    -fx-font-size: 10;
+    -fx-font-weight: bold;
+    -fx-text-fill: rgba(255,255,255,0.35);
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: rgba(255,255,255,0.65);
+    -fx-font-size: 13;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 10 16;
+    -fx-alignment: CENTER_LEFT;
+    -fx-border-width: 0;
+    -fx-max-width: Infinity;
+    -fx-graphic-text-gap: 10;
+}
+
+.nav-btn:hover {
+    -fx-background-color: #5a2a3e;
+    -fx-text-fill: white;
+}
+
+.nav-btn-active {
+    -fx-background-color: rgba(255,255,255,0.13);
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+.nav-sub-lbl {
+    -fx-padding: 14 20 5 20;
+    -fx-text-fill: rgba(255,255,255,0.45);
+    -fx-font-size: 11;
+}
+
+.nav-logout {
+    -fx-text-fill: rgba(255,120,120,0.8);
+    -fx-border-color: transparent transparent rgba(255,255,255,0.08) transparent;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 14 16 12 16;
+}
+
+.nav-logout:hover {
+    -fx-background-color: rgba(200,50,50,0.15);
+    -fx-text-fill: #ff8888;
+}
+
+/* ═══════════ TOPBAR ═══════════ */
+.topbar {
+    -fx-background-color: #f5f0eb;
+    -fx-padding: 16 32 16 32;
+    -fx-border-color: transparent transparent #e8e0d8 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 12;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.topbar-title {
+    -fx-font-size: 24;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.topbar-sub {
+    -fx-font-size: 13;
+    -fx-text-fill: #7a7570;
+}
+
+.search-box {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 8 14;
+    -fx-spacing: 8;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.search-input {
+    -fx-background-color: transparent;
+    -fx-border-color: transparent;
+    -fx-border-width: 0;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+    -fx-font-size: 13;
+    -fx-pref-width: 150;
+    -fx-prompt-text-fill: #a09890;
+}
+
+.search-input:focused {
+    -fx-border-color: transparent;
+}
+
+.user-pill {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-padding: 6 14 6 6;
+    -fx-cursor: hand;
+    -fx-spacing: 10;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.avatar-lbl {
+    -fx-background-color: #4a1e2e;
+    -fx-text-fill: white;
+    -fx-background-radius: 8;
+    -fx-min-width: 28;
+    -fx-min-height: 28;
+    -fx-max-width: 28;
+    -fx-max-height: 28;
+    -fx-font-size: 11;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.user-name-lbl {
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.user-role-lbl {
+    -fx-font-size: 11;
+    -fx-text-fill: #7a7570;
+}
+
+/* ═══════════ CONTENT ═══════════ */
+.content-area {
+    -fx-background-color: #f5f0eb;
+    -fx-spacing: 20;
+}
+
+/* ═══════════ STAT CARDS ═══════════ */
+.stat-card {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 20 22;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 10, 0, 0, 3);
+    -fx-spacing: 8;
+}
+
+.stat-icon-box {
+    -fx-background-radius: 14;
+    -fx-min-width: 52;
+    -fx-min-height: 52;
+    -fx-max-width: 52;
+    -fx-max-height: 52;
+    -fx-alignment: CENTER;
+    -fx-font-size: 22;
+}
+
+.ic-purple { -fx-background-color: #4a1e2e; -fx-text-fill: white; }
+.ic-brown  { -fx-background-color: #c8763a; -fx-text-fill: white; }
+.ic-green  { -fx-background-color: #22a050; -fx-text-fill: white; }
+.ic-orange { -fx-background-color: #f59e0b; -fx-text-fill: white; }
+
+.stat-val {
+    -fx-font-size: 28;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+    -fx-line-height: 1;
+}
+
+.stat-lbl {
+    -fx-font-size: 13;
+    -fx-text-fill: #7a7570;
+}
+
+.badge-up {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #16a34a;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 2 8;
+}
+
+.badge-dn {
+    -fx-background-color: #fee2e2;
+    -fx-text-fill: #dc2626;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 2 8;
+}
+
+/* ═══════════ CHART CARDS ═══════════ */
+.chart-card {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-spacing: 12;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 10, 0, 0, 3);
+}
+
+.chart-title-lbl {
+    -fx-font-size: 16;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.tabs-box {
+    -fx-background-color: #f5f0eb;
+    -fx-background-radius: 10;
+    -fx-padding: 3;
+    -fx-spacing: 4;
+}
+
+.tab-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #7a7570;
+    -fx-font-size: 12;
+    -fx-cursor: hand;
+    -fx-background-radius: 8;
+    -fx-padding: 5 14;
+    -fx-border-width: 0;
+}
+
+.tab-btn:hover {
+    -fx-background-color: rgba(74,30,46,0.1);
+    -fx-text-fill: #4a1e2e;
+}
+
+.tab-btn-active {
+    -fx-background-color: #4a1e2e;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+}
+
+/* Line chart */
+.chart {
+    -fx-background-color: transparent;
+    -fx-padding: 0;
+}
+
+.chart-content {
+    -fx-background-color: transparent;
+}
+
+.chart-plot-background {
+    -fx-background-color: transparent;
+}
+
+.chart-horizontal-grid-lines {
+    -fx-stroke: #f0ece6;
+    -fx-stroke-width: 1;
+}
+
+.chart-vertical-grid-lines {
+    -fx-stroke: transparent;
+}
+
+.axis {
+    -fx-tick-label-fill: #a09890;
+    -fx-tick-label-font-size: 11;
+    -fx-minor-tick-visible: false;
+}
+
+.axis-label {
+    -fx-text-fill: #a09890;
+    -fx-font-size: 11;
+}
+
+.chart-legend {
+    -fx-background-color: transparent;
+}
+
+/* Series 0 – Utilisateurs (violet foncé) */
+.default-color0.chart-series-line {
+    -fx-stroke: #4a1e2e;
+    -fx-stroke-width: 2;
+}
+.default-color0.chart-line-symbol {
+    -fx-background-color: #4a1e2e, white;
+    -fx-background-radius: 4;
+    -fx-padding: 4;
+}
+
+/* Series 1 – Oeuvres (brun orangé) */
+.default-color1.chart-series-line {
+    -fx-stroke: #c8763a;
+    -fx-stroke-width: 2;
+}
+.default-color1.chart-line-symbol {
+    -fx-background-color: #c8763a, white;
+    -fx-background-radius: 4;
+    -fx-padding: 4;
+}
+
+.chart-legend-row {
+    -fx-spacing: 20;
+    -fx-padding: 8 0 0 0;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.legend-dot {
+    -fx-font-size: 18;
+}
+
+.legend-text {
+    -fx-font-size: 12;
+    -fx-text-fill: #7a7570;
+}
+
+/* Pie / Donut chart */
+.chart-pie-label {
+    -fx-font-size: 0;
+}
+
+.chart-pie-label-line {
+    -fx-stroke: transparent;
+}
+
+.default-color0.chart-pie { -fx-pie-color: #4a1e2e; }
+.default-color1.chart-pie { -fx-pie-color: #c8763a; }
+.default-color2.chart-pie { -fx-pie-color: #22a050; }
+
+.donut-total-lbl {
+    -fx-font-size: 26;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.donut-sub-lbl {
+    -fx-font-size: 11;
+    -fx-text-fill: #7a7570;
+}
+
+.legend-pct-lbl {
+    -fx-font-weight: bold;
+    -fx-font-size: 13;
+    -fx-text-fill: #1a1a1a;
+}
+
+.legend-role-lbl {
+    -fx-font-size: 13;
+    -fx-text-fill: #1a1a1a;
+}
+
+/* ═══════════ TABLE CARDS ═══════════ */
+.table-card {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-width: 1;
+    -fx-border-radius: 16;
+    -fx-background-radius: 16;
+    -fx-padding: 24;
+    -fx-spacing: 4;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.06), 10, 0, 0, 3);
+}
+
+.sec-hdr-title {
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.voir-tout-lbl {
+    -fx-font-size: 12;
+    -fx-text-fill: #c8763a;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.u-row-box {
+    -fx-padding: 10 0;
+    -fx-border-color: transparent transparent #e8e0d8 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 12;
+    -fx-alignment: CENTER_LEFT;
+}
+
+.u-avatar-lbl {
+    -fx-background-color: #f5f0eb;
+    -fx-text-fill: #4a1e2e;
+    -fx-background-radius: 10;
+    -fx-min-width: 34;
+    -fx-min-height: 34;
+    -fx-max-width: 34;
+    -fx-max-height: 34;
+    -fx-font-size: 12;
+    -fx-font-weight: bold;
+    -fx-alignment: CENTER;
+}
+
+.u-name-lbl {
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1a1a1a;
+}
+
+.u-role-lbl {
+    -fx-font-size: 11;
+    -fx-text-fill: #7a7570;
+}
+
+.u-date-lbl {
+    -fx-font-size: 11;
+    -fx-text-fill: #a09890;
+}
+
+.act-row-box {
+    -fx-padding: 10 0;
+    -fx-border-color: transparent transparent #e8e0d8 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-spacing: 10;
+    -fx-alignment: TOP_LEFT;
+}
+
+.act-dot {
+    -fx-background-radius: 50;
+    -fx-min-width: 8;
+    -fx-min-height: 8;
+    -fx-max-width: 8;
+    -fx-max-height: 8;
+}
+
+.act-msg-lbl {
+    -fx-font-size: 13;
+    -fx-text-fill: #1a1a1a;
+    -fx-wrap-text: true;
+}
+
+.act-time-lbl {
+    -fx-font-size: 11;
+    -fx-text-fill: #a09890;
+}
+
+/* ── ScrollPane ── */
+.scroll-pane {
+    -fx-background-color: #f5f0eb;
+    -fx-background-insets: 0;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: #f5f0eb;
+}
+
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: transparent;
+    -fx-pref-width: 6;
+}
+
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #d0c8c0;
+    -fx-background-radius: 3;
+}
+

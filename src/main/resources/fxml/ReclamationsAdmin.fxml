@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<HBox prefHeight="720.0" prefWidth="1280.0"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.ReclamationsAdminController"
+      styleClass="root"
+      stylesheets="@/css/reclamations-style.css">
+
+    <VBox prefWidth="250.0" spacing="10" styleClass="sidebar">
+        <Label text="afk'art" styleClass="sidebar-logo"/>
+        <Button text="Dashboard" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+        <Button text="Utilisateurs" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+        <Button text="Réclamations" styleClass="sidebar-item,sidebar-item-active" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+        <Button text="Articles" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+        <Button text="Commandes" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
+    </VBox>
+
+    <VBox spacing="20" styleClass="main-content" HBox.hgrow="ALWAYS">
+        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-filters">
+            <Label fx:id="lblBienvenue" styleClass="page-title"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="toolbar-row">
+            <TextField fx:id="tfSearch" promptText="Rechercher par titre, client, description..." styleClass="search-field" prefWidth="340"/>
+            <ComboBox fx:id="cbStatut" styleClass="filter-combo" prefWidth="170"/>
+            <Button text="Exporter PDF" styleClass="btn-resume"/>
+            <Region HBox.hgrow="ALWAYS"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="content-scroll">
+            <content>
+                <VBox fx:id="containerReclamations" spacing="20" styleClass="cards-wrap"/>
+            </content>
+        </ScrollPane>
+    </VBox>
+</HBox>
+

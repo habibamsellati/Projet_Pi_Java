@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+            stylesheets="@/css/blog-style.css"
+            style="-fx-background-color:#EEEADE; -fx-background:#EEEADE;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.BlogController">
+
+  <VBox style="-fx-background-color:#EEEADE;" fx:id="mainContainer">
+    <padding><Insets top="32" bottom="40" left="56" right="56"/></padding>
+
+    <StackPane styleClass="hero-banner">
+      <padding><Insets top="70" bottom="70" left="40" right="40"/></padding>
+      <VBox alignment="CENTER" spacing="18">
+        <Label text="Notre Blog" styleClass="hero-title"/>
+        <Label styleClass="hero-subtitle" wrapText="true" maxWidth="560"
+               textAlignment="CENTER"
+               text="Découvrez nos articles sur l'artisanat durable, les créateurs locaux et les pratiques écologiques"/>
+      </VBox>
+    </StackPane>
+
+    <VBox><padding><Insets top="32"/></padding></VBox>
+
+    <HBox styleClass="filter-box">
+      <padding><Insets top="22" bottom="22" left="28" right="28"/></padding>
+      <TextField fx:id="searchField" promptText="Rechercher un article..."
+                 styleClass="search-field" prefWidth="260"/>
+      <HBox><padding><Insets left="14"/></padding></HBox>
+      <ComboBox fx:id="categoryCombo" styleClass="filter-combo" prefWidth="190"/>
+      <HBox><padding><Insets left="14"/></padding></HBox>
+      <ComboBox fx:id="authorCombo" styleClass="filter-combo" prefWidth="170"/>
+      <HBox><padding><Insets left="14"/></padding></HBox>
+      <ComboBox fx:id="sortCombo" styleClass="filter-combo" prefWidth="200"/>
+      <HBox><padding><Insets left="14"/></padding></HBox>
+      <Button text="Filtrer" styleClass="btn-filtrer" onAction="#handleFilter"/>
+    </HBox>
+
+    <VBox><padding><Insets top="28"/></padding></VBox>
+
+    <Button fx:id="btnPanier" text="🛒  Voir le panier" styleClass="btn-panier" onAction="#handleVoirPanier"/>
+
+    <VBox><padding><Insets top="28"/></padding></VBox>
+
+    <Label text="Articles en Vedette" styleClass="section-title"/>
+    <VBox><padding><Insets top="10"/></padding></VBox>
+    <Separator styleClass="section-sep" maxWidth="Infinity"/>
+    <VBox><padding><Insets top="22"/></padding></VBox>
+
+    <GridPane fx:id="featuredGrid" hgap="22" vgap="22">
+      <columnConstraints>
+        <ColumnConstraints percentWidth="50"/>
+        <ColumnConstraints percentWidth="50"/>
+      </columnConstraints>
+    </GridPane>
+
+    <VBox><padding><Insets top="44"/></padding></VBox>
+
+    <Label text="Tous les Articles" styleClass="section-title"/>
+    <VBox><padding><Insets top="10"/></padding></VBox>
+    <Separator styleClass="section-sep" maxWidth="Infinity"/>
+    <VBox><padding><Insets top="22"/></padding></VBox>
+
+    <GridPane fx:id="allGrid" hgap="22" vgap="22">
+      <columnConstraints>
+        <ColumnConstraints percentWidth="33.33"/>
+        <ColumnConstraints percentWidth="33.33"/>
+        <ColumnConstraints percentWidth="33.33"/>
+      </columnConstraints>
+    </GridPane>
+
+  </VBox>
+</ScrollPane>
+

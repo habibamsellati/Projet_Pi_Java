@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.AjouterReclamationController"
+            styleClass="root"
+            stylesheets="@/css/reclamations-style.css"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12;">
+
+
+    <!-- Header -->
+    <top>
+        <VBox style="-fx-padding: 20; -fx-background-color: white; -fx-border-color: #eee; -fx-border-width: 0 0 1 0;">
+            <Label text="Nouvelle Réclamation"
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+            <Label text="Signalez un problème à l'équipe de support"
+                   style="-fx-font-size: 12; -fx-text-fill: #999; -fx-padding: 10 0 0 0;"/>
+        </VBox>
+    </top>
+
+    <!-- Content -->
+    <center>
+        <VBox spacing="15" style="-fx-padding: 30; -fx-background-color: #fdfaf6;">
+
+            <!-- Message d'erreur -->
+            <Label fx:id="lblError" text="" style="-fx-text-fill: #c0392b;"/>
+
+            <!-- Type de réclamation -->
+            <VBox spacing="5">
+                <Label text="Type de réclamation *" style="-fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+                <ComboBox fx:id="comboType"
+                          promptText="Choisir un type"
+                          styleClass="combo-type-reclamation"
+                          style="-fx-min-width: 320; -fx-pref-height: 40;"/>
+            </VBox>
+
+            <!-- Titre -->
+            <VBox spacing="5">
+                <Label text="Titre *" style="-fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+                <TextField fx:id="tfTitre"
+                          promptText="Décrivez brièvement votre problème (min. 3 caractères)"
+                          style="-fx-padding: 10; -fx-font-size: 12; -fx-control-inner-background: white;"/>
+                <Label text="Entre 3 et 255 caractères" style="-fx-font-size: 10; -fx-text-fill: #999;"/>
+            </VBox>
+
+            <!-- Description -->
+            <VBox spacing="5">
+                <Label text="Description (Optionnel)" style="-fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+                <TextArea fx:id="taDescription"
+                         promptText="Fournissez plus de détails sur votre problème... (min. 10 caractères si rempli)"
+                         wrapText="true"
+                         style="-fx-padding: 10; -fx-font-size: 12; -fx-control-inner-background: white;"
+                         prefRowCount="6"/>
+                <Label text="Minimum 10 caractères si fourni (max. 2000)" style="-fx-font-size: 10; -fx-text-fill: #999;"/>
+            </VBox>
+
+            <!-- Image URL / Fichier -->
+            <VBox spacing="5">
+                <Label text="Image (Optionnel)" style="-fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+                <HBox spacing="10">
+                    <TextField fx:id="tfImageUrl"
+                              HBox.hgrow="ALWAYS"
+                              promptText="URL ou fichier image (.jpg, .png, .gif, .webp)"
+                              style="-fx-padding: 10; -fx-font-size: 12; -fx-control-inner-background: white;"/>
+                    <Button text="Parcourir..."
+                            onAction="#handleChoisirImage"
+                            style="-fx-padding: 10 18; -fx-background-color: #e9ecef; -fx-text-fill: #333; -fx-font-weight: bold;"/>
+                </HBox>
+                <Label text="Vous pouvez saisir une URL ou choisir un fichier depuis votre ordinateur" style="-fx-font-size: 10; -fx-text-fill: #999;"/>
+            </VBox>
+
+            <!-- Boutons -->
+            <HBox spacing="10" style="-fx-padding: 20 0 0 0;">
+                <Button fx:id="btnAjouter"
+                       text="Soumettre la réclamation"
+                       onAction="#handleAjouter"
+                       styleClass="btn-new"
+                       style="-fx-padding: 12 30; -fx-font-weight: bold; -fx-font-size: 13;"/>
+                <Button fx:id="btnAnnuler"
+                       text="Annuler"
+                       onAction="#handleAnnuler"
+                       style="-fx-padding: 12 30; -fx-background-color: #ddd; -fx-text-fill: #333; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </center>
+
+</BorderPane>
+

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@/css/main-style.css"
+            style="-fx-background-color:#EEEADE;"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.MainController">
+
+    <top>
+        <HBox styleClass="navbar" alignment="CENTER_LEFT" spacing="0">
+            <padding><Insets top="0" bottom="0" left="24" right="24"/></padding>
+
+            <Label styleClass="logo-afk" text="AfkArt"/>
+
+            <HBox><padding><Insets left="32"/></padding></HBox>
+
+            <Button fx:id="btnAccueil" text="Accueil" styleClass="nav-btn" onAction="#goAccueil"/>
+            <Button fx:id="btnBlog" text="Blog" styleClass="nav-btn" onAction="#goBlog"/>
+            <Button fx:id="btnLivraisons" text="Livraisons" styleClass="nav-btn" onAction="#goLivraisons"/>
+            <Button fx:id="btnSuiviLivraison" text="Suivi Livraison" styleClass="nav-btn" onAction="#goSuiviLivraison"/>
+            <Button fx:id="btnProduits" text="Produits" styleClass="nav-btn" onAction="#goProduits"/>
+            <Button fx:id="btnPropositions" text="Propositions" styleClass="nav-btn" onAction="#goPropositions"/>
+            <Button fx:id="btnEvenements" text="Evenements" styleClass="nav-btn" onAction="#goEvenements"/>
+            <Button fx:id="btnReservations" text="Mes reservations" styleClass="nav-btn" onAction="#goReservations"/>
+            <Button fx:id="btnReclamations" text="Reclamations" styleClass="nav-btn" onAction="#goReclamations"/>
+
+            <Region HBox.hgrow="ALWAYS"/>
+
+            <VBox styleClass="user-card" alignment="CENTER">
+                <padding><Insets top="10" bottom="10" left="16" right="16"/></padding>
+                <HBox spacing="8" alignment="CENTER">
+                    <Label text="User" style="-fx-font-size:14px;"/>
+                    <VBox>
+                        <Label fx:id="userNomLabel" text="Utilisateur" styleClass="user-nom"/>
+                        <Label fx:id="userRoleLabel" text="(CLIENT)" styleClass="user-role"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <HBox><padding><Insets left="12"/></padding></HBox>
+
+            <Button text="Se deconnecter" styleClass="btn-deconnexion" onAction="#handleDeconnexion"/>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane fx:id="contentArea" style="-fx-background-color:#EEEADE;"/>
+    </center>
+
+</BorderPane>
+

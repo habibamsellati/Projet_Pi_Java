@@ -1,0 +1,209 @@
+/* --- Variables et Fond Global --- */
+.main-container {
+    -fx-background-color: #F9F7F2; /* Crème clair type Artisanat */
+}
+
+.scroll-pane {
+    -fx-background-color: transparent;
+    -fx-background-insets: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: transparent;
+}
+
+/* --- Typographie (Labels) --- */
+.label {
+    -fx-text-fill: #5D4037;
+}
+
+.title-label {
+    -fx-font-family: "Serif";
+    -fx-font-size: 32px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #8D6E63;
+}
+
+/* --- Champs de saisie (Inputs) --- */
+.text-field, .text-area, .combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #D7CCC8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 10;
+    -fx-font-size: 14px;
+}
+
+.text-field:focused, .text-area:focused {
+    -fx-border-color: #8D6E63;
+    -fx-border-width: 2;
+}
+
+/* --- Cartes des Articles (Cards) --- */
+.article-card {
+    -fx-background-color: white;
+    -fx-background-radius: 15;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 15, 0, 0, 5);
+}
+
+/* Effet au survol de la carte (comme sur Symfony) */
+.article-card:hover {
+    -fx-effect: dropshadow(three-pass-box, rgba(141, 110, 99, 0.3), 20, 0, 0, 8);
+    -fx-translate-y: -5; /* Petit soulèvement */
+}
+
+.card-image {
+    -fx-background-radius: 15 15 0 0;
+    /* On définit juste la taille, l'arrondi se fera dans le code Java ou via le parent */
+}
+
+/* Overlay dégradé sur l'image */
+.gradient-overlay {
+    -fx-background-color: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.7) 100%);
+    -fx-background-radius: 15 15 0 0;
+}
+
+/* --- Boutons --- */
+.button {
+    -fx-cursor: hand;
+}
+
+/* Bouton Publier (Marron) */
+.btn-publier {
+    -fx-background-color: #8D6E63;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-font-weight: bold;
+    -fx-padding: 12 25;
+}
+
+.btn-publier:hover {
+    -fx-background-color: #70554C;
+}
+
+/* Bouton Annuler (Gris clair) */
+.btn-annuler {
+    -fx-background-color: #E0DDD5;
+    -fx-text-fill: #5D4037;
+    -fx-background-radius: 10;
+    -fx-padding: 12 25;
+}
+
+.btn-annuler:hover {
+    -fx-background-color: #D3CFC4;
+}
+
+/* Bouton Supprimer (Rouge) */
+.btn-supprimer {
+    -fx-background-color: #D66D67;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 15;
+}
+
+.btn-supprimer:hover {
+    -fx-background-color: #C05A54;
+}
+
+/* Bouton Modifier (Beige) */
+.btn-modifier {
+    -fx-background-color: #BDB49D;
+    -fx-text-fill: white;
+    -fx-background-radius: 10;
+    -fx-padding: 8 15;
+}
+
+.btn-modifier:hover {
+    -fx-background-color: #A69D84;
+}
+
+/* --- Zone d'upload d'image (Dashed Border) --- */
+.upload-box {
+    -fx-border-color: #8D6E63;
+    -fx-border-width: 2;
+    -fx-border-style: segments(10, 10) dashed;
+    -fx-background-color: white;
+    -fx-border-radius: 10;
+}
+
+/* ── Bouton Valider (Vert) ── */
+.btn-valider {
+    -fx-background-color: #2E8B57;
+    -fx-text-fill: white;
+    -fx-background-radius: 24;
+    -fx-font-weight: bold;
+    -fx-padding: 14 36;
+    -fx-font-size: 15px;
+    -fx-cursor: hand;
+}
+
+.btn-valider:hover {
+    -fx-background-color: #256e46;
+}
+
+/* ── Badge statut EN ATTENTE ── */
+.badge-attente {
+    -fx-background-color: #F0C040;
+    -fx-text-fill: #7A5500;
+    -fx-font-weight: bold;
+    -fx-font-size: 12px;
+    -fx-background-radius: 14;
+    -fx-padding: 5 14;
+}
+
+/* ── Barre de bas de page panier ── */
+.bottom-bar {
+    -fx-background-color: white;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 10, 0, 0, -3);
+    -fx-padding: 18 28;
+}
+
+/* ── Carte de commande (historique) ── */
+.commande-card {
+    -fx-background-color: white;
+    -fx-background-radius: 16;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.09), 14, 0, 0, 4);
+    -fx-padding: 20 24;
+}
+
+/* --- Design commentaires (style card moderne) --- */
+.root {
+    -fx-background-color: #fdfcfb;
+}
+
+.form-container {
+    -fx-background-color: #ffffff;
+    -fx-border-color: #e0e0e0;
+    -fx-border-width: 1 0 0 0;
+    -fx-padding: 20;
+}
+
+.button-submit {
+    -fx-background-color: #b19669;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+    -fx-background-radius: 5;
+    -fx-padding: 10 20;
+}
+
+.button-submit:hover {
+    -fx-background-color: #967d54;
+}
+
+.btn-action {
+    -fx-background-color: transparent;
+    -fx-border-color: #ddd;
+    -fx-border-radius: 4;
+}
+
+.comment-card {
+    -fx-background-color: white;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+    -fx-padding: 15;
+    -fx-border-color: #eee;
+    -fx-border-width: 1;
+    -fx-border-radius: 10;
+}
+
