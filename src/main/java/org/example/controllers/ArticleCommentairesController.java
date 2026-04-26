@@ -173,39 +173,44 @@ public class ArticleCommentairesController {
             Button btn = new Button(emoji);
             btn.setFocusTraversable(false);
             btn.setTooltip(new Tooltip(label));
+
+            // Forcer la police Segoe UI Emoji (Windows) pour affichage couleur
+            btn.setFont(javafx.scene.text.Font.font("Segoe UI Emoji", 20));
             btn.setStyle(
                 "-fx-background-color:#ffffff;" +
                 "-fx-background-radius:12;" +
                 "-fx-border-color:#ede8e3;" +
                 "-fx-border-radius:12;" +
-                "-fx-padding:6 10;" +
-                "-fx-font-size:18;" +
+                "-fx-padding:5 9;" +
                 "-fx-cursor:hand;" +
                 "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.07),3,0,0,1);"
             );
 
-            // Hover : légère élévation
-            btn.setOnMouseEntered(e -> btn.setStyle(
-                "-fx-background-color:#fff8f2;" +
-                "-fx-background-radius:12;" +
-                "-fx-border-color:#c8a882;" +
-                "-fx-border-radius:12;" +
-                "-fx-padding:6 10;" +
-                "-fx-font-size:18;" +
-                "-fx-cursor:hand;" +
-                "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.15),6,0,0,2);" +
-                "-fx-scale-x:1.15;-fx-scale-y:1.15;"
-            ));
-            btn.setOnMouseExited(e -> btn.setStyle(
-                "-fx-background-color:#ffffff;" +
-                "-fx-background-radius:12;" +
-                "-fx-border-color:#ede8e3;" +
-                "-fx-border-radius:12;" +
-                "-fx-padding:6 10;" +
-                "-fx-font-size:18;" +
-                "-fx-cursor:hand;" +
-                "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.07),3,0,0,1);"
-            ));
+            btn.setOnMouseEntered(e -> {
+                btn.setStyle(
+                    "-fx-background-color:#fff8f2;" +
+                    "-fx-background-radius:12;" +
+                    "-fx-border-color:#c8a882;" +
+                    "-fx-border-radius:12;" +
+                    "-fx-padding:5 9;" +
+                    "-fx-cursor:hand;" +
+                    "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.18),8,0,0,3);" +
+                    "-fx-scale-x:1.2;-fx-scale-y:1.2;"
+                );
+                btn.setFont(javafx.scene.text.Font.font("Segoe UI Emoji", 20));
+            });
+            btn.setOnMouseExited(e -> {
+                btn.setStyle(
+                    "-fx-background-color:#ffffff;" +
+                    "-fx-background-radius:12;" +
+                    "-fx-border-color:#ede8e3;" +
+                    "-fx-border-radius:12;" +
+                    "-fx-padding:5 9;" +
+                    "-fx-cursor:hand;" +
+                    "-fx-effect:dropshadow(three-pass-box,rgba(0,0,0,0.07),3,0,0,1);"
+                );
+                btn.setFont(javafx.scene.text.Font.font("Segoe UI Emoji", 20));
+            });
 
             btn.setOnAction(ev -> insererEmojiDansCommentaire(emoji));
             emojiBar.getChildren().add(btn);
@@ -276,6 +281,11 @@ public class ArticleCommentairesController {
 
         int likes    = article.getLikes();
         int dislikes = article.getDislikes();
+
+        // Forcer la police emoji couleur sur Windows
+        javafx.scene.text.Font emojiFont = javafx.scene.text.Font.font("Segoe UI Emoji", 14);
+        btnLike.setFont(emojiFont);
+        btnDislike.setFont(emojiFont);
 
         User user = SessionManager.getCurrentUser();
         String reactionActuelle = "";
@@ -517,6 +527,10 @@ public class ArticleCommentairesController {
     private void appliquerStyleBtnCommentaire(Button btnCLike, Button btnCDislike, String reaction,
                                                int likes, int dislikes,
                                                String styleBase, String styleLikeOn, String styleDislikeOn) {
+        javafx.scene.text.Font emojiFont = javafx.scene.text.Font.font("Segoe UI Emoji", 13);
+        btnCLike.setFont(emojiFont);
+        btnCDislike.setFont(emojiFont);
+
         if ("like".equals(reaction)) {
             btnCLike.setStyle(styleLikeOn);
             btnCLike.setText(EMOJI_LIKE + "  " + likes + "  " + CHECK_MARK);
