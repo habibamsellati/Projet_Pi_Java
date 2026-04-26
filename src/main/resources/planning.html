@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <link href='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.css' rel='stylesheet' />
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #4f46e5;
+            --bg-color: #f8fafc;
+            --card-bg: #ffffff;
+            --text-main: #1e293b;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+        }
+
+        #calendar {
+            max-width: 1100px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            padding: 25px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Personnalisation des boutons FullCalendar */
+        .fc .fc-button-primary {
+            background-color: var(--primary-color);
+            border: none;
+            border-radius: 8px;
+            font-weight: 600;
+            text-transform: capitalize;
+            padding: 8px 16px;
+            transition: all 0.2s;
+        }
+
+        .fc .fc-button-primary:hover { background-color: #4338ca; transform: translateY(-1px); }
+
+        .fc .fc-toolbar-title { font-size: 1.5rem; font-weight: 600; color: var(--text-main); }
+
+        /* Style des événements (Missions) */
+        .fc-event {
+            border: none !important;
+            border-radius: 6px !important;
+            padding: 4px 8px !important;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .event-container {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .event-title {
+            font-weight: 600;
+            font-size: 0.9em;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        .weather-info {
+            display: flex;
+            align-items: center;
+            font-size: 0.8em;
+            background: rgba(255, 255, 255, 0.25);
+            width: fit-content;
+            padding: 1px 6px;
+            border-radius: 10px;
+            margin-top: 2px;
+        }
+
+        /* Masquer le bouton de test pour le rendu final */
+        #debug-btn { display: none; }
+    </style>
+</head>
+<body>
+<div id="calendar"></div>
+
+<script src='https://cdn.jsdelivr.net/npm/fullcalendar@6.1.8/index.global.min.js'></script>
+<script>
+    var calendar;
+    const API_KEY = '893558cc2f6fba49cf32953e353269c5';
+
+    document.addEventListener('DOMContentLoaded', function() {
+        var calendarEl = document.getElementById('calendar');
+        calendar = new FullCalendar.Calendar(calendarEl, {
+            initialView: 'dayGridMonth',
+            locale: 'fr',
+            headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,dayGridWeek'
+            },
+            // Customisation de l'affichage de l'événement
+            eventContent: function(arg) {
+                let container = document.createElement('div');
+                container.classList.add('event-container');
+
+                let title = document.createElement('div');
+                title.classList.add('event-title');
+                title.innerText = arg.event.title;
+
+                container.appendChild(title);
+
+                if (arg.event.extendedProps.temp) {
+                    let weather = document.createElement('div');
+                    weather.classList.add('weather-info');
+                    weather.innerHTML = `☀️ ${arg.event.extendedProps.temp}`;
+                    container.appendChild(weather);
+                }
+
+                return { domNodes: [container] };
+            }
+        });
+        calendar.render();
+    });
+
+    async function loadMissions(jsonInput) {
+        try {
+            const missions = (typeof jsonInput === 'string') ? JSON.parse(jsonInput) : jsonInput;
+
+            const events = await Promise.all(missions.map(async (m) => {
+                let temperature = null;
+                if (m.lat && m.lng && m.lat !== 0) {
+                    try {
+                        const res = await fetch(`https://api.openweathermap.org/data/2.5/weather?lat=${m.lat}&lon=${m.lng}&appid=${API_KEY}&units=metric`);
+                        const data = await res.json();
+                        if (data.main) temperature = Math.round(data.main.temp) + "°C";
+                    } catch (e) { console.error("Erreur météo"); }
+                }
+
+                // On définit une couleur plus sympa selon le statut
+                let bgColor = '#6366f1'; // Indigo par défaut
+                if (m.statutlivraison.toLowerCase().includes('livré')) bgColor = '#10b981'; // Vert
+                if (m.statutlivraison.toLowerCase().includes('cours')) bgColor = '#f59e0b'; // Orange
+
+                return {
+                    title: m.addresslivraison,
+                    start: m.datelivraison,
+                    backgroundColor: bgColor,
+                    extendedProps: { temp: temperature }
+                };
+            }));
+
+            calendar.removeAllEvents();
+            calendar.addEventSource(events);
+        } catch (err) {
+            console.error("Erreur chargement JSON:", err);
+        }
+    }
+</script>
+</body>
+</html>

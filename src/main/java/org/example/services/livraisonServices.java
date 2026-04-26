@@ -2,133 +2,169 @@ package org.example.services;
 
 import org.example.models.livraison;
 import org.example.utils.MyDbConnexion;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class livraisonServices implements CRUD<livraison> {
+public class livraisonServices {
     private Connection cnx;
 
     public livraisonServices() {
         cnx = MyDbConnexion.getInstance().getCnx();
     }
 
-    @Override
-    public void insertOne(livraison livraison) throws SQLException {
-        String req = "INSERT INTO `livraison` (`datelivraison`, `addresslivraison`, `statutlivraison`, `note_livreur`, `livreur_id`, `lat`, `lng`, `commande_id`) " +
-                "VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
-        PreparedStatement ps = cnx.prepareStatement(req);
-        ps.setTimestamp(1, Timestamp.valueOf(livraison.getDateLivraison()));
-        ps.setString(2, livraison.getAddressLivraison());
-        ps.setString(3, livraison.getStatutLivraison());
-        ps.setString(4, livraison.getNoteLivreur());
-
-        if (livraison.getLivreurId() != null) ps.setInt(5, livraison.getLivreurId());
-        else ps.setNull(5, Types.INTEGER);
-
-        if (livraison.getLat() != null) ps.setDouble(6, livraison.getLat());
-        else ps.setNull(6, Types.DOUBLE);
-
-        if (livraison.getLng() != null) ps.setDouble(7, livraison.getLng());
-        else ps.setNull(7, Types.DOUBLE);
-
-        if (livraison.getCommandeId() != null) ps.setInt(8, livraison.getCommandeId());
-        else ps.setNull(8, Types.INTEGER);
-
-        ps.executeUpdate();
-    }
-
-    @Override
-    public void updateOne(livraison livraison) throws SQLException {
-        // Mise à jour de TOUS les champs nécessaires pour ne pas perdre d'infos
-        String req = "UPDATE `livraison` SET `datelivraison`=?, `addresslivraison`=?, `statutlivraison`=?, `note_livreur`=?, `livreur_id`=?, `commande_id`=? WHERE `id`=?";
-        PreparedStatement ps = cnx.prepareStatement(req);
-        ps.setTimestamp(1, Timestamp.valueOf(livraison.getDateLivraison()));
-        ps.setString(2, livraison.getAddressLivraison());
-        ps.setString(3, livraison.getStatutLivraison());
-        ps.setString(4, livraison.getNoteLivreur());
-
-        if (livraison.getLivreurId() != null) ps.setInt(5, livraison.getLivreurId());
-        else ps.setNull(5, Types.INTEGER);
-
-        if (livraison.getCommandeId() != null) ps.setInt(6, livraison.getCommandeId());
-        else ps.setNull(6, Types.INTEGER);
-
-        ps.setInt(7, livraison.getId());
-        ps.executeUpdate();
-    }
-
-    @Override
-    public void deleteOne(int id) throws SQLException {
-        String req = "DELETE FROM `livraison` WHERE id = ?";
-        PreparedStatement ps = cnx.prepareStatement(req);
-        ps.setInt(1, id);
-        ps.executeUpdate();
-    }
-
-    @Override
-    public List<livraison> findALL() throws SQLException {
+    // --- LOGIQUE POUR LE CALENDRIER & MÉTÉO ---
+    public List<livraison> findByLivreur(int livreurId) throws SQLException {
         List<livraison> list = new ArrayList<>();
-        String req = "SELECT * FROM `livraison`";
-        Statement st = cnx.createStatement();
-        ResultSet rs = st.executeQuery(req);
+        String req = "SELECT * FROM `livraison` WHERE livreur_id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, livreurId);
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    livraison l = new livraison();
+                    l.setId(rs.getInt("id"));
+                    l.setAddressLivraison(rs.getString("addresslivraison"));
+                    l.setStatutLivraison(rs.getString("statutlivraison"));
 
-        while (rs.next()) {
-            livraison l = new livraison();
-            l.setId(rs.getInt("id"));
-            Timestamp ts = rs.getTimestamp("datelivraison");
-            if (ts != null) l.setDateLivraison(ts.toLocalDateTime());
+                    double lat = rs.getDouble("lat");
+                    l.setLat(rs.wasNull() ? null : lat);
+                    double lng = rs.getDouble("lng");
+                    l.setLng(rs.wasNull() ? null : lng);
 
-            l.setAddressLivraison(rs.getString("addresslivraison"));
-            l.setStatutLivraison(rs.getString("statutlivraison"));
-            l.setNoteLivreur(rs.getString("note_livreur"));
-            l.setLivreurId(rs.getObject("livreur_id") != null ? rs.getInt("livreur_id") : null);
-            l.setLat(rs.getObject("lat") != null ? rs.getDouble("lat") : null);
-            l.setLng(rs.getObject("lng") != null ? rs.getDouble("lng") : null);
-            l.setCommandeId(rs.getObject("commande_id") != null ? rs.getInt("commande_id") : null);
-            list.add(l);
+                    Timestamp ts = rs.getTimestamp("datelivraison");
+                    if (ts != null) l.setDateLivraison(ts.toLocalDateTime());
+                    list.add(l);
+                }
+            }
         }
         return list;
     }
 
-    // --- Méthodes Utilitaires pour les ComboBox ---
-
+    // --- MÉTHODES POUR LES FORMULAIRES (AjouterLivraison) ---
     public List<Integer> getAllCommandeIds() throws SQLException {
         List<Integer> ids = new ArrayList<>();
-        String req = "SELECT id FROM `commande`";
-        Statement st = cnx.createStatement();
-        ResultSet rs = st.executeQuery(req);
-        while (rs.next()) ids.add(rs.getInt("id"));
+        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery("SELECT id FROM `commande`")) {
+            while (rs.next()) ids.add(rs.getInt("id"));
+        }
         return ids;
     }
 
     public List<String> getEmailsLivreurs() throws SQLException {
         List<String> emails = new ArrayList<>();
         String req = "SELECT email FROM user WHERE role = 'livreur'";
-        Statement st = cnx.createStatement();
-        ResultSet rs = st.executeQuery(req);
-        while (rs.next()) emails.add(rs.getString("email"));
+        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(req)) {
+            while (rs.next()) emails.add(rs.getString("email"));
+        }
         return emails;
     }
 
     public Integer getIdByEmail(String email) throws SQLException {
-        if (email == null) return null;
         String req = "SELECT id FROM user WHERE email = ?";
-        PreparedStatement ps = cnx.prepareStatement(req);
-        ps.setString(1, email);
-        ResultSet rs = ps.executeQuery();
-        return rs.next() ? rs.getInt("id") : null;
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setString(1, email);
+            try (ResultSet rs = ps.executeQuery()) {
+                return rs.next() ? rs.getInt("id") : null;
+            }
+        }
     }
 
-    // AJOUT DE LA MÉTHODE MANQUANTE
     public String getEmailById(Integer id) throws SQLException {
-        if (id == null) return null;
+        if (id == null || id == 0) return null;
         String req = "SELECT email FROM user WHERE id = ?";
-        PreparedStatement ps = cnx.prepareStatement(req);
-        ps.setInt(1, id);
-        ResultSet rs = ps.executeQuery();
-        return rs.next() ? rs.getString("email") : null;
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, id);
+            try (ResultSet rs = ps.executeQuery()) {
+                if (rs.next()) return rs.getString("email");
+            }
+        }
+        return null;
+    }
+
+    // --- GESTION DES MISSIONS & POSITION (EspaceLivreur) ---
+    public void demarrerMission(Integer livraisonId) throws SQLException {
+        updateStatut(livraisonId, "En cours");
+    }
+
+    public void terminerMission(Integer livraisonId) throws SQLException {
+        updateStatut(livraisonId, "Livré");
+    }
+
+    public void updateStatut(int id, String nouveauStatut) throws SQLException {
+        String sql = "UPDATE livraison SET statutlivraison = ? WHERE id = ?";
+        try (PreparedStatement pstmt = cnx.prepareStatement(sql)) {
+            pstmt.setString(1, nouveauStatut);
+            pstmt.setInt(2, id);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // RÉTABLISSEMENT DE LA MÉTHODE MANQUANTE
+    public void updateLivreurPosition(int livreurId, double lat, double lng) throws SQLException {
+        String sql = "UPDATE user SET current_lat = ?, current_lng = ? WHERE id = ?";
+        try (PreparedStatement st = cnx.prepareStatement(sql)) {
+            st.setDouble(1, lat);
+            st.setDouble(2, lng);
+            st.setInt(3, livreurId);
+            st.executeUpdate();
+        }
+    }
+
+    // --- CRUD DE BASE ---
+    public List<livraison> findALL() throws SQLException {
+        List<livraison> list = new ArrayList<>();
+        String req = "SELECT l.*, u.current_lat, u.current_lng FROM `livraison` l LEFT JOIN user u ON l.livreur_id = u.id";
+        try (Statement st = cnx.createStatement(); ResultSet rs = st.executeQuery(req)) {
+            while (rs.next()) {
+                livraison l = new livraison();
+                l.setId(rs.getInt("id"));
+                l.setAddressLivraison(rs.getString("addresslivraison"));
+                l.setStatutLivraison(rs.getString("statutlivraison"));
+                l.setLat(rs.getObject("lat") != null ? rs.getDouble("lat") : null);
+                l.setLng(rs.getObject("lng") != null ? rs.getDouble("lng") : null);
+                Timestamp ts = rs.getTimestamp("datelivraison");
+                if (ts != null) l.setDateLivraison(ts.toLocalDateTime());
+                list.add(l);
+            }
+        }
+        return list;
+    }
+
+    public void insertOne(livraison l) throws SQLException {
+        String req = "INSERT INTO `livraison` (`datelivraison`, `addresslivraison`, `statutlivraison`, `note_livreur`, `livreur_id`, `lat`, `lng`, `commande_id`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            fillPreparedStatement(ps, l);
+            ps.executeUpdate();
+        }
+    }
+
+    public void updateOne(livraison l) throws SQLException {
+        String req = "UPDATE `livraison` SET `datelivraison`=?, `addresslivraison`=?, `statutlivraison`=?, `note_livreur`=?, `livreur_id`=?, `lat`=?, `lng`=?, `commande_id`=? WHERE `id`=?";
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            fillPreparedStatement(ps, l);
+            ps.setInt(9, l.getId());
+            ps.executeUpdate();
+        }
+    }
+
+    private void fillPreparedStatement(PreparedStatement ps, livraison l) throws SQLException {
+        if (l.getDateLivraison() != null) ps.setTimestamp(1, Timestamp.valueOf(l.getDateLivraison()));
+        else ps.setNull(1, Types.TIMESTAMP);
+        ps.setString(2, l.getAddressLivraison());
+        ps.setString(3, l.getStatutLivraison());
+        ps.setString(4, l.getNoteLivreur());
+        if (l.getLivreurId() != null && l.getLivreurId() != 0) ps.setInt(5, l.getLivreurId());
+        else ps.setNull(5, Types.INTEGER);
+        if (l.getLat() != null) ps.setDouble(6, l.getLat()); else ps.setNull(6, Types.DOUBLE);
+        if (l.getLng() != null) ps.setDouble(7, l.getLng()); else ps.setNull(7, Types.DOUBLE);
+        if (l.getCommandeId() != null && l.getCommandeId() != 0) ps.setInt(8, l.getCommandeId());
+        else ps.setNull(8, Types.INTEGER);
+    }
+
+    public void deleteOne(int id) throws SQLException {
+        String req = "DELETE FROM `livraison` WHERE id = ?";
+        try (PreparedStatement ps = cnx.prepareStatement(req)) {
+            ps.setInt(1, id);
+            ps.executeUpdate();
+        }
     }
 }

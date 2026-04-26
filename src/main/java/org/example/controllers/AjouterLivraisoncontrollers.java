@@ -11,11 +11,13 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 import org.example.models.livraison;
+import org.example.services.GeocodingService;
 import org.example.services.livraisonServices;
 
 import java.io.IOException;
 import java.net.URL;
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ResourceBundle;
 
 public class AjouterLivraisoncontrollers implements Initializable {
@@ -29,12 +31,14 @@ public class AjouterLivraisoncontrollers implements Initializable {
 
     private final livraisonServices ls = new livraisonServices();
     private livraison livraisonAModifier = null;
-
-    // Flag pour savoir si on retourne au Front ou au Back
     private boolean isBackOffice = false;
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        // Configuration par défaut (Mode Ajout)
+        if (labelTitre != null) labelTitre.setText("Ajouter une Livraison");
+        if (btnCreer != null) btnCreer.setText("+ Enregistrer la nouvelle livraison");
+
         chargerCombos();
     }
 
@@ -47,65 +51,94 @@ public class AjouterLivraisoncontrollers implements Initializable {
             commandeCombo.setItems(FXCollections.observableArrayList(ls.getAllCommandeIds()));
             livreurCombo.setItems(FXCollections.observableArrayList(ls.getEmailsLivreurs()));
         } catch (SQLException e) {
-            e.printStackTrace();
+            afficherAlerte("Erreur de chargement", "Impossible de charger : " + e.getMessage(), Alert.AlertType.ERROR);
         }
     }
 
+    /**
+     * Remplit le formulaire pour la MODIFICATION
+     */
     public void setLivraisonData(livraison l) {
+        if (l == null) return;
         this.livraisonAModifier = l;
-        if (labelTitre != null) labelTitre.setText("Modifier la Livraison");
-        btnCreer.setText("Enregistrer les modifications");
+
+        // --- CHANGEMENT DYNAMIQUE DE L'INTERFACE ---
+        if (labelTitre != null) labelTitre.setText("Modification de Livraison");
+        if (btnCreer != null) btnCreer.setText("Enregistrer les modifications");
+
+        // --- REMPLISSAGE DES CHAMPS ---
         adresseField.setText(l.getAddressLivraison());
         if (l.getDateLivraison() != null) {
             datePicker.setValue(l.getDateLivraison().toLocalDate());
         }
         commandeCombo.setValue(l.getCommandeId());
-        try {
-            String emailLivreur = ls.getEmailById(l.getLivreurId());
-            livreurCombo.setValue(emailLivreur);
-        } catch (SQLException e) {
-            System.err.println("Erreur récupération email livreur: " + e.getMessage());
+
+        // Récupération sécurisée de l'email du livreur
+        if (l.getLivreurId() != null && l.getLivreurId() != 0) {
+            try {
+                String emailLivreur = ls.getEmailById(l.getLivreurId());
+                livreurCombo.setValue(emailLivreur);
+            } catch (SQLException e) {
+                System.err.println("Erreur récupération email livreur: " + e.getMessage());
+            }
         }
     }
 
     @FXML
     void handleCreer(ActionEvent event) {
-        if (champsInvalides()) return;
+        if (validationSaisie()) return;
+
         try {
             if (livraisonAModifier == null) {
+                // MODE INSERTION
                 livraison newL = new livraison();
                 remplirObjet(newL);
                 ls.insertOne(newL);
                 afficherAlerte("Succès", "Livraison ajoutée avec succès !", Alert.AlertType.INFORMATION);
             } else {
+                // MODE MISE À JOUR
                 remplirObjet(livraisonAModifier);
                 ls.updateOne(livraisonAModifier);
                 afficherAlerte("Succès", "Livraison mise à jour avec succès !", Alert.AlertType.INFORMATION);
             }
             retourListe(event);
         } catch (SQLException e) {
-            afficherAlerte("Erreur", "Base de données : " + e.getMessage(), Alert.AlertType.ERROR);
+            afficherAlerte("Erreur DB", e.getMessage(), Alert.AlertType.ERROR);
+            e.printStackTrace();
         }
     }
 
     private void remplirObjet(livraison l) throws SQLException {
-        l.setAddressLivraison(adresseField.getText().trim());
+        String adresse = adresseField.getText().trim();
+        l.setAddressLivraison(adresse);
         l.setDateLivraison(datePicker.getValue().atStartOfDay());
         l.setCommandeId(commandeCombo.getValue());
+
         String selectedEmail = livreurCombo.getValue();
         if (selectedEmail != null) {
-            int idLivreur = ls.getIdByEmail(selectedEmail);
-            l.setLivreurId(idLivreur);
+            l.setLivreurId(ls.getIdByEmail(selectedEmail));
         }
+
+        // Géocodage
+        double[] coords = GeocodingService.getCoordinates(adresse);
+        if (coords != null) {
+            l.setLat(coords[0]);
+            l.setLng(coords[1]);
+        }
+
         if (livraisonAModifier == null) {
             l.setStatutLivraison("En attente");
         }
     }
 
-    private boolean champsInvalides() {
-        if (adresseField.getText().trim().isEmpty() || datePicker.getValue() == null ||
-                commandeCombo.getValue() == null || livreurCombo.getValue() == null) {
-            afficherAlerte("Champs manquants", "Veuillez remplir tout le formulaire.", Alert.AlertType.WARNING);
+    private boolean validationSaisie() {
+        StringBuilder sb = new StringBuilder();
+        if (adresseField.getText().trim().isEmpty()) sb.append("- Adresse vide.\n");
+        if (datePicker.getValue() == null) sb.append("- Date manquante.\n");
+        if (commandeCombo.getValue() == null) sb.append("- Commande non sélectionnée.\n");
+
+        if (sb.length() > 0) {
+            afficherAlerte("Données Invalides", sb.toString(), Alert.AlertType.WARNING);
             return true;
         }
         return false;
@@ -114,29 +147,11 @@ public class AjouterLivraisoncontrollers implements Initializable {
     @FXML
     void retourListe(ActionEvent event) {
         try {
-            String fxmlFile;
-
-            // --- CORRECTION DES CHEMINS ---
-            if (isBackOffice) {
-                fxmlFile = "/Dashboard.fxml"; // Nom corrigé selon tes fichiers
-            } else {
-                fxmlFile = "/AfficherLivraison.fxml";
-            }
-
-            // Sécurité pour éviter le NullPointerException
-            URL url = getClass().getResource(fxmlFile);
-            if (url == null) {
-                System.err.println("ERREUR : Fichier introuvable -> " + fxmlFile);
-                return;
-            }
-
-            Parent root = FXMLLoader.load(url);
+            String fxmlFile = isBackOffice ? "/Dashboard.fxml" : "/AfficherLivraison.fxml";
+            Parent root = FXMLLoader.load(getClass().getResource(fxmlFile));
             Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        } catch (IOException e) { e.printStackTrace(); }
     }
 
     private void afficherAlerte(String titre, String message, Alert.AlertType type) {

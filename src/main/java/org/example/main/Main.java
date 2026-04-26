@@ -1,5 +1,10 @@
 package org.example.main;
 
+import javafx.application.Application;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
 import org.example.models.livraison;
 import org.example.services.livraisonServices;
 
@@ -7,63 +12,54 @@ import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.util.List;
 
-public class Main {
+public class Main extends Application {
+
+    @Override
+    public void start(Stage primaryStage) throws Exception {
+        // Charge ta page principale (Assure-toi que le chemin est correct)
+        Parent root = FXMLLoader.load(getClass().getResource("/AfficherLivraison.fxml"));
+        primaryStage.setTitle("Gestion des Livraisons - AfkArt");
+        primaryStage.setScene(new Scene(root));
+        primaryStage.show();
+    }
+
     public static void main(String[] args) {
+        // --- CONFIGURATION RENDU CARTE (CRUCIAL) ---
+        System.setProperty("prism.order", "sw");
+        System.setProperty("prism.text", "t2k");
+        System.setProperty("prism.vsync", "false");
+
         // 1. Instancier le service
         livraisonServices service = new livraisonServices();
 
         try {
-            System.out.println("--- DÉBUT DES TESTS ---");
+            System.out.println("--- DÉBUT DES TESTS CONSOLE ---");
 
             // --- TEST 1 : INSERTION ---
-            System.out.println("\n1. Test Insertion...");
+            System.out.println("1. Test Insertion...");
             livraison nouvelle = new livraison();
             nouvelle.setDateLivraison(LocalDateTime.now());
             nouvelle.setAddressLivraison("Esprit Gazala");
             nouvelle.setStatutLivraison("en_attente");
-            nouvelle.setNoteLivreur("123"); // On met un chiffre pour éviter l'erreur de type INT
+            nouvelle.setNoteLivreur("123");
+            // On ajoute des coordonnées de test pour Ariana (Tunisie) pour la map
+            nouvelle.setLat(36.8665);
+            nouvelle.setLng(10.1647);
 
             service.insertOne(nouvelle);
             System.out.println("=> Insertion réussie !");
 
-            // --- TEST 2 : AFFICHAGE & RÉCUPÉRATION ---
-            System.out.println("\n2. Liste des livraisons en base :");
+            // --- TEST 2 : LISTE ---
             List<livraison> liste = service.findALL();
-            if (liste.isEmpty()) {
-                System.out.println("La base est vide.");
-                return;
-            }
+            System.out.println("Nombre de livraisons en base : " + liste.size());
 
-            // On récupère la dernière livraison insérée pour tester l'update et le delete
-            livraison livATester = liste.get(liste.size() - 2);
-            int testId = livATester.getId();
-            System.out.println("=> On va tester l'Update et le Delete sur l'ID : " + testId);
-
-
-
-            // --- TEST 3 : MISE À JOUR (UPDATE) ---
-            System.out.println("\n3. Test Mise à jour...");
-            livATester.setAddressLivraison(" MODIFIÉE");
-            livATester.setStatutLivraison("en_cours");
-
-            service.updateOne(livATester);
-            System.out.println("=> Mise à jour de l'ID " + testId + " réussie !");
-
-            // --- TEST 4 : SUPPRESSION (DELETE) ---
-            System.out.println("\n4. Test Suppression...");
-            // Optionnel : décommente la ligne suivante si tu veux vraiment supprimer à chaque test
-            // service.deleteOne(testId);
-            // System.out.println("=> Suppression de l'ID " + testId + " réussie !");
-            System.out.println("=> Suppression ignorée pour garder les données en base.");
-
-            System.out.println("\n--- FIN DES TESTS AVEC SUCCÈS ---");
+            System.out.println("--- FIN DES TESTS : LANCEMENT DE L'INTERFACE ---");
 
         } catch (SQLException e) {
-            System.err.println("\n❌ ERREUR SQL : " + e.getMessage());
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("\n❌ ERREUR : " + e.getMessage());
-            e.printStackTrace();
+            System.err.println("❌ ERREUR SQL : " + e.getMessage());
         }
+
+        // 2. Lancer l'application JavaFX
+        launch(args);
     }
 }

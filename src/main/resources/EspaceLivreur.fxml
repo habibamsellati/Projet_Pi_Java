@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: #F9F7F2;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.EspaceLivreurController">
+    <children>
+        <HBox alignment="CENTER_LEFT" layoutX="10.0" layoutY="10.0" prefHeight="80.0" prefWidth="1000.0" spacing="30.0" style="-fx-padding: 0 50 0 50;" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+            <children>
+                <Label text="AfkArt" textFill="#5D4037">
+                    <font>
+                        <Font name="System Bold" size="24.0" />
+                    </font>
+                </Label>
+                <HBox alignment="CENTER" spacing="20.0" HBox.hgrow="ALWAYS">
+                    <children>
+                        <Label text="Accueil" textFill="#8D8D8D" />
+                        <Label text="Blog" textFill="#8D8D8D" />
+                        <Label text="Livraisons" textFill="#8D8D8D" />
+                        <Label style="-fx-font-weight: bold;" text="Suivi Livraison" textFill="#5D4037" />
+                    </children>
+                </HBox>
+
+                <HBox alignment="CENTER" spacing="15.0" style="-fx-background-color: white; -fx-background-radius: 30; -fx-padding: 10 20; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 2);">
+                    <children>
+                        <VBox alignment="CENTER_LEFT">
+                            <children>
+                                <Label fx:id="nomLivreur" style="-fx-font-weight: bold;" text="Ben Mustapha Mariem" textFill="#2D3436" />
+                                <Label style="-fx-font-size: 10;" text="(LIVREUR)" textFill="#B2BEC3" />
+                            </children>
+                        </VBox>
+                    </children>
+                </HBox>
+                <Button mnemonicParsing="false" style="-fx-background-color: white; -fx-background-radius: 20; -fx-padding: 10 20; -fx-border-color: #DCDDE1; -fx-border-radius: 20;" text="Se déconnecter" />
+            </children>
+        </HBox>
+
+        <VBox alignment="TOP_CENTER" layoutY="100.0" prefWidth="1000.0" spacing="20.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="100.0">
+            <children>
+                <Label text="Mes Missions" textFill="#5D4037">
+                    <font>
+                        <Font name="Serif Regular" size="36.0" />
+                    </font>
+                </Label>
+                <Label style="-fx-font-style: italic;" text="Tableau de bord logistique" textFill="#8D8D8D" />
+
+                <Button mnemonicParsing="false"
+                        onAction="#afficherPlanning"
+                        style="-fx-background-color: #8D6E63; -fx-background-radius: 10; -fx-padding: 10 25; -fx-cursor: hand;"
+                        text="📅 Afficher mon planning"
+                        textFill="WHITE">
+                    <font>
+                        <Font name="System Bold" size="14.0" />
+                    </font>
+                </Button>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="vboxMissions" alignment="TOP_CENTER" spacing="30.0" style="-fx-padding: 20 150 50 150;">
+                        </VBox>
+                    </content>
+                    <VBox.margin>
+                        <Insets top="20.0" />
+                    </VBox.margin>
+                </ScrollPane>
+            </children>
+        </VBox>
+    </children>
+</AnchorPane>

@@ -1,7 +1,6 @@
 package org.example.models;
 import java.time.LocalDateTime;
 
-
 public class livraison {
 
     private Integer id;
@@ -10,18 +9,23 @@ public class livraison {
     private String statutLivraison;
     private String noteLivreur;
     private Integer livreurId;
-    private Double lat;
-    private Double lng;
+    private Double lat; // Destination (fixe)
+    private Double lng; // Destination (fixe)
     private Integer commandeId;
 
-    // Constructeur vide (nécessaire pour beaucoup de frameworks comme Hibernate/Spring)
+    // --- AJOUT POUR LE SUIVI TEMPS RÉEL ---
+    private Double currentLat; // Position actuelle du livreur
+    private Double currentLng; // Position actuelle du livreur
+    // ---------------------------------------
+
+    // Constructeur vide
     public livraison() {
     }
 
-    // Constructeur complet
+    // Constructeur complet (Mis à jour avec les nouveaux champs)
     public livraison(Integer id, LocalDateTime dateLivraison, String addressLivraison,
                      String statutLivraison, String noteLivreur, Integer livreurId,
-                     Double lat, Double lng, Integer commandeId) {
+                     Double lat, Double lng, Integer commandeId, Double currentLat, Double currentLng) {
         this.id = id;
         this.dateLivraison = dateLivraison;
         this.addressLivraison = addressLivraison;
@@ -31,6 +35,8 @@ public class livraison {
         this.lat = lat;
         this.lng = lng;
         this.commandeId = commandeId;
+        this.currentLat = currentLat;
+        this.currentLng = currentLng;
     }
 
     // --- Getters et Setters ---
@@ -62,13 +68,21 @@ public class livraison {
     public Integer getCommandeId() { return commandeId; }
     public void setCommandeId(Integer commandeId) { this.commandeId = commandeId; }
 
-    // Optionnel : Méthode toString pour faciliter le debug
+    // --- NOUVEAUX GETTERS ET SETTERS ---
+
+    public Double getCurrentLat() { return currentLat; }
+    public void setCurrentLat(Double currentLat) { this.currentLat = currentLat; }
+
+    public Double getCurrentLng() { return currentLng; }
+    public void setCurrentLng(Double currentLng) { this.currentLng = currentLng; }
+
     @Override
     public String toString() {
         return "Livraison{" +
                 "id=" + id +
                 ", statut='" + statutLivraison + '\'' +
                 ", adresse='" + addressLivraison + '\'' +
+                ", position_livreur='" + currentLat + "," + currentLng + '\'' +
                 '}';
     }
 }

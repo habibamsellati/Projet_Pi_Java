@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Suivi Livraison Temps Réel</title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+    <style>
+        /* Remplit toute la fenêtre JavaFX */
+        html, body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #f0f0f0;
+        }
+
+        #map {
+            width: 100%;
+            height: 100%;
+        }
+
+        /* Style de l'étiquette de temps (Tooltip orange) */
+        .time-label {
+            background: #e67e22; /* Orange comme demandé */
+            border: 2px solid white;
+            border-radius: 8px;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+            padding: 6px 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            white-space: nowrap;
+        }
+
+        /* La petite flèche sous l'étiquette */
+        .leaflet-tooltip-top.time-label::before {
+            border-top-color: #e67e22;
+        }
+    </style>
+</head>
+<body>
+
+<div id="map"></div>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+    var map;
+    var markerDest, markerLivreur, routeLine;
+
+    /**
+     * Initialise ou met à jour la carte avec les positions et le temps
+     */
+    function updateTracking(latDest, lngDest, address, latLivr, lngLivr, temps) {
+
+        // 1. Initialisation de la carte si elle n'existe pas encore
+        if (!map) {
+            map = L.map('map').setView([latDest, lngDest], 13);
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap'
+            }).addTo(map);
+        }
+
+        // 2. Marqueur Destination (Maison / Point Bleu)
+        if (markerDest) map.removeLayer(markerDest);
+        markerDest = L.marker([latDest, lngDest]).addTo(map)
+            .bindPopup("<b>Destination :</b><br>" + address);
+
+        // 3. Marqueur Livreur (Cercle Orange) avec Étiquette de Temps
+        if (markerLivreur) map.removeLayer(markerLivreur);
+
+        markerLivreur = L.circleMarker([latLivr, lngLivr], {
+            radius: 10,
+            fillColor: "#e67e22",
+            color: "#fff",
+            weight: 3,
+            opacity: 1,
+            fillOpacity: 1
+        }).addTo(map);
+
+        // Ajout de l'étiquette (Tooltip) avec le temps estimé
+        markerLivreur.bindTooltip("⏳ " + temps, {
+            permanent: true,
+            direction: 'top',
+            className: 'time-label',
+            offset: [0, -10]
+        }).openTooltip();
+
+        // 4. Ligne pointillée entre le livreur et la destination
+        if (routeLine) map.removeLayer(routeLine);
+        routeLine = L.polyline([[latLivr, lngLivr], [latDest, lngDest]], {
+            color: '#e67e22',
+            weight: 2,
+            dashArray: '5, 10',
+            opacity: 0.6
+        }).addTo(map);
+
+        // 5. Ajuster la vue pour voir les deux points
+        var group = new L.featureGroup([markerDest, markerLivreur]);
+        map.fitBounds(group.getBounds().pad(0.2));
+
+        // --- SOLUTION AU PROBLÈME D'AFFICHAGE ---
+        // Force Leaflet à recalculer sa taille 500ms après l'ouverture
+        // pour supprimer les carrés blancs
+        setTimeout(function() {
+            map.invalidateSize();
+        }, 500);
+    }
+
+    // Garder la compatibilité avec l'ancien nom de fonction si nécessaire
+    function initMap(latDest, lngDest, address, latLivr, lngLivr) {
+        updateTracking(latDest, lngDest, address, latLivr, lngLivr, "Calcul...");
+    }
+</script>
+</body>
+</html>
