@@ -10,12 +10,15 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import tn.esprit.models.User;
 import tn.esprit.services.UserService;
+import javafx.scene.control.Label;
 
 public class LoginController {
 
     @FXML
     private TextField emailField;
 
+    @FXML
+    private Label messageLabel;
     @FXML
     private PasswordField passwordField;
 
@@ -45,6 +48,11 @@ public class LoginController {
                 errorLabel.setText("Email ou mot de passe incorrect.");
                 return;
             }
+            if (user.getStatut().equals("inactif")) {
+                messageLabel.setText("Veuillez confirmer votre email");
+                return;
+            }
+
 
             redirectByRole(user);
 
@@ -177,4 +185,25 @@ public class LoginController {
             errorLabel.setText("Impossible d'ouvrir la page d'inscription");
         }
     }
+
+    @FXML
+    public void goToForgotPassword() {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/forgot-password.fxml"));
+            Parent root = loader.load();
+
+            Stage stage = (Stage) emailField.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setMaximized(true);
+            stage.show();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            if (messageLabel != null) {
+                messageLabel.setText("Erreur ouverture mot de passe oublié.");
+            }
+        }
+    }
+
+
 }

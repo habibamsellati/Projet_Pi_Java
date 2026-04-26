@@ -11,6 +11,7 @@ import tn.esprit.models.User;
 import tn.esprit.services.UserService;
 
 import java.sql.Timestamp;
+import java.util.regex.Pattern;
 
 public class AdminUserAddController {
 
@@ -50,6 +51,15 @@ public class AdminUserAddController {
     private final UserService userService = new UserService();
     private User currentUser;
 
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("^[A-Za-zÀ-ÿ\\s'-]{2,30}$");
+
+    private static final Pattern PHONE_PATTERN =
+            Pattern.compile("^\\d{8}$");
+
     @FXML
     public void initialize() {
         roleComboBox.setItems(FXCollections.observableArrayList(
@@ -86,37 +96,33 @@ public class AdminUserAddController {
     @FXML
     public void handleAddUser() {
         try {
+            resetValidationStyles();
             messageLabel.setText("");
 
             String prenom = prenomField.getText().trim();
             String nom = nomField.getText().trim();
-            String email = emailField.getText().trim();
+            String email = emailField.getText().trim().toLowerCase();
             String password = passwordField.getText().trim();
             String role = roleComboBox.getValue();
             String statut = statutComboBox.getValue();
             String sexe = sexeComboBox.getValue();
             String telephoneText = telephoneField.getText().trim();
 
-            if (prenom.isEmpty() || nom.isEmpty() || email.isEmpty() || password.isEmpty()) {
-                throw new Exception("Veuillez remplir tous les champs obligatoires.");
-            }
-
-            if (!email.contains("@")) {
-                throw new Exception("Email invalide.");
-            }
+            validatePrenom(prenom);
+            validateNom(nom);
+            validateEmail(email);
+            validatePassword(password);
+            validateRole(role);
+            validateStatut(statut);
+            validateSexe(sexe);
+            validateTelephone(telephoneText);
 
             if (userService.emailExists(email)) {
+                markInvalid(emailField);
                 throw new Exception("Cet email existe déjà.");
             }
 
-            int telephone = 0;
-            if (!telephoneText.isEmpty()) {
-                try {
-                    telephone = Integer.parseInt(telephoneText);
-                } catch (NumberFormatException e) {
-                    throw new Exception("Le téléphone doit être un nombre.");
-                }
-            }
+            int telephone = Integer.parseInt(telephoneText);
 
             User user = new User();
             user.setPrenom(prenom);
@@ -131,13 +137,111 @@ public class AdminUserAddController {
 
             userService.addUser(user);
 
+            messageLabel.setStyle("-fx-text-fill: green; -fx-font-weight: bold;");
+            messageLabel.setText("Utilisateur ajouté avec succès.");
+
             goToUsers();
 
         } catch (Exception e) {
             e.printStackTrace();
-            messageLabel.setStyle("-fx-text-fill: red;");
+            messageLabel.setStyle("-fx-text-fill: red; -fx-font-weight: bold;");
             messageLabel.setText(e.getMessage());
         }
+    }
+
+    private void validatePrenom(String prenom) throws Exception {
+        if (prenom.isEmpty()) {
+            markInvalid(prenomField);
+            throw new Exception("Le prénom est obligatoire.");
+        }
+        if (!NAME_PATTERN.matcher(prenom).matches()) {
+            markInvalid(prenomField);
+            throw new Exception("Le prénom doit contenir uniquement des lettres et avoir entre 2 et 30 caractères.");
+        }
+    }
+
+    private void validateNom(String nom) throws Exception {
+        if (nom.isEmpty()) {
+            markInvalid(nomField);
+            throw new Exception("Le nom est obligatoire.");
+        }
+        if (!NAME_PATTERN.matcher(nom).matches()) {
+            markInvalid(nomField);
+            throw new Exception("Le nom doit contenir uniquement des lettres et avoir entre 2 et 30 caractères.");
+        }
+    }
+
+    private void validateEmail(String email) throws Exception {
+        if (email.isEmpty()) {
+            markInvalid(emailField);
+            throw new Exception("L'email est obligatoire.");
+        }
+        if (!EMAIL_PATTERN.matcher(email).matches()) {
+            markInvalid(emailField);
+            throw new Exception("Format d'email invalide. Exemple : nom@gmail.com");
+        }
+    }
+
+    private void validatePassword(String password) throws Exception {
+        if (password.isEmpty()) {
+            markInvalid(passwordField);
+            throw new Exception("Le mot de passe est obligatoire.");
+        }
+        if (password.length() < 6) {
+            markInvalid(passwordField);
+            throw new Exception("Le mot de passe doit contenir au moins 6 caractères.");
+        }
+        if (!password.matches(".*[A-Za-z].*") || !password.matches(".*\\d.*")) {
+            markInvalid(passwordField);
+            throw new Exception("Le mot de passe doit contenir au moins une lettre et un chiffre.");
+        }
+    }
+
+    private void validateRole(String role) throws Exception {
+        if (role == null || role.trim().isEmpty()) {
+            markInvalid(roleComboBox);
+            throw new Exception("Veuillez sélectionner un rôle.");
+        }
+    }
+
+    private void validateStatut(String statut) throws Exception {
+        if (statut == null || statut.trim().isEmpty()) {
+            markInvalid(statutComboBox);
+            throw new Exception("Veuillez sélectionner un statut.");
+        }
+    }
+
+    private void validateSexe(String sexe) throws Exception {
+        if (sexe == null || sexe.trim().isEmpty()) {
+            markInvalid(sexeComboBox);
+            throw new Exception("Veuillez sélectionner le sexe.");
+        }
+    }
+
+    private void validateTelephone(String telephoneText) throws Exception {
+        if (telephoneText.isEmpty()) {
+            markInvalid(telephoneField);
+            throw new Exception("Le téléphone est obligatoire.");
+        }
+        if (!PHONE_PATTERN.matcher(telephoneText).matches()) {
+            markInvalid(telephoneField);
+            throw new Exception("Le numéro de téléphone doit contenir exactement 8 chiffres.");
+        }
+    }
+
+    private void markInvalid(Control control) {
+        control.setStyle("-fx-border-color: red; -fx-border-width: 2; -fx-border-radius: 8;");
+    }
+
+    private void resetValidationStyles() {
+        prenomField.setStyle("");
+        nomField.setStyle("");
+        emailField.setStyle("");
+        passwordField.setStyle("");
+        telephoneField.setStyle("");
+        roleComboBox.setStyle("");
+        statutComboBox.setStyle("");
+        sexeComboBox.setStyle("");
     }
 
     @FXML

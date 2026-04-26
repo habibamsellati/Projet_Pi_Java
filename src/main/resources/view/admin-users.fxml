@@ -3,15 +3,16 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.ComboBox?>
 
-<BorderPane xmlns="http://javafx.com/javafx/8"
+<BorderPane xmlns="http://javafx.com/javafx/17"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="tn.esprit.controllers.AdminUsersController"
             prefWidth="1600.0"
@@ -57,72 +58,96 @@
     </left>
 
     <center>
-        <VBox spacing="24.0" styleClass="main-content">
-            <padding>
-                <Insets top="26" right="34" bottom="26" left="34"/>
-            </padding>
-
+        <StackPane alignment="TOP_LEFT">
             <children>
-                <HBox alignment="CENTER_LEFT" spacing="18.0">
+                <!-- largeur contrôlée pour que le blanc du tableau ne dépasse pas -->
+                <VBox spacing="20.0"
+                      maxWidth="1310.0"
+                      prefWidth="1310.0"
+                      styleClass="main-content">
+                    <padding>
+                        <Insets top="26" right="26" bottom="26" left="36"/>
+                    </padding>
+
                     <children>
-                        <Button text="←" onAction="#handleBack" styleClass="back-arrow-btn"/>
-
-                        <VBox spacing="6.0">
+                        <!-- barre haute -->
+                        <HBox alignment="CENTER_LEFT" spacing="18.0">
                             <children>
-                                <Label text="Gestion des Utilisateurs" styleClass="page-title"/>
-                                <Label text="Liste et gestion des comptes" styleClass="page-subtitle"/>
-                            </children>
-                        </VBox>
+                                <Button text="←" onAction="#handleBack" styleClass="back-arrow-btn"/>
 
-                        <Region HBox.hgrow="ALWAYS"/>
-
-                        <TextField promptText="Rechercher..." styleClass="top-search"/>
-                        <Button text="🔔" styleClass="icon-btn"/>
-
-                        <HBox alignment="CENTER_LEFT" spacing="12.0" styleClass="admin-chip">
-                            <children>
-                                <Label text="AD" styleClass="avatar-circle"/>
-                                <VBox spacing="2.0">
+                                <VBox spacing="6.0">
                                     <children>
-                                        <Label fx:id="userNameLabel" text="Admin" styleClass="chip-name"/>
-                                        <Label fx:id="userRoleLabel" text="ADMIN" styleClass="chip-role"/>
+                                        <Label text="Gestion des Utilisateurs" styleClass="page-title"/>
+                                        <Label text="Liste et gestion des comptes" styleClass="page-subtitle"/>
                                     </children>
                                 </VBox>
+
+                                <!-- espace contrôlé au lieu de pousser tout au bord -->
+                                <Region minWidth="250.0" prefWidth="250.0"/>
+
+                                <TextField promptText="Rechercher..." styleClass="top-search"/>
+                                <Button text="🔔" styleClass="icon-btn"/>
+
+                                <HBox alignment="CENTER_LEFT"
+                                      spacing="12.0"
+                                      styleClass="admin-chip"
+                                      translateX="-8">
+                                    <children>
+                                        <Label text="AD" styleClass="avatar-circle"/>
+                                        <VBox spacing="2.0">
+                                            <children>
+                                                <Label fx:id="userNameLabel" text="Admin" styleClass="chip-name"/>
+                                                <Label fx:id="userRoleLabel" text="ADMIN" styleClass="chip-role"/>
+                                            </children>
+                                        </VBox>
+                                    </children>
+                                </HBox>
                             </children>
                         </HBox>
+
+                        <Label text="Liste et gestion des comptes utilisateurs" styleClass="simple-text"/>
+
+                        <!-- barre recherche + actions -->
+                        <HBox spacing="14.0" alignment="CENTER_LEFT">
+                            <children>
+                                <TextField fx:id="searchField"
+                                           promptText="Rechercher (nom, prénom, email...)"
+                                           styleClass="filter-field"/>
+
+                                <ComboBox fx:id="sortComboBox"
+                                          onAction="#handleSort"
+                                          promptText="Trier par"
+                                          styleClass="edit-combo"
+                                          prefWidth="170.0"/>
+
+                                <Button text="Rechercher" onAction="#handleSearch" styleClass="dark-btn"/>
+                                <Button text="Corbeille" styleClass="dark-btn"/>
+
+                                <Region HBox.hgrow="ALWAYS"/>
+
+                                <Button text="Exporter en PDF" onAction="#handleExportPdf" styleClass="green-btn"/>
+                                <Button text="Ajouter un utilisateur" onAction="#goToAddUser" styleClass="orange-btn"/>
+                            </children>
+                        </HBox>
+
+                        <!-- header + liste avec même largeur -->
+                        <VBox spacing="0.0" maxWidth="1310.0" prefWidth="1310.0" VBox.vgrow="ALWAYS">
+                            <children>
+                                <VBox fx:id="tableHeaderContainer"
+                                      maxWidth="1310.0"
+                                      prefWidth="1310.0"
+                                      styleClass="users-header-container"/>
+
+                                <ListView fx:id="usersListView"
+                                          maxWidth="1310.0"
+                                          prefWidth="1310.0"
+                                          VBox.vgrow="ALWAYS"
+                                          styleClass="users-list-view"/>
+                            </children>
+                        </VBox>
                     </children>
-                </HBox>
-
-                <Label text="Liste et gestion des comptes utilisateurs" styleClass="simple-text"/>
-
-                <HBox spacing="14.0" alignment="CENTER_LEFT">
-                    <children>
-                        <TextField fx:id="searchField"
-                                   promptText="Rechercher (nom, prénom, email...)"
-                                   styleClass="filter-field"/>
-
-                        <Button text="Rechercher" onAction="#handleSearch" styleClass="dark-btn"/>
-                        <Button text="Corbeille" styleClass="dark-btn"/>
-
-                        <Region HBox.hgrow="ALWAYS"/>
-
-                        <Button text="Exporter en PDF" styleClass="green-btn"/>
-                        <Button text="Ajouter un utilisateur" onAction="#goToAddUser" styleClass="orange-btn"/>
-                    </children>
-                </HBox>
-
-                <TableView fx:id="usersTable" VBox.vgrow="ALWAYS" styleClass="users-table">
-                    <columns>
-                        <TableColumn fx:id="prenomColumn" text="Prénom" prefWidth="140.0"/>
-                        <TableColumn fx:id="nomColumn" text="Nom" prefWidth="140.0"/>
-                        <TableColumn fx:id="emailColumn" text="Email" prefWidth="320.0"/>
-                        <TableColumn fx:id="roleColumn" text="Rôle" prefWidth="150.0"/>
-                        <TableColumn fx:id="statutColumn" text="Statut" prefWidth="130.0"/>
-                        <TableColumn fx:id="dateColumn" text="Créé le" prefWidth="180.0"/>
-                        <TableColumn fx:id="actionsColumn" text="Actions" prefWidth="240.0"/>
-                    </columns>
-                </TableView>
+                </VBox>
             </children>
-        </VBox>
+        </StackPane>
     </center>
 </BorderPane>

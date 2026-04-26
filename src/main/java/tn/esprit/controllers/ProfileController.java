@@ -10,10 +10,18 @@ import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import tn.esprit.models.User;
 import tn.esprit.services.UserService;
+import javafx.scene.control.Control;
+import java.util.regex.Pattern;
 
 import java.text.SimpleDateFormat;
 
 public class ProfileController {
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("^[A-Za-zÀ-ÿ\\s'-]{2,30}$");
 
     @FXML
     private Label userNameLabel;
@@ -100,23 +108,42 @@ public class ProfileController {
     @FXML
     public void handleUpdateProfile() {
         try {
+            resetStyles();
             messageLabel.setText("");
 
             String nom = nomField.getText().trim();
             String prenom = prenomField.getText().trim();
-            String email = emailField.getText().trim();
+            String email = emailField.getText().trim().toLowerCase();
 
-            if (nom.isEmpty() || prenom.isEmpty() || email.isEmpty()) {
-                throw new Exception("Veuillez remplir tous les champs du profil.");
+            if (nom.isEmpty()) {
+                markInvalid(nomField);
+                throw new Exception("Nom obligatoire.");
             }
 
-            if (!email.contains("@")) {
+            if (!NAME_PATTERN.matcher(nom).matches()) {
+                markInvalid(nomField);
+                throw new Exception("Nom invalide.");
+            }
+
+            if (prenom.isEmpty()) {
+                markInvalid(prenomField);
+                throw new Exception("Prénom obligatoire.");
+            }
+
+            if (!NAME_PATTERN.matcher(prenom).matches()) {
+                markInvalid(prenomField);
+                throw new Exception("Prénom invalide.");
+            }
+
+            if (!EMAIL_PATTERN.matcher(email).matches()) {
+                markInvalid(emailField);
                 throw new Exception("Email invalide.");
             }
 
             User existing = userService.findByEmail(email);
             if (existing != null && existing.getId() != currentUser.getId()) {
-                throw new Exception("Cet email existe déjà.");
+                markInvalid(emailField);
+                throw new Exception("Email déjà utilisé.");
             }
 
             currentUser.setNom(nom);
@@ -125,18 +152,10 @@ public class ProfileController {
 
             userService.updateProfile(currentUser);
 
-            User refreshed = userService.findById(currentUser.getId());
-            if (refreshed != null) {
-                currentUser = refreshed;
-            }
-
-            loadUserData();
-
             messageLabel.setStyle("-fx-text-fill: green;");
-            messageLabel.setText("Profil mis à jour avec succès.");
+            messageLabel.setText("Profil mis à jour ✔");
 
         } catch (Exception e) {
-            e.printStackTrace();
             messageLabel.setStyle("-fx-text-fill: red;");
             messageLabel.setText(e.getMessage());
         }
@@ -145,37 +164,52 @@ public class ProfileController {
     @FXML
     public void handleUpdatePassword() {
         try {
+            resetStyles();
             messageLabel.setText("");
 
             String newPassword = newPasswordField.getText().trim();
             String confirmPassword = confirmPasswordField.getText().trim();
 
-            if (newPassword.isEmpty() || confirmPassword.isEmpty()) {
-                throw new Exception("Veuillez remplir les deux champs du mot de passe.");
+            if (newPassword.isEmpty()) {
+                markInvalid(newPasswordField);
+                throw new Exception("Mot de passe requis.");
             }
 
             if (newPassword.length() < 6) {
-                throw new Exception("Le mot de passe doit contenir au moins 6 caractères.");
+                markInvalid(newPasswordField);
+                throw new Exception("Minimum 6 caractères.");
+            }
+
+            if (!newPassword.matches(".*[A-Za-z].*") || !newPassword.matches(".*\\d.*")) {
+                markInvalid(newPasswordField);
+                throw new Exception("Mot de passe doit contenir lettre + chiffre.");
             }
 
             if (!newPassword.equals(confirmPassword)) {
+                markInvalid(confirmPasswordField);
                 throw new Exception("Les mots de passe ne correspondent pas.");
             }
 
             userService.updatePassword(currentUser.getId(), newPassword);
-            currentUser.setMotDePasse(newPassword);
-
-            newPasswordField.clear();
-            confirmPasswordField.clear();
 
             messageLabel.setStyle("-fx-text-fill: green;");
-            messageLabel.setText("Mot de passe mis à jour avec succès.");
+            messageLabel.setText("Mot de passe mis à jour ✔");
 
         } catch (Exception e) {
-            e.printStackTrace();
             messageLabel.setStyle("-fx-text-fill: red;");
             messageLabel.setText(e.getMessage());
         }
+    }
+    private void markInvalid(Control c) {
+        c.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+    }
+
+    private void resetStyles() {
+        nomField.setStyle("");
+        prenomField.setStyle("");
+        emailField.setStyle("");
+        newPasswordField.setStyle("");
+        confirmPasswordField.setStyle("");
     }
 
     @FXML
@@ -195,13 +229,15 @@ public class ProfileController {
                 case "ADMIN":
                     loader = new FXMLLoader(getClass().getResource("/view/admin-front.fxml"));
                     root = loader.load();
+
                     AdminFrontController adminController = loader.getController();
                     adminController.setUser(currentUser);
                     break;
 
                 case "CLIENT":
-                    loader = new FXMLLoader(getClass().getResource("/view/client-dashboard.fxml"));
+                    loader = new FXMLLoader(getClass().getResource("/view/client_dashboard.fxml"));
                     root = loader.load();
+
                     ClientDashboardController clientController = loader.getController();
                     clientController.setUser(currentUser);
                     break;
@@ -209,6 +245,7 @@ public class ProfileController {
                 case "ARTISAN":
                     loader = new FXMLLoader(getClass().getResource("/view/role-space.fxml"));
                     root = loader.load();
+
                     RoleSpaceController artisanController = loader.getController();
                     artisanController.configure(
                             currentUser,
@@ -226,17 +263,18 @@ public class ProfileController {
                 case "LIVREUR":
                     loader = new FXMLLoader(getClass().getResource("/view/role-space.fxml"));
                     root = loader.load();
+
                     RoleSpaceController livreurController = loader.getController();
                     livreurController.configure(
                             currentUser,
                             "Espace Livreur",
-                            "Gérez vos oeuvres, commandes et evenements.",
-                            "Catalogue",
-                            "Gestion des oeuvres.",
-                            "Commandes",
-                            "Suivi des ventes.",
-                            "Evenements",
-                            "Planning et reservation."
+                            "Gérez vos missions et livraisons.",
+                            "Planning",
+                            "Consulter les missions.",
+                            "Livraisons",
+                            "Suivi des livraisons.",
+                            "Historique",
+                            "Historique des missions."
                     );
                     break;
 
@@ -246,12 +284,13 @@ public class ProfileController {
 
             Stage stage = (Stage) userNameLabel.getScene().getWindow();
             stage.setScene(new Scene(root));
+            stage.setMaximized(true);
             stage.show();
 
         } catch (Exception e) {
             e.printStackTrace();
             messageLabel.setStyle("-fx-text-fill: red;");
-            messageLabel.setText("Erreur retour dashboard : " + e.getMessage());
+            messageLabel.setText("Erreur retour accueil : " + e.getMessage());
         }
     }
 

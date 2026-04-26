@@ -44,14 +44,14 @@
                                 onAction="#goToUsers"
                                 styleClass="sidebar-button"/>
 
-                        <Button text="Produits recyclables" styleClass="menu-btn"/>
-                        <Button text="Propositions" styleClass="menu-btn"/>
-                        <Button text="Livraison" styleClass="menu-btn"/>
-                        <Button text="Réclamations" styleClass="menu-btn"/>
-                        <Button text="Articles" styleClass="menu-btn"/>
-                        <Button text="Evenements" styleClass="menu-btn"/>
-                        <Button text="Réservations" styleClass="menu-btn"/>
-                        <Button text="Suivi livraison" styleClass="menu-btn"/>
+                        <Button text="Produits recyclables" onAction="#openProduitsModule" styleClass="menu-btn"/>
+                        <Button text="Propositions" onAction="#openPropositionsModule" styleClass="menu-btn"/>
+                        <Button text="Livraison" onAction="#openLivraisonModule" styleClass="menu-btn"/>
+                        <Button text="Réclamations" onAction="#openReclamationsModule" styleClass="menu-btn"/>
+                        <Button text="Articles" onAction="#openArticlesModule" styleClass="menu-btn"/>
+                        <Button text="Evenements" onAction="#openEvenementsModule" styleClass="menu-btn"/>
+                        <Button text="Réservations" onAction="#openReservationsModule" styleClass="menu-btn"/>
+                        <Button text="Suivi livraison" onAction="#openSuiviModule" styleClass="menu-btn"/>
                         <Button text="Aller au Front"
                                 onAction="#goToFront"
                                 styleClass="front-button"/>

@@ -28,13 +28,13 @@ public class UserService {
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
 
-            ps.setString(1, user.getNom());
-            ps.setString(2, user.getPrenom());
-            ps.setString(3, user.getEmail());
-            ps.setString(4, user.getMotDePasse());
+            ps.setString(1, user.getNom().trim());
+            ps.setString(2, user.getPrenom().trim());
+            ps.setString(3, user.getEmail().trim().toLowerCase());
+            ps.setString(4, user.getMotDePasse().trim());
             ps.setString(5, user.getRole());
             ps.setTimestamp(6, new Timestamp(System.currentTimeMillis()));
-            ps.setString(7, "actif");
+            ps.setString(7, user.getStatut() == null || user.getStatut().trim().isEmpty() ? "actif" : user.getStatut());
             ps.setInt(8, user.getTelephone());
             ps.setString(9, user.getSexe());
 
@@ -46,10 +46,10 @@ public class UserService {
     }
 
     public boolean emailExists(String email) {
-        String query = "SELECT id FROM user WHERE email = ?";
+        String query = "SELECT id FROM user WHERE LOWER(email) = ?";
 
         try (PreparedStatement ps = connection.prepareStatement(query)) {
-            ps.setString(1, email.trim());
+            ps.setString(1, email.trim().toLowerCase());
             ResultSet rs = ps.executeQuery();
             return rs.next();
 
@@ -226,4 +226,40 @@ public class UserService {
             throw new RuntimeException("Erreur updateUserByAdmin : " + e.getMessage(), e);
         }
     }
+
+    public void activateUserByEmail(String email) {
+        String sql = "UPDATE user SET statut='actif' WHERE email=?";
+
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.executeUpdate();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean userExistsByEmail(String email) {
+        String query = "SELECT id FROM user WHERE LOWER(email) = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, email.trim().toLowerCase());
+            ResultSet rs = ps.executeQuery();
+            return rs.next();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur userExistsByEmail : " + e.getMessage(), e);
+        }
+    }
+
+    public void updatePasswordByEmail(String email, String newPassword) {
+        String query = "UPDATE user SET motdepasse = ? WHERE LOWER(email) = ?";
+
+        try (PreparedStatement ps = connection.prepareStatement(query)) {
+            ps.setString(1, newPassword.trim());
+            ps.setString(2, email.trim().toLowerCase());
+            ps.executeUpdate();
+        } catch (SQLException e) {
+            throw new RuntimeException("Erreur updatePasswordByEmail : " + e.getMessage(), e);
+        }
+    }
+
 }

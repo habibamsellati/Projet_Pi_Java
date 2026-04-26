@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.ModulePlaceholderController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/style/admin-back.css"
+            styleClass="back-root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="18.0" style="-fx-padding: 24;">
+            <children>
+                <Button text="←" onAction="#handleBack" styleClass="back-arrow-btn"/>
+                <VBox spacing="6">
+                    <children>
+                        <Label fx:id="moduleTitleLabel" text="Module" styleClass="page-title"/>
+                        <Label text="Interface en cours de construction" styleClass="page-subtitle"/>
+                    </children>
+                </VBox>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label fx:id="userInfoLabel" text="Utilisateur connecté" styleClass="chip-name"/>
+            </children>
+        </HBox>
+    </top>
+
+    <center>
+        <VBox alignment="CENTER" spacing="20">
+            <children>
+                <Label fx:id="bigModuleLabel" text="Module" styleClass="edit-big-title"/>
+                <Label text="Accès autorisé avec succès." styleClass="simple-text"/>
+            </children>
+        </VBox>
+    </center>
+</BorderPane>

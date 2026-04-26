@@ -59,10 +59,10 @@
                     <TextField fx:id="emailField" promptText="Entrez votre email" styleClass="input"/>
 
                     <Label text="Mot de passe" styleClass="field-label"/>
-                    <PasswordField fx:id="passwordField" promptText="Entrez votre mot de passe" styleClass="input"/>
+                    <PasswordField fx:id="passwordField" promptText="Au moins 6 caractères avec lettre et chiffre" styleClass="input"/>
 
                     <Label text="Téléphone" styleClass="field-label"/>
-                    <TextField fx:id="telephoneField" promptText="Entrez votre numéro de téléphone" styleClass="input"/>
+                    <TextField fx:id="telephoneField" promptText="8 chiffres" styleClass="input"/>
 
                     <ComboBox fx:id="sexeComboBox" promptText="Sélectionner le sexe"/>
 
@@ -77,7 +77,10 @@
 
                     <ComboBox fx:id="roleComboBox" promptText="Sélectionner le rôle"/>
 
-                    <Label fx:id="messageLabel" styleClass="message-label"/>
+                    <Label fx:id="messageLabel"
+                           wrapText="true"
+                           maxWidth="400"
+                           styleClass="message-label"/>
 
                     <Button text="S'inscrire"
                             onAction="#handleSignup"

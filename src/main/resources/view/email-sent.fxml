@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="tn.esprit.controllers.EmailSentController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/style/confirm-code.css"
+            styleClass="confirm-root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="92.0" styleClass="confirm-header">
+            <children>
+                <Label text="AfkArt" styleClass="confirm-logo"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Accueil" styleClass="confirm-nav-flat"/>
+                <Button text="Connexion" onAction="#goToLogin" styleClass="confirm-nav-outline"/>
+                <Button text="Rejoindre" styleClass="confirm-nav-primary"/>
+            </children>
+            <padding>
+                <Insets top="18" right="42" bottom="18" left="42"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane alignment="CENTER" style="-fx-background-color: #f7f3ee;">
+            <children>
+
+                <VBox alignment="CENTER"
+                      spacing="20"
+                      maxWidth="500"
+                      style="-fx-background-color: white; -fx-padding: 40; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 20, 0, 0, 8);">
+
+                    <Label text="Email envoyé"
+                           style="-fx-font-size: 26px; -fx-font-weight: bold; -fx-text-fill: #2f261f;"/>
+
+                    <Label fx:id="infoLabel"
+                           text="Un email vous a été envoyé."
+                           wrapText="true"
+                           style="-fx-text-fill: #5c4a3d; text-alignment: center;"/>
+
+                    <Button text="J'ai reçu l'email"
+                            onAction="#goToResetPassword"
+                            maxWidth="Infinity"
+                            style="-fx-background-color: #c97848; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 10 20;"/>
+
+                    <Button text="Retour"
+                            onAction="#goToLogin"
+                            style="-fx-background-color: transparent; -fx-text-fill: #c97848;"/>
+
+                </VBox>
+
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>

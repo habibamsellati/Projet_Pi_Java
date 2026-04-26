@@ -9,8 +9,19 @@ import javafx.scene.control.*;
 import javafx.stage.Stage;
 import tn.esprit.models.User;
 import tn.esprit.services.UserService;
+import javafx.scene.control.Control;
+import java.util.regex.Pattern;
 
 public class AdminUserEditController {
+
+    private static final Pattern EMAIL_PATTERN =
+            Pattern.compile("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,}$");
+
+    private static final Pattern NAME_PATTERN =
+            Pattern.compile("^[A-Za-zÀ-ÿ\\s'-]{2,30}$");
+
+    private static final Pattern PHONE_PATTERN =
+            Pattern.compile("^\\d{8}$");
 
     @FXML
     private Label userNameLabel;
@@ -101,31 +112,54 @@ public class AdminUserEditController {
     @FXML
     public void handleUpdateUser() {
         try {
+            resetStyles();
             messageLabel.setText("");
 
             String prenom = prenomField.getText().trim();
             String nom = nomField.getText().trim();
-            String email = emailField.getText().trim();
+            String email = emailField.getText().trim().toLowerCase();
             String role = roleComboBox.getValue();
             String statut = statutComboBox.getValue();
             String sexe = sexeComboBox.getValue();
-            String telephoneText = telephoneField.getText().trim();
+            String telText = telephoneField.getText().trim();
             String newPassword = passwordField.getText().trim();
 
-            if (prenom.isEmpty() || nom.isEmpty() || email.isEmpty() || role == null || statut == null) {
-                throw new Exception("Veuillez remplir tous les champs obligatoires.");
+            if (!NAME_PATTERN.matcher(prenom).matches()) {
+                markInvalid(prenomField);
+                throw new Exception("Prénom invalide");
             }
 
-            if (!email.contains("@")) {
-                throw new Exception("Email invalide.");
+            if (!NAME_PATTERN.matcher(nom).matches()) {
+                markInvalid(nomField);
+                throw new Exception("Nom invalide");
             }
 
-            int telephone = 0;
-            if (!telephoneText.isEmpty()) {
-                try {
-                    telephone = Integer.parseInt(telephoneText);
-                } catch (NumberFormatException e) {
-                    throw new Exception("Le téléphone doit être un nombre.");
+            if (!EMAIL_PATTERN.matcher(email).matches()) {
+                markInvalid(emailField);
+                throw new Exception("Email invalide");
+            }
+
+            User existing = userService.findByEmail(email);
+            if (existing != null && existing.getId() != userToEdit.getId()) {
+                markInvalid(emailField);
+                throw new Exception("Email déjà utilisé");
+            }
+
+            int tel = 0;
+            if (!telText.isEmpty()) {
+                if (!PHONE_PATTERN.matcher(telText).matches()) {
+                    markInvalid(telephoneField);
+                    throw new Exception("Téléphone invalide (8 chiffres)");
+                }
+                tel = Integer.parseInt(telText);
+            }
+
+            if (!newPassword.isEmpty()) {
+                if (newPassword.length() < 6 ||
+                        !newPassword.matches(".*[A-Za-z].*") ||
+                        !newPassword.matches(".*\\d.*")) {
+                    markInvalid(passwordField);
+                    throw new Exception("Mot de passe faible");
                 }
             }
 
@@ -135,17 +169,28 @@ public class AdminUserEditController {
             userToEdit.setRole(role);
             userToEdit.setStatut(statut);
             userToEdit.setSexe(sexe);
-            userToEdit.setTelephone(telephone);
+            userToEdit.setTelephone(tel);
 
             userService.updateUserByAdmin(userToEdit, newPassword);
 
             goToUsers();
 
         } catch (Exception e) {
-            e.printStackTrace();
             messageLabel.setStyle("-fx-text-fill: red;");
             messageLabel.setText(e.getMessage());
         }
+    }
+
+    private void markInvalid(Control c) {
+        c.setStyle("-fx-border-color: red; -fx-border-width: 2;");
+    }
+
+    private void resetStyles() {
+        prenomField.setStyle("");
+        nomField.setStyle("");
+        emailField.setStyle("");
+        telephoneField.setStyle("");
+        passwordField.setStyle("");
     }
 
     @FXML

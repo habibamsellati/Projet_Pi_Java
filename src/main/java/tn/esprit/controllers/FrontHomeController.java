@@ -8,10 +8,17 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
+import tn.esprit.models.User;
 
 import java.net.URL;
 
 public class FrontHomeController {
+
+    private User currentUser;
+
+    public void setUser(User user) {
+        this.currentUser = user;
+    }
 
     @FXML
     private Button loginButton;
