@@ -1,0 +1,10 @@
+﻿src\main\java\org\example\models\Commande.java
+src\main\java\org\example\models\Article.java
+src\main\java\org\example\models\User.java
+src\main\java\org\example\models\Role.java
+src\main\java\org\example\utils\MyDatabase.java
+src\main\java\org\example\utils\SessionManager.java
+src\main\java\org\example\services\PersonalizedMessageService.java
+src\main\java\org\example\services\EmailService.java
+src\main\java\org\example\services\ServiceCommande.java
+src\main\java\org\example\app\TestEmailCommande.java

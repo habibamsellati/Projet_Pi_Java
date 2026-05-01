@@ -34,11 +34,6 @@ import java.util.List;
  */
 public class GestionCommandesController {
 
-    // ── Topbar ──
-    @FXML private Label lblAvatar;
-    @FXML private Label lblNomAdmin;
-    @FXML private Label lblSoustitre;
-
     // ── Stats ──
     @FXML private Label lblTotalCommandes;
     @FXML private Label lblConfirmees;
@@ -64,25 +59,16 @@ public class GestionCommandesController {
     void initialize() {
         checkAdminAccess();
 
-        User user = SessionManager.getCurrentUser();
-        if (user != null) {
-            String nom = user.getNomComplet();
-            lblNomAdmin.setText(nom);
-            lblAvatar.setText(buildInitiales(nom));
-        }
+        // Remplir le ComboBox statut
+        cbStatut.getItems().setAll("Tous", "en_attente", "confirmee", "livree", "annulee");
+        cbStatut.getSelectionModel().selectFirst();
 
-        cbStatut.getSelectionModel().selectFirst(); // "Tous"
         chargerStats();
         chargerCommandes(null, null);
 
-        // Recherche en temps réel
         tfRecherche.textProperty().addListener((obs, ov, nv) -> chargerCommandes(nv, cbStatut.getValue()));
         cbStatut.valueProperty().addListener((obs, ov, nv) -> chargerCommandes(tfRecherche.getText(), nv));
     }
-
-    // ══════════════════════════════════════════
-    //  Contrôle d'accès ADMIN
-    // ══════════════════════════════════════════
 
     private void checkAdminAccess() {
         User user = SessionManager.getCurrentUser();
@@ -91,11 +77,6 @@ public class GestionCommandesController {
                 new Alert(Alert.AlertType.ERROR,
                         "Accès refusé : le module Commandes est réservé à l'administrateur principal.")
                         .showAndWait();
-                // Redirection vers la page d'accueil
-                try {
-                    javafx.stage.Stage stage = (javafx.stage.Stage) lblNomAdmin.getScene().getWindow();
-                    SceneNavigator.navigate(stage, "/fxml/AccueilView.fxml", "afk'art – Accueil", 1200, 780);
-                } catch (Exception ignored) {}
             });
         }
     }

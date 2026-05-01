@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.sql.Timestamp;
+
 public class Produit {
     private int id;
     private String nom; // Plastique, Papier, etc.
@@ -11,6 +13,7 @@ public class Produit {
     private String image;
     private int impactEcologique; // 0 à 100
     private int artisanId;
+    private Timestamp dateCreation;
 
     public Produit() {}
 
@@ -47,4 +50,25 @@ public class Produit {
     public void setImpactEcologique(int impactEcologique) { this.impactEcologique = impactEcologique; }
     public int getArtisanId() { return artisanId; }
     public void setArtisanId(int artisanId) { this.artisanId = artisanId; }
+    public Timestamp getDateCreation() { return dateCreation; }
+    public void setDateCreation(Timestamp dateCreation) { this.dateCreation = dateCreation; }
+
+    public String getNomAffichage() {
+        return nom == null || nom.isBlank() ? "Produit recyclable" : nom;
+    }
+
+    public String getDescriptionCourte() {
+        if (description == null || description.isBlank()) {
+            return "Aucune description fournie.";
+        }
+        String trimmed = description.trim();
+        return trimmed.length() <= 140 ? trimmed : trimmed.substring(0, 137) + "...";
+    }
+
+    public String getImpactLabel() {
+        if (impactEcologique >= 80) return "Très fort impact positif";
+        if (impactEcologique >= 60) return "Impact positif élevé";
+        if (impactEcologique >= 40) return "Impact positif moyen";
+        return "Impact positif faible";
+    }
 }

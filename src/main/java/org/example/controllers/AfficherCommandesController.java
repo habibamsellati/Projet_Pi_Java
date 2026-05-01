@@ -41,7 +41,7 @@ public class AfficherCommandesController {
             if (user != null && user.getRole() == Role.ADMIN) {
                 SceneNavigator.navigate(event, "/fxml/AdminDashboard.fxml", "afk'art – Backoffice Admin", 1200, 780);
             } else {
-                SceneNavigator.navigate(event, "/fxml/ArtisanDashboard.fxml", "Espace Artisan", 900, 620);
+                SceneNavigator.navigate(event, "/fxml/MainView.fxml", "Artefact", 1200, 750);
             }
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();

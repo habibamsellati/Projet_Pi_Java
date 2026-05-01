@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.example.models.User;
 
 public class MainController {
 
@@ -28,10 +29,15 @@ public class MainController {
 
     @FXML
     void initialize() {
-        if (SessionManager.utilisateurConnecte != null) {
-            userNomLabel.setText(
-                    SessionManager.utilisateurConnecte.prenom + " " + SessionManager.utilisateurConnecte.nom
-            );
+        // Afficher nom et rôle depuis les deux SessionManager
+        org.example.utils.SessionManager utilSession = null;
+        User currentUser = org.example.utils.SessionManager.getCurrentUser();
+
+        if (currentUser != null) {
+            userNomLabel.setText(currentUser.getPrenom() + " " + currentUser.getNom());
+            userRoleLabel.setText("(" + (currentUser.getRole() != null ? currentUser.getRole().name() : "USER") + ")");
+        } else if (SessionManager.utilisateurConnecte != null) {
+            userNomLabel.setText(SessionManager.utilisateurConnecte.prenom + " " + SessionManager.utilisateurConnecte.nom);
             userRoleLabel.setText("(" + SessionManager.utilisateurConnecte.role + ")");
         }
 
@@ -45,8 +51,8 @@ public class MainController {
     @FXML public void goSuiviLivraison() { chargerPage("/fxml/SuiviLivraisonView.fxml"); setActif(btnSuiviLivraison); }
     @FXML public void goProduits() { chargerPage("/fxml/ProduitsView.fxml"); setActif(btnProduits); }
     @FXML public void goPropositions() { chargerPage("/fxml/PropositionsView.fxml"); setActif(btnPropositions); }
-    @FXML public void goEvenements() { chargerPage("/fxml/EvenementsView.fxml"); setActif(btnEvenements); }
-    @FXML public void goReservations() { chargerPage("/fxml/ReservationsView.fxml"); setActif(btnReservations); }
+    @FXML public void goEvenements() { chargerPage("/fxml/ModuleEvenementReservation.fxml"); setActif(btnEvenements); }
+    @FXML public void goReservations() { chargerPage("/fxml/ModuleEvenementReservation.fxml"); setActif(btnReservations); }
     @FXML public void goReclamations() { chargerPage("/fxml/ReclamationsView.fxml"); setActif(btnReclamations); }
 
     private void chargerPage(String fxmlPath) {

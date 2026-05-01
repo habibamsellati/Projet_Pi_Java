@@ -24,9 +24,12 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import org.example.models.Article;
+import org.example.models.Role;
+import org.example.models.User;
 import org.example.services.PanierService;
 import org.example.services.ServiceArticle;
 import org.example.utils.SceneNavigator;
+import org.example.utils.SessionManager;
 
 import java.io.File;
 import java.net.URL;
@@ -48,6 +51,7 @@ public class BlogController implements Initializable {
     @FXML private ComboBox<String> authorCombo;
     @FXML private ComboBox<String> sortCombo;
     @FXML private Button btnPanier;
+    @FXML private Button btnAjouterArticle;
 
     private final ServiceArticle serviceArticle = new ServiceArticle();
     private final PanierService panierService = PanierService.getInstance();
@@ -60,6 +64,14 @@ public class BlogController implements Initializable {
         renderFeatured(articles);
         renderAll(articles);
         refreshPanierButton();
+
+        User currentUser = SessionManager.getCurrentUser();
+        boolean canCreateArticle = currentUser != null
+                && (currentUser.getRole() == Role.ARTISANT || currentUser.getRole() == Role.ADMIN);
+        if (btnAjouterArticle != null) {
+            btnAjouterArticle.setVisible(canCreateArticle);
+            btnAjouterArticle.setManaged(canCreateArticle);
+        }
     }
 
     private void initCombos() {
@@ -220,6 +232,16 @@ public class BlogController implements Initializable {
         try {
             javafx.stage.Stage stage = (javafx.stage.Stage) btnPanier.getScene().getWindow();
             SceneNavigator.navigate(stage, "/fxml/PanierClient.fxml", "Mon Panier", 1000, 760);
+        } catch (Exception e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
+    }
+
+    @FXML
+    void handleAjouterArticle() {
+        try {
+            Stage stage = (Stage) btnAjouterArticle.getScene().getWindow();
+            SceneNavigator.navigate(stage, "/fxml/AjouterArticle.fxml", "Créer un article", 1000, 760);
         } catch (Exception e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }

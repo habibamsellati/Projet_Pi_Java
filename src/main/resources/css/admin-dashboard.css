@@ -501,3 +501,90 @@
     -fx-background-radius: 3;
 }
 
+/* ═══════════ BOUTONS ACTIONS ═══════════ */
+.btn-primary {
+    -fx-background-color: #5C3A1E;
+    -fx-text-fill: white;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+.btn-primary:hover { -fx-background-color: #4a2e18; }
+
+.btn-secondary {
+    -fx-background-color: white;
+    -fx-text-fill: #2d2d2d;
+    -fx-font-size: 13;
+    -fx-padding: 9 20;
+    -fx-background-radius: 10;
+    -fx-border-color: #e8e0d8;
+    -fx-border-radius: 10;
+    -fx-cursor: hand;
+}
+.btn-secondary:hover { -fx-background-color: #f5f0eb; }
+
+.btn-danger {
+    -fx-background-color: #c62828;
+    -fx-text-fill: white;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-padding: 9 20;
+    -fx-background-radius: 10;
+    -fx-cursor: hand;
+}
+.btn-danger:hover { -fx-background-color: #a81c1c; }
+
+/* ═══════════ CHAMP RECHERCHE (vues events/réservations) ═══════════ */
+.search-field {
+    -fx-background-color: white;
+    -fx-border-color: #e8e0d8;
+    -fx-border-radius: 8;
+    -fx-background-radius: 8;
+    -fx-padding: 8 14;
+    -fx-font-size: 13;
+    -fx-prompt-text-fill: #a09890;
+}
+.search-field:focused { -fx-border-color: #c8763a; }
+
+/* ═══════════ BADGES STATUT RÉSERVATIONS ═══════════ */
+.badge-confirmed .label, .badge-confirmed > .label {
+    -fx-background-color: #dcfce7;
+    -fx-text-fill: #16a34a;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12;
+}
+.badge-confirmed {
+    -fx-background-color: #dcfce7;
+    -fx-background-radius: 20;
+}
+.badge-confirmed #lblStatus {
+    -fx-text-fill: #16a34a;
+    -fx-background-color: #dcfce7;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.badge-pending {
+    -fx-background-color: #fff3cd;
+    -fx-background-radius: 20;
+}
+.badge-pending #lblStatus {
+    -fx-text-fill: #b45309;
+    -fx-background-color: #fff3cd;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+
+.badge-cancelled {
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 20;
+}
+.badge-cancelled #lblStatus {
+    -fx-text-fill: #dc2626;
+    -fx-background-color: #fee2e2;
+    -fx-background-radius: 20;
+    -fx-font-weight: bold;
+}
+

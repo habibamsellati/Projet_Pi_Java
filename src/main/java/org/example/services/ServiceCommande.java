@@ -18,7 +18,9 @@ public class ServiceCommande {
     private final EmailService emailService;
 
     private static final Set<String> STATUTS_AUTORISES = Set.of("en_attente", "confirmee", "livree", "annulee");
-    private static final Set<String> MODES_PAIEMENT_AUTORISES = Set.of("carte", "espèces", "virement");
+    private static final Set<String> MODES_PAIEMENT_AUTORISES = Set.of(
+            "carte", "espèces", "virement", "livraison"
+    );
     private static final Pattern TELEPHONE_TUNISIEN = Pattern.compile("^[2-9]\\d{7}$");
 
     public ServiceCommande() {
@@ -415,6 +417,9 @@ public class ServiceCommande {
         if (commande.getTelephone() != null) {
             commande.setTelephone(normaliserTelephone(commande.getTelephone()));
         }
+        if (commande.getModePaiement() != null) {
+            commande.setModePaiement(normaliserModePaiement(commande.getModePaiement()));
+        }
     }
 
     private void generarMessagePersonnalise(Commande commande) {
@@ -530,6 +535,26 @@ public class ServiceCommande {
         }
 
         return numeroLocal;
+    }
+
+    private String normaliserModePaiement(String modePaiement) {
+        if (modePaiement == null) {
+            return null;
+        }
+
+        String v = modePaiement.trim().toLowerCase();
+        if (v.isBlank()) {
+            return null;
+        }
+
+        // Harmonise les variantes saisies côté UI/DB
+        if (v.equals("especes")) {
+            return "espèces";
+        }
+        if (v.contains("livraison") || v.equals("cod") || v.equals("cash_on_delivery")) {
+            return "livraison";
+        }
+        return v;
     }
 }
 

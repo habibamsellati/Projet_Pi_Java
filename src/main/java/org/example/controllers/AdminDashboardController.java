@@ -10,6 +10,7 @@ import javafx.scene.chart.*;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
@@ -33,6 +34,22 @@ public class AdminDashboardController {
     @FXML private Label lblBienvenue;
     @FXML private Label lblAvatar;
     @FXML private Label lblNomAdmin;
+
+    // ── Zone de contenu central (pour charger les sous-vues) ──
+    @FXML private ScrollPane scrollContent;
+    @FXML private javafx.scene.layout.VBox mainVBox;
+    @FXML private javafx.scene.layout.VBox dashboardContent;
+    @FXML private Label topbarTitle;
+
+    // ── Boutons sidebar navigation ──
+    @FXML private Button btnNavDashboard;
+    @FXML private Button btnNavProduits;
+    @FXML private Button btnNavPropositions;
+    @FXML private Button btnNavReclamations;
+    @FXML private Button btnNavArticles;
+    @FXML private Button btnNavCommandes;
+    @FXML private Button btnNavEvenements;
+    @FXML private Button btnNavReservations;
 
     // ── Stat cards ──
     @FXML private Label lblTotalUsers;
@@ -337,18 +354,68 @@ public class AdminDashboardController {
 
     // ══════════════ Navigation ══════════════
 
-    @FXML void handleNavDashboard(ActionEvent e)    { /* déjà sur cette page */ }
-
-    @FXML void handleVoirArticles(ActionEvent event) {
-        navigate(event, "/fxml/AfficherArticles.fxml", "Backoffice - Articles");
+    @FXML void handleNavDashboard(ActionEvent e) {
+        if (scrollContent != null && dashboardContent != null) {
+            scrollContent.setContent(dashboardContent);
+            if (topbarTitle != null) topbarTitle.setText("Dashboard");
+            setSidebarActive(btnNavDashboard);
+        }
     }
 
-    @FXML void handleVoirCommandes(ActionEvent event) {
-        navigate(event, "/fxml/GestionCommandes.fxml", "Backoffice - Commandes");
+    @FXML void handleNavProduits(ActionEvent e) {
+        loadSubView("/fxml/AdminProduitsView.fxml", "Produits recyclables", btnNavProduits);
     }
 
-    @FXML void handleVoirReclamations(ActionEvent event) {
-        navigate(event, "/fxml/ReclamationsView.fxml", "Backoffice - Réclamations");
+    @FXML void handleNavPropositions(ActionEvent e) {
+        loadSubView("/fxml/AdminPropositionsView.fxml", "Propositions", btnNavPropositions);
+    }
+
+    @FXML void handleNavReclamations(ActionEvent e) {
+        loadSubView("/fxml/ReclamationsAdmin.fxml", "Réclamations", btnNavReclamations);
+    }
+
+    @FXML void handleNavArticles(ActionEvent e) {
+        loadSubView("/fxml/AfficherArticles.fxml", "Articles", btnNavArticles);
+    }
+
+    @FXML void handleNavCommandes(ActionEvent e) {
+        loadSubView("/fxml/GestionCommandes.fxml", "Commandes", btnNavCommandes);
+    }
+
+    @FXML void handleNavEvenements(ActionEvent e) {
+        loadSubView("/fxml/AdminEvents.fxml", "Gestion des Événements", btnNavEvenements);
+    }
+
+    @FXML void handleNavReservations(ActionEvent e) {
+        loadSubView("/fxml/AdminReservations.fxml", "Gestion des Réservations", btnNavReservations);
+    }
+
+    private void loadSubView(String fxmlPath, String titre, Button activeBtn) {
+        try {
+            javafx.scene.Node view = javafx.fxml.FXMLLoader.load(getClass().getResource(fxmlPath));
+            if (scrollContent != null) {
+                scrollContent.setContent(view);
+            }
+            if (topbarTitle != null) topbarTitle.setText(titre);
+            setSidebarActive(activeBtn);
+        } catch (Exception ex) {
+            new Alert(Alert.AlertType.ERROR, "Impossible de charger : " + fxmlPath + "\n" + ex.getMessage()).showAndWait();
+        }
+    }
+
+    private void setSidebarActive(Button active) {
+        Button[] navBtns = {btnNavDashboard, btnNavProduits, btnNavPropositions,
+                            btnNavReclamations, btnNavArticles, btnNavCommandes,
+                            btnNavEvenements, btnNavReservations};
+        for (Button b : navBtns) {
+            if (b == null) continue;
+            b.getStyleClass().removeAll("nav-btn-active");
+            if (!b.getStyleClass().contains("nav-btn")) b.getStyleClass().add("nav-btn");
+        }
+        if (active != null) {
+            active.getStyleClass().remove("nav-btn");
+            active.getStyleClass().add("nav-btn-active");
+        }
     }
 
     @FXML void handleLogout(ActionEvent event) {
@@ -360,13 +427,12 @@ public class AdminDashboardController {
         }
     }
 
-    private void navigate(ActionEvent event, String fxml, String title) {
-        try {
-            SceneNavigator.navigate(event, fxml, title, 1200, 780);
-        } catch (Exception e) {
-            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
-        }
-    }
+    // Gardés pour compatibilité avec d'autres appels éventuels
+    @FXML void handleVoirPropositions(ActionEvent event) { handleNavPropositions(event); }
+    @FXML void handleVoirProduits(ActionEvent event)     { handleNavProduits(event); }
+    @FXML void handleVoirArticles(ActionEvent event)     { handleNavArticles(event); }
+    @FXML void handleVoirCommandes(ActionEvent event)    { handleNavCommandes(event); }
+    @FXML void handleVoirReclamations(ActionEvent event) { handleNavReclamations(event); }
 
     // ══════════════ Utilitaires ══════════════
 

@@ -117,7 +117,19 @@ public class ReclamationAdminCardController {
             ReponseReclamation rep = new ReponseReclamation(contenu, reclamation.getId(), admin.getId());
             serviceReclamation.ajouterReponse(rep);
             taReponse.clear();
-            showInfo("Succès", "Réponse ajoutée");
+
+            // Envoyer email de notification au client
+            String emailClient = (reclamation.getClient() != null) ? reclamation.getClient().getEmail() : null;
+            if (emailClient != null && !emailClient.isBlank()) {
+                String nomClient = reclamation.getClient().getNomComplet();
+                String nomAdmin  = admin.getNomComplet();
+                emailService.envoyerReponseReclamation(emailClient, nomClient,
+                        reclamation.getTitre(), contenu, nomAdmin);
+                showInfo("Succès", "Réponse ajoutée et email envoyé au client.");
+            } else {
+                showInfo("Succès", "Réponse ajoutée (email client introuvable, notification non envoyée).");
+            }
+
         } catch (IllegalArgumentException e) {
             showError("Erreur de validation", e.getMessage());
         } catch (SQLException e) {

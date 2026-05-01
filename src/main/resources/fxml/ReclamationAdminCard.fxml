@@ -3,93 +3,74 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 
-<VBox spacing="12"
-      styleClass="reclamation-card"
+<VBox styleClass="reclamation-card"
       xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.controllers.ReclamationAdminCardController"
-      stylesheets="@/css/reclamations-style.css"
-      style="-fx-padding: 20;">
+      stylesheets="@/css/reclamations-style.css">
 
-
-    <!-- En-tête -->
-    <HBox alignment="CENTER_LEFT" spacing="10">
-        <VBox spacing="5" HBox.hgrow="ALWAYS">
-            <Label fx:id="lblTitre"
-                   text="Titre de la réclamation"
-                   style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
-            <Label fx:id="lblClient"
-                   text="Client: ..."
-                   style="-fx-font-size: 12; -fx-text-fill: #666;"/>
+    <!-- ── En-tête carte ─────────────────────────────────── -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="card-header">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblTitre" text="Titre de la réclamation" styleClass="card-title"/>
+            <HBox spacing="16" alignment="CENTER_LEFT">
+                <Label fx:id="lblClient" text="Client: ..." styleClass="card-meta"/>
+                <Label fx:id="lblDate"   text="Date"       styleClass="card-meta"/>
+            </HBox>
         </VBox>
-        <Label fx:id="lblStatut"
-               text="En attente"
-               styleClass="status-badge, status-en-attente"/>
+        <Label fx:id="lblStatut" text="En attente" styleClass="status-badge, status-en-attente"/>
     </HBox>
 
-    <!-- Métadonnées -->
-    <HBox spacing="20">
-        <Label fx:id="lblDate"
-               text="23/02/2026 à 14:30"
-               style="-fx-text-fill: #999; -fx-font-size: 11;"/>
+    <!-- ── Corps ─────────────────────────────────────────── -->
+    <VBox styleClass="card-body" spacing="16">
+
+        <!-- Description -->
+        <VBox spacing="4">
+            <Label text="DESCRIPTION" styleClass="section-label"/>
+            <Label fx:id="lblDescription" text="Description..." wrapText="true" styleClass="card-description-text"/>
+        </VBox>
+
+        <!-- Ligne séparatrice -->
+        <Separator opacity="0.5"/>
+
+        <!-- Statut + Réponse côte à côte -->
+        <HBox spacing="20" alignment="TOP_LEFT">
+
+            <!-- Changer statut -->
+            <VBox spacing="8" prefWidth="220">
+                <Label text="CHANGER LE STATUT" styleClass="section-label"/>
+                <ComboBox fx:id="cbNouveauStatut" styleClass="section-combo" maxWidth="Infinity"/>
+                <Button text="Enregistrer" onAction="#handleChangerStatut"
+                        styleClass="btn-save" maxWidth="Infinity"/>
+            </VBox>
+
+            <!-- Réponse -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="RÉPONDRE AU CLIENT" styleClass="section-label"/>
+                <TextArea fx:id="taReponse"
+                          promptText="Rédigez votre réponse..."
+                          wrapText="true"
+                          prefRowCount="3"
+                          styleClass="reply-area"/>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+    <!-- ── Pied de carte ─────────────────────────────────── -->
+    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-footer">
+
+        <!-- Actions réponse -->
+        <Button text="Envoyer réponse"   onAction="#handleAjouterReponse"  styleClass="btn-primary"/>
+        <Button text="Modifier réponse"  onAction="#handleModifierReponse" styleClass="btn-secondary"/>
+        <Button text="Voir réponses"     onAction="#handleVoirReponses"    styleClass="btn-secondary"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Actions avancées -->
+        <Button text="Résumé IA"  onAction="#handleVoirResume"  styleClass="btn-resume"/>
+        <Button text="Meet"       onAction="#handleDemarrerMeet" styleClass="btn-meet"/>
+
     </HBox>
-
-    <!-- Divider -->
-    <Separator style="-fx-border-color: #eee;"/>
-
-    <!-- Description -->
-    <VBox spacing="5">
-        <Label text="Description" style="-fx-font-weight: bold;"/>
-        <Label fx:id="lblDescription"
-               text="Description de la réclamation..."
-               wrapText="true"
-               style="-fx-text-fill: #555; -fx-font-size: 12;"/>
-    </VBox>
-
-    <!-- Gestion du statut -->
-    <VBox spacing="5" style="-fx-padding: 10 0;-fx-border-color: #eee; -fx-border-width: 1 0 0 0;">
-        <Label text="Changer le statut" style="-fx-font-weight: bold;"/>
-        <HBox spacing="10" alignment="CENTER_LEFT">
-            <ComboBox fx:id="cbNouveauStatut"
-                     style="-fx-min-width: 150; -fx-padding: 8;"/>
-            <Button text="Enregistrer"
-                   onAction="#handleChangerStatut"
-                   styleClass="btn-view"
-                   style="-fx-padding: 8 15;"/>
-        </HBox>
-    </VBox>
-
-    <!-- Ajouter une réponse -->
-    <VBox spacing="5" style="-fx-padding: 10 0; -fx-border-color: #eee; -fx-border-width: 1 0 0 0;">
-        <Label text="Ajouter une réponse" style="-fx-font-weight: bold;"/>
-        <TextArea fx:id="taReponse"
-                 promptText="Réponse à la réclamation..."
-                 wrapText="true"
-                 style="-fx-padding: 10; -fx-control-inner-background: white; -fx-font-size: 12;"
-                 prefRowCount="3"/>
-        <HBox spacing="10">
-            <Button text="Envoyer réponse"
-                   onAction="#handleAjouterReponse"
-                   styleClass="btn-new"
-                   style="-fx-padding: 8 15;"/>
-            <Button fx:id="btnModifierReponse"
-                    text="Modifier réponse"
-                    onAction="#handleModifierReponse"
-                    styleClass="btn-view"
-                    style="-fx-padding: 8 15;"/>
-            <Button text="Voir les réponses"
-                   onAction="#handleVoirReponses"
-                   styleClass="btn-view"
-                   style="-fx-padding: 8 15;"/>
-            <Button text="Résumé"
-                    onAction="#handleVoirResume"
-                    styleClass="btn-resume"
-                    style="-fx-padding: 8 15;"/>
-            <Button text="Meet"
-                    onAction="#handleDemarrerMeet"
-                    styleClass="btn-meet"
-                    style="-fx-padding: 8 15;"/>
-        </HBox>
-    </VBox>
 
 </VBox>
-

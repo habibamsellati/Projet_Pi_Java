@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<ScrollPane fx:id="mainScrollPane" fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.AjouterEvenementController">
+    <VBox spacing="20" style="-fx-padding: 40; -fx-alignment: top-center;">
+        
+        <VBox alignment="CENTER" spacing="5">
+            <Label text="NOUVEL HORIZON" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #c4956a;"/>
+            <TextFlow textAlignment="CENTER">
+                <Text text="Façonner " style="-fx-font-size: 32px; -fx-font-family: 'Serif'; -fx-fill: #2d2d2d;"/>
+                <Text text="Demain" style="-fx-font-size: 32px; -fx-font-family: 'Serif'; -fx-fill: #c4956a;"/>
+            </TextFlow>
+            <Label text="Partagez votre lumière créative. Remplissez ces quelques notes, et nous&#10;nous occupons du reste." textAlignment="CENTER" style="-fx-text-fill: #6b5b4f;"/>
+        </VBox>
+        
+        <VBox styleClass="form-card" style="-fx-max-width: 700;" spacing="25">
+            <!-- SECTION 1 -->
+            <VBox spacing="15">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="1" style="-fx-background-color: #fcece3; -fx-text-fill: #c4956a; -fx-padding: 2 6; -fx-background-radius: 10; -fx-font-weight: bold;"/>
+                    <Label text="Essence de la Création" style="-fx-font-size: 18px; -fx-font-family: 'Serif'; -fx-text-fill: #c4956a;"/>
+                </HBox>
+                
+                <VBox spacing="5">
+                    <Label text="TITRE DE L'ŒUVRE COLLECTIVE *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                    <TextField fx:id="tfNom" promptText="Ex: Reflets d'Orient - Atelier de Céramique" styleClass="text-field"/>
+                    <Label fx:id="lblErrNom" textFill="red" visible="false" managed="false"/>
+                </VBox>
+                
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="DISCIPLINE (TYPE ART)" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <ComboBox fx:id="cbTypeArt" promptText="Choisir un type d'art" maxWidth="Infinity" styleClass="text-field"/>
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="THÉMATIQUE" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <TextField fx:id="tfTheme" promptText="Ex: Modernité et Tradition" styleClass="text-field"/>
+                    </VBox>
+                </HBox>
+                
+                <VBox spacing="5">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="PARCOURS &amp; VISION (DESCRIPTION) *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button text="✨ Générer par IA" onAction="#handleGenerateAIDesc" 
+                                style="-fx-background-color: transparent; -fx-text-fill: #c4956a; -fx-font-size: 9px; -fx-font-weight: bold; -fx-cursor: hand; -fx-border-color: #c4956a; -fx-border-radius: 5;"/>
+                    </HBox>
+                    <TextArea fx:id="taDescription" promptText="Décrivez l'expérience que vous proposez..." prefHeight="100" wrapText="true" styleClass="text-area"/>
+                    <Label fx:id="lblErrDescription" textFill="red" visible="false" managed="false"/>
+                </VBox>
+                
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="FICHIER DE COUVERTURE" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT" style="-fx-border-color: #e8ddd4; -fx-border-radius: 5; -fx-padding: 5;">
+                            <Button text="Choisir un fichier" styleClass="btn-secondary" onAction="#handleChoisirImage"/>
+                            <Label fx:id="lblImage" text="Aucun fichier choisi" style="-fx-text-fill: #9e8e82;"/>
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+            
+            <Separator/>
+            
+            <!-- SECTION 2 -->
+            <VBox spacing="15">
+                <HBox alignment="CENTER_LEFT" spacing="10">
+                    <Label text="2" style="-fx-background-color: #f1f4f9; -fx-text-fill: #9e8e82; -fx-padding: 2 6; -fx-background-radius: 10; -fx-font-weight: bold;"/>
+                    <Label text="Temporalité &amp; Lieu" style="-fx-font-size: 18px; -fx-font-family: 'Serif'; -fx-text-fill: #6b5b4f;"/>
+                </HBox>
+                
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="INAUGURATION *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <HBox spacing="5">
+                            <DatePicker fx:id="dpDateDebut" promptText="jj/mm/aaaa" styleClass="date-picker" HBox.hgrow="ALWAYS"/>
+                            <TextField fx:id="tfHeureDebut" promptText="HH:mm" prefWidth="100" style="-fx-background-radius: 5;"/>
+                        </HBox>
+                        <Label fx:id="lblErrDebut" textFill="red" visible="false" managed="false"/>
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="CLÔTURE *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <HBox spacing="5">
+                            <DatePicker fx:id="dpDateFin" promptText="jj/mm/aaaa" styleClass="date-picker" HBox.hgrow="ALWAYS"/>
+                            <TextField fx:id="tfHeureFin" promptText="HH:mm" prefWidth="100" style="-fx-background-radius: 5;"/>
+                        </HBox>
+                        <Label fx:id="lblErrFin" textFill="red" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+                
+                <VBox spacing="5">
+                    <Label text="ESPACE D'ACCUEIL *" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                    <TextField fx:id="tfLieu" promptText="Où se déroule la magie ?" styleClass="text-field"/>
+                    <Label fx:id="lblErrLieu" textFill="red" visible="false" managed="false"/>
+                </VBox>
+                
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="JAUGE DE PARTICIPANTS (CAPACITÉ)" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                        <TextField fx:id="tfCapacite" promptText="Ex: 50" styleClass="text-field"/>
+                        <Label fx:id="lblErrCapacite" textFill="red" visible="false" managed="false"/>
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label text="CONTRIBUTION (TND)" style="-fx-font-weight: bold; -fx-font-size: 10px; -fx-text-fill: #6b5b4f;"/>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="💡 IA Suggest" onAction="#handleSuggestPrice" 
+                                    style="-fx-background-color: transparent; -fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                        </HBox>
+                        <TextField fx:id="tfPrix" promptText="Ex: 25.00" styleClass="text-field"/>
+                        <Label fx:id="lblErrPrix" textFill="red" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+            
+            <Separator/>
+            
+            <!-- BUTTON AREA -->
+            <VBox alignment="CENTER" spacing="10">
+                <HBox alignment="CENTER" style="-fx-background-color: #fdf5f2; -fx-padding: 10; -fx-background-radius: 5; -fx-max-width: 400;">
+                    <Label text="⚠️ Le bouton ci-dessous valide vos informations et crée l'événement." style="-fx-text-fill: #d37a5b; -fx-font-size: 10px;"/>
+                </HBox>
+                <Button fx:id="btnSubmit" text="Inaugurer l'Événement" style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 12 40; -fx-font-weight: bold; -fx-font-size: 14px;" onAction="#handleCreerEvenement"/>
+                <Label text="Si rien ne se passe, vérifiez les erreurs en haut du formulaire." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82;"/>
+            </VBox>
+        </VBox>
+        
+        <Button text="← Retour à mes projets" style="-fx-background-color: transparent; -fx-text-fill: #6b5b4f; -fx-cursor: hand;" onAction="#handleGoBack"/>
+        
+    </VBox>
+</ScrollPane>

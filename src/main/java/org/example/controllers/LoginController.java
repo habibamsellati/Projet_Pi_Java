@@ -2,15 +2,11 @@ package org.example.controllers;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import org.example.models.Role;
 import org.example.models.User;
 import org.example.services.AuthService;
 import org.example.utils.SceneNavigator;
@@ -36,15 +32,8 @@ public class LoginController {
             );
 
             Stage stage = (Stage) tfEmail.getScene().getWindow();
-            if (user.getRole() == Role.CLIENT) {
-                Parent root = FXMLLoader.load(getClass().getResource("/fxml/MainView.fxml"));
-                stage.setScene(new Scene(root, 1200, 750));
-                stage.setTitle("Artefact");
-                stage.centerOnScreen();
-                stage.show();
-            } else {
-                SceneNavigator.openDashboardFor(user, stage);
-            }
+            // Toujours utiliser openDashboardFor — gère tous les rôles correctement
+            SceneNavigator.openDashboardFor(user, stage);
         } catch (Exception e) {
             lblInfo.setText(e.getMessage());
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();

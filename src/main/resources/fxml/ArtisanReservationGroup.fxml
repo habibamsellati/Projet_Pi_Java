@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="0" style="-fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 5); -fx-margin: 10;" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
+    
+    <!-- HEADER NOIR -->
+    <HBox alignment="CENTER_LEFT" spacing="20" style="-fx-background-color: #1a1a1a; -fx-background-radius: 20 20 0 0; -fx-padding: 25;">
+        <ImageView fx:id="ivEventThumb" fitHeight="60" fitWidth="60" style="-fx-background-radius: 10;"/>
+        
+        <VBox spacing="5">
+            <Label fx:id="lblEventTitre" text="CERAMICA+" style="-fx-font-family: 'Serif'; -fx-font-size: 22px; -fx-text-fill: white; -fx-letter-spacing: 2px;"/>
+            <Label fx:id="lblEventSubtitle" text="01 MAY 2026  ARIANA2" style="-fx-font-size: 10px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+        </VBox>
+        
+        <Region HBox.hgrow="ALWAYS"/>
+        
+        <VBox alignment="CENTER_RIGHT" spacing="5">
+            <Label fx:id="lblFillingRatio" text="1/12" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: white;"/>
+            <ProgressBar fx:id="pbFilling" prefWidth="120" progress="0.1" style="-fx-accent: #c47653;"/>
+            <Label text="REMPLISSAGE DE L'ÉVÉNEMENT" style="-fx-font-size: 8px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+        </VBox>
+    </HBox>
+    
+    <!-- TABLE LABELS -->
+    <HBox alignment="CENTER_LEFT" spacing="0" style="-fx-background-color: #fcfcfc; -fx-padding: 10 20; -fx-border-color: transparent transparent #e8ddd4 transparent;">
+        <Label prefWidth="180" text="COLLECTIONNEUR" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+        <Label prefWidth="100" text="PLACES" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+        <Label prefWidth="100" text="HEURE" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+        <Label prefWidth="180" text="CONTACTS" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+        <Label prefWidth="120" text="TOTAL" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+        <Label prefWidth="100" text="STATUT" alignment="CENTER" style="-fx-font-size: 9px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+    </HBox>
+    
+    <!-- CONTAINER POUR LES LIGNES -->
+    <VBox fx:id="vboxRows" style="-fx-background-color: white; -fx-background-radius: 0 0 20 20; -fx-min-height: 50;"/>
+
+</VBox>

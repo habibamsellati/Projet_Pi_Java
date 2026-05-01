@@ -38,17 +38,25 @@
                     styleClass="nav-btn,nav-btn-active" maxWidth="Infinity"
                     onAction="#handleNavDashboard"/>
             <Button text="👥  Utilisateurs"         styleClass="nav-btn" maxWidth="Infinity"/>
-            <Button text="♻  Produits recyclables"  styleClass="nav-btn" maxWidth="Infinity"/>
-            <Button text="📋  Propositions"          styleClass="nav-btn" maxWidth="Infinity"/>
+            <Button fx:id="btnNavProduits" text="♻  Produits recyclables"  styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavProduits"/>
+            <Button fx:id="btnNavPropositions" text="📋  Propositions"  styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavPropositions"/>
             <Button text="🚚  Livraisons"            styleClass="nav-btn" maxWidth="Infinity"/>
             <Button text="🏠  Suivi Livraisons"      styleClass="nav-btn" maxWidth="Infinity"/>
-            <Button text="⚠  Réclamations"          styleClass="nav-btn" maxWidth="Infinity"
-                    onAction="#handleVoirReclamations"/>
+            <Button fx:id="btnNavReclamations" text="⚠  Réclamations"  styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavReclamations"/>
             <Button text="🔧  Artisans"              styleClass="nav-btn" maxWidth="Infinity"/>
-            <Button text="📰  Articles"              styleClass="nav-btn" maxWidth="Infinity"
-                    onAction="#handleVoirArticles"/>
-            <Button text="🛒  Commandes"             styleClass="nav-btn" maxWidth="Infinity"
-                    onAction="#handleVoirCommandes"/>
+            <Button fx:id="btnNavArticles" text="📰  Articles"  styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavArticles"/>
+            <Button fx:id="btnNavCommandes" text="🛒  Commandes"  styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavCommandes"/>
+            <Button fx:id="btnNavEvenements" text="🎭  Événements"
+                    styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavEvenements"/>
+            <Button fx:id="btnNavReservations" text="📅  Réservations"
+                    styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavReservations"/>
 
             <Label text="Liste validée des articles" styleClass="nav-sub-lbl"/>
             <Button text="📁  Catégories" styleClass="nav-btn" maxWidth="Infinity"/>
@@ -67,7 +75,7 @@
             <!-- TOPBAR -->
             <HBox styleClass="topbar">
                 <VBox spacing="2">
-                    <Label text="Dashboard" styleClass="topbar-title"/>
+                    <Label fx:id="topbarTitle" text="Dashboard" styleClass="topbar-title"/>
                     <Label fx:id="lblBienvenue" text="Bienvenue, Administrateur" styleClass="topbar-sub"/>
                 </VBox>
                 <Region HBox.hgrow="ALWAYS"/>
@@ -85,8 +93,8 @@
             </HBox>
 
             <!-- SCROLLABLE CONTENT -->
-            <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
-                <VBox styleClass="content-area">
+            <ScrollPane fx:id="scrollContent" fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+                <VBox fx:id="dashboardContent" styleClass="content-area">
                     <padding><Insets top="20" right="32" bottom="32" left="32"/></padding>
 
                     <!-- ── STAT CARDS ── -->

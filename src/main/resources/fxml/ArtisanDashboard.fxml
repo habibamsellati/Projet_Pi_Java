@@ -18,6 +18,10 @@
         <Button text="✏️  Nouvel Article" styleClass="btn-publier" onAction="#handleNouvelArticle" maxWidth="Infinity"/>
         <Button text="📋  Voir les Articles" onAction="#handleVoirArticles" maxWidth="Infinity"
                 style="-fx-background-color: #D7CCC8; -fx-text-fill: #5D4037; -fx-background-radius: 10; -fx-padding: 12 25;"/>
+        <Button text="♻️  Produits recyclables" onAction="#handleVoirProduits" maxWidth="Infinity"
+                style="-fx-background-color: #E8F5E9; -fx-text-fill: #2E7D32; -fx-background-radius: 10; -fx-font-weight: bold; -fx-padding: 12 25;"/>
+        <Button text="📋  Propositions" onAction="#handleVoirPropositions" maxWidth="Infinity"
+                style="-fx-background-color: #FFF8E1; -fx-text-fill: #A35D00; -fx-background-radius: 10; -fx-font-weight: bold; -fx-padding: 12 25;"/>
         <Button text="📝  Nouvelle Réclamation" onAction="#handleNouvelleReclamation" maxWidth="Infinity"
                 style="-fx-background-color: #E8F5E9; -fx-text-fill: #2E7D32; -fx-background-radius: 10; -fx-font-weight: bold; -fx-padding: 12 25;"/>
         <Button text="📨  Mes Réclamations" onAction="#handleMesReclamations" maxWidth="Infinity"

@@ -40,8 +40,9 @@ public class AuthService {
                 }
 
                 Role role = Role.fromDatabaseValue(rs.getString("role"));
-                if (role != Role.ARTISANT && role != Role.CLIENT && role != Role.ADMIN) {
-                    throw new IllegalArgumentException("Seuls les rôles ARTISANT, CLIENT et ADMIN sont gérés ici.");
+                if (role != Role.ARTISANT && role != Role.CLIENT && role != Role.ADMIN
+                        && role != Role.LIVREUR && role != Role.RESPONSABLE) {
+                    throw new IllegalArgumentException("Rôle non reconnu : " + rs.getString("role"));
                 }
 
                 User user = new User();

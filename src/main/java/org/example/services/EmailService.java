@@ -68,6 +68,28 @@ public class EmailService {
         return send(emailAdmin, subject, html);
     }
 
+    public boolean envoyerStatutProposition(String emailClient, String titreProposition,
+                                             String nomProduit, String statut, double prix) {
+        if (emailClient == null || emailClient.isBlank()) return false;
+        String subject = switch (statut) {
+            case "acceptee" -> "Votre proposition a été acceptée - AfkArt";
+            case "refusee"  -> "Votre proposition a été refusée - AfkArt";
+            case "terminee" -> "Votre oeuvre est terminée - AfkArt";
+            default         -> "Mise à jour de votre proposition - AfkArt";
+        };
+        String html = buildStatutPropositionHtml(titreProposition, nomProduit, statut, prix);
+        return send(emailClient, subject, html);
+    }
+
+    public boolean envoyerReponseReclamation(String emailClient, String nomClient,
+                                              String titreReclamation, String contenuReponse,
+                                              String nomAdmin) {
+        if (emailClient == null || emailClient.isBlank()) return false;
+        String subject = "Réponse à votre réclamation - AfkArt";
+        String html    = buildReponseReclamationHtml(nomClient, titreReclamation, contenuReponse, nomAdmin);
+        return send(emailClient, subject, html);
+    }
+
     public boolean isSmtpEnabled() { return smtpEnabled; }
 
     // ── Envoi ─────────────────────────────────────────────────────────────────
@@ -165,6 +187,83 @@ public class EmailService {
         }
 
         sb.append("<p style='margin-top:24px;color:#555;'>Merci pour votre achat !<br/><strong>Equipe AfkArt</strong></p>");
+        sb.append("</div></div></body></html>");
+        return sb.toString();
+    }
+
+    private String buildStatutPropositionHtml(String titre, String nomProduit, String statut, double prix) {
+        String couleur = switch (statut) {
+            case "acceptee" -> "#1e8e3e";
+            case "refusee"  -> "#d93025";
+            case "terminee" -> "#7a5c3a";
+            default         -> "#1f3b73";
+        };
+        String emoji = switch (statut) {
+            case "acceptee" -> "✅";
+            case "refusee"  -> "❌";
+            case "terminee" -> "🎉";
+            default         -> "ℹ️";
+        };
+        String message = switch (statut) {
+            case "acceptee" -> "Votre proposition <strong>" + esc(titre) + "</strong> pour le produit <strong>"
+                    + esc(nomProduit) + "</strong> a été <strong>ACCEPTÉE</strong>. "
+                    + "Prix convenu : <strong>" + String.format("%.2f TND", prix) + "</strong>. "
+                    + "L'artisan vous contactera prochainement.";
+            case "refusee"  -> "Votre proposition <strong>" + esc(titre) + "</strong> pour le produit <strong>"
+                    + esc(nomProduit) + "</strong> a été <strong>REFUSÉE</strong>. "
+                    + "Vous pouvez soumettre une nouvelle proposition sur AfkArt.";
+            case "terminee" -> "Bonne nouvelle ! Votre oeuvre réalisée à partir de <strong>"
+                    + esc(nomProduit) + "</strong> est <strong>TERMINÉE</strong>. "
+                    + "Contactez l'artisan pour la récupération.";
+            default         -> "Le statut de votre proposition <strong>" + esc(titre) + "</strong> a été mis à jour.";
+        };
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><body style='font-family:Arial,sans-serif;background:#f6f7fb;padding:24px;color:#2f2f2f;'>");
+        sb.append("<div style='max-width:620px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7ef;'>");
+        sb.append("<div style='background:").append(couleur).append(";color:#fff;padding:22px 24px;'>");
+        sb.append("<h1 style='margin:0;font-size:20px;'>").append(emoji).append(" Mise à jour de votre proposition</h1>");
+        sb.append("</div>");
+        sb.append("<div style='padding:24px;'>");
+        sb.append("<p style='line-height:1.7;font-size:15px;'>").append(message).append("</p>");
+        sb.append("<p style='margin-top:20px;color:#555;'>Merci pour votre confiance.<br/><strong>Équipe AfkArt</strong></p>");
+        sb.append("</div></div></body></html>");
+        return sb.toString();
+    }
+
+    private String buildReponseReclamationHtml(String nomClient, String titreReclamation,
+                                                String contenuReponse, String nomAdmin) {
+        String nom    = nvl(nomClient, "Client");
+        String titre  = nvl(titreReclamation, "votre réclamation");
+        String reponse = nvl(contenuReponse, "");
+        String admin  = nvl(nomAdmin, "L'équipe AfkArt");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><body style='font-family:Arial,sans-serif;background:#f6f7fb;padding:24px;color:#2f2f2f;'>");
+        sb.append("<div style='max-width:660px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7ef;'>");
+
+        // Header
+        sb.append("<div style='background:#1f3b73;color:#fff;padding:22px 24px;'>");
+        sb.append("<h1 style='margin:0;font-size:20px;'>Réponse à votre réclamation</h1>");
+        sb.append("<p style='margin:6px 0 0;font-size:13px;opacity:.9;'>").append(esc(titre)).append("</p>");
+        sb.append("</div>");
+
+        // Corps
+        sb.append("<div style='padding:24px;'>");
+        sb.append("<p style='margin:0 0 16px;'>Bonjour <strong>").append(esc(nom)).append("</strong>,</p>");
+        sb.append("<p style='margin:0 0 20px;color:#555;line-height:1.6;'>");
+        sb.append("Notre équipe a traité votre réclamation <strong>").append(esc(titre)).append("</strong>.");
+        sb.append(" Voici la réponse de notre administrateur :</p>");
+
+        // Réponse encadrée
+        sb.append("<div style='background:#f0f4ff;border-left:4px solid #1f3b73;padding:16px 18px;border-radius:6px;margin:0 0 24px;'>");
+        sb.append("<p style='margin:0 0 8px;font-size:12px;color:#888;font-weight:bold;text-transform:uppercase;letter-spacing:.5px;'>Réponse de ").append(esc(admin)).append("</p>");
+        sb.append("<p style='margin:0;line-height:1.7;font-size:15px;color:#2f2f2f;'>").append(esc(reponse)).append("</p>");
+        sb.append("</div>");
+
+        sb.append("<p style='margin:0;color:#555;line-height:1.6;'>Si vous avez d'autres questions, n'hésitez pas à nous contacter.</p>");
+        sb.append("<p style='margin-top:20px;color:#555;'>Cordialement,<br/><strong>").append(esc(admin)).append("</strong><br/>");
+        sb.append("<span style='color:#888;font-size:13px;'>Équipe AfkArt</span></p>");
         sb.append("</div></div></body></html>");
         return sb.toString();
     }

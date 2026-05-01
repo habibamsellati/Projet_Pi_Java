@@ -1,0 +1,13 @@
+﻿src\main\java\org\example\models\Role.java
+src\main\java\org\example\models\User.java
+src\main\java\org\example\models\Article.java
+src\main\java\org\example\models\Commentaire.java
+src\main\java\org\example\utils\MyDatabase.java
+src\main\java\org\example\utils\SessionManager.java
+src\main\java\org\example\utils\I18nManager.java
+src\main\java\org\example\services\ServiceArticle.java
+src\main\java\org\example\services\ServiceCommentaire.java
+src\main\java\org\example\services\CommentTranslationService.java
+src\main\java\org\example\services\ServiceReactionArticle.java
+src\main\java\org\example\services\ServiceReactionCommentaire.java
+src\main\java\org\example\controllers\ArticleCommentairesController.java

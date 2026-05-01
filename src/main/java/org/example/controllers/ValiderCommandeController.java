@@ -32,15 +32,18 @@ public class ValiderCommandeController {
     @FXML private TextField         tfPrenom;
     @FXML private TextField         tfTelephone;
     @FXML private TextArea          taAdresse;
-    @FXML private ComboBox<String>  cbPaiement;
+    @FXML private Label             lblPaiement;
+
+    private static final String MODE_PAIEMENT_PAR_DEFAUT = "livraison";
 
     private final PanierService    panierService    = PanierService.getInstance();
     private final ServiceCommande  serviceCommande  = new ServiceCommande();
 
     @FXML
     void initialize() {
-        cbPaiement.getItems().setAll("carte", "espèces", "virement");
-        cbPaiement.setValue("carte");
+        if (lblPaiement != null) {
+            lblPaiement.setText("Paiement à la livraison");
+        }
 
         // Pré-remplir nom/prénom depuis la session
         User user = SessionManager.getCurrentUser();
@@ -77,7 +80,7 @@ public class ValiderCommandeController {
             commande.setAdresseLivraison(taAdresse.getText());
             String tel = tfTelephone.getText();
             commande.setTelephone(tel == null || tel.isBlank() ? null : tel.trim());
-            commande.setModePaiement(cbPaiement.getValue());
+            commande.setModePaiement(MODE_PAIEMENT_PAR_DEFAUT);
             commande.setStatut("en_attente");
             commande.setClientId(user.getId());
             commande.setEmailClient(user.getEmail()); // email du client connecté

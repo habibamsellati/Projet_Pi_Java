@@ -1,77 +1,257 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
 
-<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.AjouterProduitController">
-    <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 30;">
+<ScrollPane fitToWidth="true"
+            styleClass="main-container"
+            stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.AjouterProduitController">
+    <content>
+        <VBox spacing="16" alignment="TOP_CENTER"
+              style="-fx-padding: 30 0 40 0; -fx-background-color: #F9F7F2;">
 
-        <Label text="Publier un Produit Recyclable" styleClass="title-label" style="-fx-font-size: 28;"/>
+            <Label text="Créer un produit"
+                   style="-fx-font-family: Georgia; -fx-font-size: 28; -fx-text-fill: #2f2430;"/>
 
-        <VBox spacing="15" style="-fx-max-width: 700; -fx-background-color: white; -fx-padding: 25; -fx-background-radius: 15;">
+            <!-- ── Section Détection intelligente ─────────────── -->
+            <VBox spacing="10" maxWidth="500"
+                  style="-fx-background-color: #FFF8DC;
+                         -fx-border-color: #F5C842;
+                         -fx-border-radius: 12; -fx-background-radius: 12;
+                         -fx-border-width: 1.5; -fx-padding: 14 16;">
 
-            <Label text="Matériau *" style="-fx-font-weight: bold;"/>
-            <ComboBox fx:id="cbNom" maxWidth="Infinity" promptText="Choisir le matériau">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Plastique" /><String fx:value="Papier" />
-                        <String fx:value="Carton" /><String fx:value="Verre" />
-                        <String fx:value="Métal" /><String fx:value="Bois" /><String fx:value="Tissu" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="🧠"
+                           style="-fx-background-color: #F5A623; -fx-background-radius: 8;
+                                  -fx-padding: 6 8; -fx-font-size: 16;"/>
+                    <VBox spacing="2">
+                        <Label text="Détection intelligente"
+                               style="-fx-font-size: 13; -fx-font-weight: bold; -fx-text-fill: #8D5A00;"/>
+                        <Label text="Décrivez votre produit en langage naturel, l'IA remplit le formulaire"
+                               style="-fx-font-size: 11; -fx-text-fill: #A07020;"/>
+                    </VBox>
+                </HBox>
 
-            <HBox spacing="20">
-                <VBox HBox.hgrow="ALWAYS" spacing="10">
-                    <Label text="Qualité Environnementale" style="-fx-font-weight: bold;"/>
-                    <ComboBox fx:id="cbType" maxWidth="Infinity">
+                <TextArea fx:id="taDetection"
+                          prefRowCount="3" wrapText="true"
+                          promptText="Ex : j'ai 3 bouteilles plastique naturel..."
+                          style="-fx-background-color: white; -fx-border-color: #E8D080;
+                                 -fx-border-radius: 8; -fx-background-radius: 8;
+                                 -fx-padding: 8; -fx-font-size: 12;"/>
+
+                <Button text="Analyser"
+                        onAction="#handleAnalyserIA"
+                        style="-fx-background-color: #F5A623; -fx-text-fill: white;
+                               -fx-background-radius: 20; -fx-padding: 8 20;
+                               -fx-font-size: 12; -fx-font-weight: bold; -fx-cursor: hand;"/>
+
+                <!-- Résultats analyse -->
+                <VBox fx:id="vboxResultats" spacing="8" managed="false" visible="false"
+                      style="-fx-background-color: white; -fx-border-color: #E8D080;
+                             -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 10;">
+
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label text="Résultats de l'analyse"
+                               style="-fx-font-size: 12; -fx-font-weight: bold; -fx-text-fill: #8D5A00;"/>
+                        <Button text="Appliquer au formulaire"
+                                onAction="#handleAppliquerResultats"
+                                style="-fx-background-color: #2d7a58; -fx-text-fill: white;
+                                       -fx-background-radius: 14; -fx-padding: 5 14;
+                                       -fx-font-size: 11; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    </HBox>
+
+                    <!-- Chips résultats -->
+                    <HBox fx:id="hboxChips" spacing="6" alignment="CENTER_LEFT"/>
+
+                    <!-- Barres de progression -->
+                    <VBox spacing="4">
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="Catégorie" prefWidth="70"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                            <ProgressBar fx:id="pbCategorie" prefWidth="200" prefHeight="8"
+                                         style="-fx-accent: #4CAF50;"/>
+                            <Label fx:id="lblPbCategorie" text="0%"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                        </HBox>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="Type" prefWidth="70"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                            <ProgressBar fx:id="pbType" prefWidth="200" prefHeight="8"
+                                         style="-fx-accent: #4CAF50;"/>
+                            <Label fx:id="lblPbType" text="0%"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                        </HBox>
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="État" prefWidth="70"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                            <ProgressBar fx:id="pbEtat" prefWidth="200" prefHeight="8"
+                                         style="-fx-accent: #4CAF50;"/>
+                            <Label fx:id="lblPbEtat" text="0%"
+                                   style="-fx-font-size: 11; -fx-text-fill: #7a6a5a;"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </VBox>
+
+            <!-- ── Formulaire ──────────────────────────────────── -->
+            <VBox spacing="14" maxWidth="500"
+                  style="-fx-background-color: white; -fx-background-radius: 12;
+                         -fx-border-color: #E8E0D8; -fx-border-radius: 12;
+                         -fx-border-width: 1; -fx-padding: 20 24;">
+
+                <!-- Nom produit -->
+                <VBox spacing="4">
+                    <Label text="Nomproduit"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbNom" maxWidth="Infinity" promptText="Choisir un produit">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Naturel" /><String fx:value="Durable" />
-                                <String fx:value="Écologique" /><String fx:value="Zéro déchet" />
+                                <String fx:value="Plastique"/>
+                                <String fx:value="Papier"/>
+                                <String fx:value="Carton"/>
+                                <String fx:value="Verre"/>
+                                <String fx:value="Metal"/>
+                                <String fx:value="Bois"/>
+                                <String fx:value="Tissu"/>
                             </FXCollections>
                         </items>
                     </ComboBox>
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS" spacing="10">
-                    <Label text="État du produit" style="-fx-font-weight: bold;"/>
-                    <ComboBox fx:id="cbEtat" maxWidth="Infinity">
+
+                <!-- Type matériau -->
+                <VBox spacing="4">
+                    <Label text="Typemateriau"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbType" maxWidth="Infinity" promptText="Choisir un type">
                         <items>
                             <FXCollections fx:factory="observableArrayList">
-                                <String fx:value="Bon" /><String fx:value="Moyen" /><String fx:value="Mauvais" />
+                                <String fx:value="Naturel"/>
+                                <String fx:value="Durable"/>
+                                <String fx:value="Ecologique"/>
+                                <String fx:value="Zero dechet"/>
+                                <String fx:value="Reutilisable"/>
                             </FXCollections>
                         </items>
                     </ComboBox>
                 </VBox>
-            </HBox>
 
-            <HBox spacing="20">
-                <VBox HBox.hgrow="ALWAYS" spacing="5">
-                    <Label text="Quantité (0-999 999)" style="-fx-font-weight: bold;"/>
-                    <TextField fx:id="tfQuantite" promptText="Ex: 50"/>
+                <!-- État -->
+                <VBox spacing="4">
+                    <Label text="Etat"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbEtat" maxWidth="Infinity" promptText="Choisir un état">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Excellent"/>
+                                <String fx:value="Bon"/>
+                                <String fx:value="Moyen"/>
+                                <String fx:value="A recycler"/>
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
                 </VBox>
-                <VBox HBox.hgrow="ALWAYS" spacing="5">
-                    <Label text="Origine" style="-fx-font-weight: bold;"/>
-                    <TextField fx:id="tfOrigine" promptText="Ex: Tunis, Ariana..."/>
+
+                <!-- Quantité -->
+                <VBox spacing="4">
+                    <Label text="Quantite"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <TextField fx:id="tfQuantite"
+                               style="-fx-background-color: white; -fx-border-color: #dcd5ce;
+                                      -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 9;"/>
                 </VBox>
-            </HBox>
 
-            <Label text="Impact Écologique (Bénéfice environnemental)" style="-fx-font-weight: bold;"/>
-            <HBox spacing="10" alignment="CENTER_LEFT">
-                <Slider fx:id="sldImpact" min="0" max="100" value="50" showTickLabels="true" HBox.hgrow="ALWAYS"/>
-                <Label fx:id="lblImpactValue" text="50" style="-fx-font-weight: bold; -fx-text-fill: #8D6E63;"/>
-            </HBox>
+                <!-- Origine -->
+                <VBox spacing="4">
+                    <Label text="Origine"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <TextField fx:id="tfOrigine" promptText="Ex: Tunis"
+                               style="-fx-background-color: white; -fx-border-color: #dcd5ce;
+                                      -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 9;"/>
+                </VBox>
 
-            <Label text="Description détaillée (min 10 caractères) *" style="-fx-font-weight: bold;"/>
-            <TextArea fx:id="taDescription" prefHeight="100" promptText="Décrivez l'origine et l'usage possible..."/>
+                <!-- Impact écologique -->
+                <VBox spacing="4">
+                    <Label text="Impactecologique"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <TextField fx:id="tfImpact" promptText="0 - 100"
+                               style="-fx-background-color: white; -fx-border-color: #dcd5ce;
+                                      -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 9;"/>
+                </VBox>
 
-            <Button text="Sélectionner une Image" onAction="#handleUploadImage" styleClass="btn-annuler" maxWidth="Infinity"/>
+                <!-- Date d'ajout -->
+                <VBox spacing="4">
+                    <Label text="Date d'ajout"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <Label fx:id="lblDate"
+                           style="-fx-background-color: #f5f5f5; -fx-border-color: #dcd5ce;
+                                  -fx-border-radius: 8; -fx-background-radius: 8;
+                                  -fx-padding: 9; -fx-font-size: 12; -fx-text-fill: #7a6a5a;
+                                  -fx-min-width: 440;"/>
+                </VBox>
 
-            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 10 0 0 0;">
-                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
-                <Button text="Mettre en vente" styleClass="btn-publier" onAction="#handleAjouterProduit"/>
-            </HBox>
+                <!-- Description -->
+                <VBox spacing="4">
+                    <Label text="Description"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <TextArea fx:id="taDescription" prefRowCount="4" wrapText="true"
+                              style="-fx-background-color: white; -fx-border-color: #dcd5ce;
+                                     -fx-border-radius: 8; -fx-background-radius: 8; -fx-padding: 8;"/>
+                </VBox>
+
+                <!-- Aperçu image -->
+                <VBox fx:id="vboxApercu" spacing="6">
+                    <Label text="Aperçu de l'image générée :"
+                           style="-fx-font-size: 12; -fx-text-fill: #2f2430; -fx-font-weight: bold;"/>
+                    <VBox alignment="CENTER" spacing="8" prefHeight="150"
+                          style="-fx-background-color: #f5f5f5;
+                                 -fx-border-color: #8D6E63;
+                                 -fx-border-radius: 10; -fx-background-radius: 10;
+                                 -fx-border-width: 1;">
+                        <ImageView fx:id="ivApercu"
+                                   fitWidth="440" fitHeight="140"
+                                   preserveRatio="true" smooth="true"
+                                   visible="false" managed="false"/>
+                        <Label fx:id="lblApercuPlaceholder"
+                               text="Remplissez la description puis cliquez sur « Générer Image IA »"
+                               style="-fx-font-size: 11; -fx-text-fill: #b0a090;"
+                               wrapText="true" alignment="CENTER" maxWidth="380"/>
+                    </VBox>
+                    <Button fx:id="btnGenererImage"
+                            text="✦ Générer Image IA"
+                            onAction="#handleGenererImage"
+                            style="-fx-background-color: #8D6E63; -fx-text-fill: white;
+                                   -fx-background-radius: 20; -fx-padding: 8 20;
+                                   -fx-font-size: 12; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                </VBox>
+
+                <!-- Boutons -->
+                <HBox spacing="14" alignment="CENTER_LEFT" style="-fx-padding: 6 0 0 0;">
+                    <Button text="Enregistrer"
+                            onAction="#handleAjouterProduit"
+                            style="-fx-background-color: #8D6E63; -fx-text-fill: white;
+                                   -fx-background-radius: 20; -fx-padding: 10 24;
+                                   -fx-font-size: 13; -fx-font-weight: bold; -fx-cursor: hand;"/>
+                    <Button text="Annuler"
+                            onAction="#handleAnnuler"
+                            style="-fx-background-color: transparent; -fx-text-fill: #5D4037;
+                                   -fx-font-size: 13; -fx-cursor: hand;"/>
+                </HBox>
+
+            </VBox>
         </VBox>
-    </VBox>
+    </content>
 </ScrollPane>

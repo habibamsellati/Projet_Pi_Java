@@ -103,13 +103,13 @@ public class ArticleCommentairesController {
 
     @FXML
     public void initialize() {
-        // Remplir le sÃ©lecteur de langue
+        // Remplir le selecteur de langue
         langCombo.getItems().addAll(
             I18nManager.get("lang.fr"),
             I18nManager.get("lang.en"),
             I18nManager.get("lang.ar")
         );
-        // SÃ©lectionner la langue courante
+        // Selectionner la langue courante
         syncLangCombo();
         initialiserEmojiBar();
     }

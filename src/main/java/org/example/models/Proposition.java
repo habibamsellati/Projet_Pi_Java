@@ -1,5 +1,7 @@
 package org.example.models;
 
+import java.sql.Timestamp;
+
 public class Proposition {
     private int id;
     private int produitId;
@@ -10,6 +12,8 @@ public class Proposition {
     private String telephone;
     private String image;
     private String statut; // "en attente", "acceptée", "refusée"
+    private String nomProduit;
+    private Timestamp dateCreation;
 
     public Proposition() { this.statut = "en attente"; }
 
@@ -32,4 +36,20 @@ public class Proposition {
     public void setImage(String image) { this.image = image; }
     public String getStatut() { return statut; }
     public void setStatut(String statut) { this.statut = statut; }
+    public String getNomProduit() { return nomProduit; }
+    public void setNomProduit(String nomProduit) { this.nomProduit = nomProduit; }
+    public Timestamp getDateCreation() { return dateCreation; }
+    public void setDateCreation(Timestamp dateCreation) { this.dateCreation = dateCreation; }
+
+    public String getTitreAffichage() {
+        return titre == null || titre.isBlank() ? "Proposition sans titre" : titre;
+    }
+
+    public String getDescriptionCourte() {
+        if (description == null || description.isBlank()) {
+            return "Aucune description fournie.";
+        }
+        String trimmed = description.trim();
+        return trimmed.length() <= 140 ? trimmed : trimmed.substring(0, 137) + "...";
+    }
 }

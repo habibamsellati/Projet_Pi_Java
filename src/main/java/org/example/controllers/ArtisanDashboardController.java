@@ -25,12 +25,22 @@ public class ArtisanDashboardController {
 
     @FXML
     void handleNouvelArticle(ActionEvent event) {
-        navigate(event, "/fxml/AfficherArticles.fxml", "Gestion des Articles");
+        navigate(event, "/fxml/AjouterArticle.fxml", "Créer un article");
     }
 
     @FXML
     void handleVoirArticles(ActionEvent event) {
         navigate(event, "/fxml/AfficherArticles.fxml", "Liste des Articles");
+    }
+
+    @FXML
+    void handleVoirProduits(ActionEvent event) {
+        navigate(event, "/fxml/ProduitsView.fxml", "Produits recyclables");
+    }
+
+    @FXML
+    void handleVoirPropositions(ActionEvent event) {
+        navigate(event, "/fxml/PropositionsView.fxml", "Propositions");
     }
 
     @FXML

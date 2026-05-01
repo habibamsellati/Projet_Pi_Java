@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
@@ -86,7 +85,10 @@
 
                 <Label text="Mode de paiement"
                        style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
-                <ComboBox fx:id="cbPaiement" maxWidth="Infinity"/>
+                <Label fx:id="lblPaiement" text="Paiement à la livraison"
+                       style="-fx-background-color: #f5f5f5; -fx-border-color: #dcd5ce;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 10; -fx-font-size: 13; -fx-text-fill: #5D4037;"/>
 
                 <Region prefHeight="10"/>
 

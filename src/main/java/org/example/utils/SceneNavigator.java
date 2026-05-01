@@ -32,14 +32,13 @@ public final class SceneNavigator {
             return;
         }
 
-        if (user.getRole() == Role.ADMIN) {
-            navigate(stage, "/fxml/AdminDashboard.fxml", "afk'art – Backoffice Admin", 1200, 780);
-        } else if (user.getRole() == Role.ARTISANT) {
-            navigate(stage, "/fxml/ArtisanDashboard.fxml", "Espace Artisan", 900, 620);
-        } else if (user.getRole() == Role.CLIENT) {
-            navigate(stage, "/fxml/ClientDashboard.fxml", "Espace Client", 900, 620);
-        } else {
-            throw new IllegalArgumentException("Ce rôle n'a pas d'interface dédiée dans cette version.");
+        switch (user.getRole()) {
+            case ADMIN      -> navigate(stage, "/fxml/AdminDashboard.fxml",   "afk'art – Backoffice Admin", 1200, 780);
+            case ARTISANT   -> navigate(stage, "/fxml/MainView.fxml",         "Artefact",                   1200, 750);
+            case CLIENT     -> navigate(stage, "/fxml/MainView.fxml",         "Artefact",                   1200, 750);
+            case LIVREUR    -> navigate(stage, "/fxml/MainView.fxml",         "Artefact – Livreur",         1200, 750);
+            case RESPONSABLE-> navigate(stage, "/fxml/AdminDashboard.fxml",   "afk'art – Responsable",      1200, 780);
+            default         -> navigate(stage, "/fxml/Login.fxml",            "Connexion",                  520,  420);
         }
     }
 }

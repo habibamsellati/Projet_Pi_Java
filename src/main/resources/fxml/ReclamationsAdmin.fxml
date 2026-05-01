@@ -5,43 +5,39 @@
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Priority?>
 <?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 
-<HBox prefHeight="720.0" prefWidth="1280.0"
-      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+<!-- Vue contenu seul — chargée dans le panneau central du dashboard admin -->
+<VBox prefHeight="760.0" prefWidth="960.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="org.example.controllers.ReclamationsAdminController"
-      styleClass="root"
-      stylesheets="@/css/reclamations-style.css">
+      styleClass="main-content"
+      stylesheets="@/css/reclamations-style.css"
+      spacing="20">
 
-    <VBox prefWidth="250.0" spacing="10" styleClass="sidebar">
-        <Label text="afk'art" styleClass="sidebar-logo"/>
-        <Button text="Dashboard" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-        <Button text="Utilisateurs" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-        <Button text="Réclamations" styleClass="sidebar-item,sidebar-item-active" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-        <Button text="Articles" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-        <Button text="Commandes" styleClass="sidebar-item" maxWidth="Infinity" alignment="BASELINE_LEFT"/>
-    </VBox>
+    <!-- Titre page -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblBienvenue" styleClass="page-title"/>
+    </HBox>
 
-    <VBox spacing="20" styleClass="main-content" HBox.hgrow="ALWAYS">
-        <HBox alignment="CENTER_LEFT" spacing="15" styleClass="top-filters">
-            <Label fx:id="lblBienvenue" styleClass="page-title"/>
-            <Region HBox.hgrow="ALWAYS"/>
-        </HBox>
+    <!-- Barre filtres -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="toolbar-row">
+        <TextField fx:id="tfSearch"
+                   promptText="Rechercher par titre, client, description..."
+                   styleClass="search-field"
+                   prefWidth="360"/>
+        <ComboBox fx:id="cbStatut" styleClass="filter-combo" prefWidth="180"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Exporter PDF" styleClass="btn-resume"/>
+    </HBox>
 
-        <HBox spacing="12" alignment="CENTER_LEFT" styleClass="toolbar-row">
-            <TextField fx:id="tfSearch" promptText="Rechercher par titre, client, description..." styleClass="search-field" prefWidth="340"/>
-            <ComboBox fx:id="cbStatut" styleClass="filter-combo" prefWidth="170"/>
-            <Button text="Exporter PDF" styleClass="btn-resume"/>
-            <Region HBox.hgrow="ALWAYS"/>
-        </HBox>
+    <!-- Liste réclamations -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="content-scroll">
+        <content>
+            <VBox fx:id="containerReclamations" styleClass="cards-wrap"/>
+        </content>
+    </ScrollPane>
 
-        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="content-scroll">
-            <content>
-                <VBox fx:id="containerReclamations" spacing="20" styleClass="cards-wrap"/>
-            </content>
-        </ScrollPane>
-    </VBox>
-</HBox>
-
+</VBox>

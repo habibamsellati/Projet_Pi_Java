@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.Insets?>
+
+<VBox spacing="25" alignment="TOP_CENTER" stylesheets="@/css/admin-dashboard.css"
+      style="-fx-background-color: #f7f3f0; -fx-padding: 30;"
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.AdminEventsController">
+
+    <!-- HEADER: Title & Global Actions -->
+    <HBox alignment="CENTER_LEFT" spacing="20">
+        <VBox spacing="5" HBox.hgrow="ALWAYS">
+            <Label text="Gestion des Événements" style="-fx-font-size: 28px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+            <Label text="Catalogue complet de vos manifestations culturelles" style="-fx-font-size: 13px; -fx-text-fill: #9e8e82;"/>
+        </VBox>
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Button text="+ Nouvel Événement" onAction="#handleNewEvent" styleClass="btn-primary" 
+                    style="-fx-background-color: #8b5e4a; -fx-text-fill: white; -fx-font-weight: bold;"/>
+            <Button text="🔄 Actualiser" onAction="#loadData" styleClass="btn-secondary"/>
+        </HBox>
+    </HBox>
+
+    <!-- STATS CARDS (Event-Specific) -->
+    <HBox spacing="15" alignment="CENTER">
+        <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+            <Label text="ÉVÉNEMENTS ACTIFS" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalEvents" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #2d2d2d;"/>
+            <ProgressBar fx:id="pbActive" progress="0.75" maxWidth="Infinity" style="-fx-accent: #2d2d2d;"/>
+        </VBox>
+        <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+            <Label text="CAPACITÉ TOTALE" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblTotalCapacity" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #8b5e4a;"/>
+            <ProgressBar fx:id="pbCapacity" progress="0.6" maxWidth="Infinity" style="-fx-accent: #8b5e4a;"/>
+        </VBox>
+        <VBox spacing="10" prefWidth="250" styleClass="stat-card">
+            <Label text="À VENIR" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+            <Label fx:id="lblUpcoming" text="0" style="-fx-font-size: 32px; -fx-font-weight: 900; -fx-text-fill: #c4956a;"/>
+            <ProgressBar fx:id="pbUpcoming" progress="0.3" maxWidth="Infinity" style="-fx-accent: #c4956a;"/>
+        </VBox>
+    </HBox>
+
+    <!-- SEARCH & FILTER BAR -->
+    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="stat-card" style="-fx-padding: 15 25;">
+        <TextField fx:id="tfSearch" promptText="Rechercher un événement par nom ou lieu..." prefWidth="350" styleClass="search-field"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Label text="Trier par:" style="-fx-text-fill: #6b5b4f; -fx-font-size: 12px;"/>
+        <ComboBox fx:id="comboSort" prefWidth="150" promptText="Date"/>
+        <ComboBox fx:id="comboOrder" prefWidth="100" promptText="Ordre"/>
+    </HBox>
+
+    <!-- MAIN LIST AREA -->
+    <VBox spacing="0" VBox.vgrow="ALWAYS" styleClass="stat-card" style="-fx-padding: 0;">
+        <HBox spacing="0" style="-fx-padding: 15 25; -fx-background-color: #faf7f5; -fx-border-color: transparent transparent #ede5de transparent; -fx-background-radius: 16 16 0 0;">
+            <Label text="ID" prefWidth="60" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="ÉVÉNEMENT" prefWidth="280" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="DATE" prefWidth="180" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="LIEU" prefWidth="150" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Label text="PRIX" prefWidth="100" minWidth="-Infinity" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="ACTIONS" prefWidth="150" minWidth="-Infinity" alignment="CENTER_RIGHT" style="-fx-text-fill: #6b5b4f; -fx-font-size: 11px; -fx-font-weight: bold;"/>
+        </HBox>
+
+        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color: transparent; -fx-padding: 0;">
+            <VBox fx:id="vboxEvents" spacing="0" style="-fx-background-color: white;">
+                <!-- Event Rows injected dynamically -->
+            </VBox>
+        </ScrollPane>
+    </VBox>
+
+</VBox>
