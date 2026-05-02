@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.ValiderCommandeController">
+
+    <!-- ── En-tête ── -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="16"
+              style="-fx-padding: 18 28; -fx-background-color: white;
+                     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 3);">
+            <Button text="← Retour" onAction="#handleRetour"
+                    style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                           -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;"/>
+            <Label text="Valider la commande" styleClass="title-label"/>
+        </HBox>
+    </top>
+
+    <!-- ── Contenu en deux colonnes ── -->
+    <center>
+        <HBox spacing="28" style="-fx-padding: 28;">
+
+            <!-- ── Colonne gauche : Récapitulatif ── -->
+            <VBox spacing="16" HBox.hgrow="ALWAYS"
+                  style="-fx-background-color: white; -fx-background-radius: 18;
+                         -fx-padding: 28; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.09), 12, 0, 0, 4);">
+
+                <Label text="📋 Récapitulatif de la commande"
+                       style="-fx-font-size: 20; -fx-font-weight: bold;
+                              -fx-text-fill: #5D4037; -fx-font-family: 'Serif';"/>
+                <Separator/>
+
+                <ScrollPane fitToWidth="true" prefHeight="340"
+                            style="-fx-background-color: transparent;">
+                    <content>
+                        <VBox fx:id="vbRecap" spacing="12"
+                              style="-fx-padding: 4;"/>
+                    </content>
+                </ScrollPane>
+
+                <Separator/>
+
+                <HBox alignment="CENTER_RIGHT">
+                    <Label fx:id="lblTotalRecap" text="Total : 0.00 DT"
+                           style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #8D5E3C;"/>
+                </HBox>
+            </VBox>
+
+            <!-- ── Colonne droite : Formulaire ── -->
+            <VBox spacing="14" minWidth="380" maxWidth="420"
+                  style="-fx-background-color: white; -fx-background-radius: 18;
+                         -fx-padding: 28; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.09), 12, 0, 0, 4);">
+
+                <Label text="📦 Informations de livraison"
+                       style="-fx-font-size: 20; -fx-font-weight: bold;
+                              -fx-text-fill: #5D4037; -fx-font-family: 'Serif';"/>
+                <Separator/>
+
+                <Label text="Nom" style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+                <TextField fx:id="tfNom" promptText="Votre nom"/>
+
+                <Label text="Prénom" style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+                <TextField fx:id="tfPrenom" promptText="Votre prénom"/>
+
+                <Label text="Numéro de téléphone"
+                       style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+                <TextField fx:id="tfTelephone" promptText="Ex : 20 123 456 ou +21620123456"/>
+
+                <Label text="Adresse de livraison *"
+                       style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+                <TextArea fx:id="taAdresse" prefHeight="100"
+                          promptText="Saisissez votre adresse complète (min 10 caractères)"/>
+
+                <Label text="Mode de paiement"
+                       style="-fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+                <Label fx:id="lblPaiement" text="Paiement à la livraison"
+                       style="-fx-background-color: #f5f5f5; -fx-border-color: #dcd5ce;
+                              -fx-border-radius: 8; -fx-background-radius: 8;
+                              -fx-padding: 10; -fx-font-size: 13; -fx-text-fill: #5D4037;"/>
+
+                <Region prefHeight="10"/>
+
+                <Button text="✓  Valider la commande" onAction="#handleValider"
+                        maxWidth="Infinity"
+                        style="-fx-background-color: #2E8B57; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-font-size: 16;
+                               -fx-background-radius: 26; -fx-padding: 16 0;
+                               -fx-cursor: hand;"/>
+
+            </VBox>
+        </HBox>
+    </center>
+
+</BorderPane>
+

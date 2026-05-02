@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.ClientCatalogueController">
+    <content>
+        <VBox spacing="24" style="-fx-padding: 28 36 30 36;">
+
+            <VBox spacing="10" alignment="CENTER" style="-fx-padding: 50 30; -fx-background-color: linear-gradient(to right, #C39F73, #B8A06D); -fx-background-radius: 18;">
+                <Label text="Notre Blog" style="-fx-font-size: 62; -fx-font-family: 'Serif'; -fx-text-fill: white;"/>
+                <Label text="Découvrez nos articles sur l'artisanat durable, les créateurs locaux et les pratiques écologiques"
+                       style="-fx-text-fill: white; -fx-font-size: 24; -fx-font-weight: bold;" wrapText="true" maxWidth="900" alignment="CENTER"/>
+            </VBox>
+
+            <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 18; -fx-background-radius: 14;">
+                <TextField fx:id="tfRecherche" promptText="Rechercher un article..." HBox.hgrow="ALWAYS" prefWidth="280"/>
+                <ComboBox fx:id="cbCategorie" prefWidth="220"/>
+                <ComboBox fx:id="cbTri" prefWidth="240"/>
+                <Button text="Filtrer" styleClass="btn-publier" onAction="#handleFiltrer"/>
+            </HBox>
+
+            <HBox alignment="CENTER_LEFT">
+                <Button fx:id="btnVoirPanier" text="Voir le panier (0)" onAction="#handleVoirPanier"
+                        style="-fx-background-color: #2E8B57; -fx-text-fill: white; -fx-font-weight: bold; -fx-background-radius: 24; -fx-padding: 10 22;"/>
+                <Region HBox.hgrow="ALWAYS"/>
+            </HBox>
+
+            <Label text="Articles en Vedette" style="-fx-font-size: 50; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+            <Region prefHeight="1" style="-fx-background-color: #C49A6C;"/>
+
+            <FlowPane fx:id="fpArticles" hgap="22" vgap="22" prefWrapLength="1220"/>
+        </VBox>
+    </content>
+</ScrollPane>
+

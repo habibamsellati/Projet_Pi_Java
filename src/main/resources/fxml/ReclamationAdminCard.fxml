@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox styleClass="reclamation-card"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.ReclamationAdminCardController"
+      stylesheets="@/css/reclamations-style.css">
+
+    <!-- ── En-tête carte ─────────────────────────────────── -->
+    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="card-header">
+        <VBox spacing="4" HBox.hgrow="ALWAYS">
+            <Label fx:id="lblTitre" text="Titre de la réclamation" styleClass="card-title"/>
+            <HBox spacing="16" alignment="CENTER_LEFT">
+                <Label fx:id="lblClient" text="Client: ..." styleClass="card-meta"/>
+                <Label fx:id="lblDate"   text="Date"       styleClass="card-meta"/>
+            </HBox>
+        </VBox>
+        <Label fx:id="lblStatut" text="En attente" styleClass="status-badge, status-en-attente"/>
+    </HBox>
+
+    <!-- ── Corps ─────────────────────────────────────────── -->
+    <VBox styleClass="card-body" spacing="16">
+
+        <!-- Description -->
+        <VBox spacing="4">
+            <Label text="DESCRIPTION" styleClass="section-label"/>
+            <Label fx:id="lblDescription" text="Description..." wrapText="true" styleClass="card-description-text"/>
+        </VBox>
+
+        <!-- Ligne séparatrice -->
+        <Separator opacity="0.5"/>
+
+        <!-- Statut + Réponse côte à côte -->
+        <HBox spacing="20" alignment="TOP_LEFT">
+
+            <!-- Changer statut -->
+            <VBox spacing="8" prefWidth="220">
+                <Label text="CHANGER LE STATUT" styleClass="section-label"/>
+                <ComboBox fx:id="cbNouveauStatut" styleClass="section-combo" maxWidth="Infinity"/>
+                <Button text="Enregistrer" onAction="#handleChangerStatut"
+                        styleClass="btn-save" maxWidth="Infinity"/>
+            </VBox>
+
+            <!-- Réponse -->
+            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                <Label text="RÉPONDRE AU CLIENT" styleClass="section-label"/>
+                <TextArea fx:id="taReponse"
+                          promptText="Rédigez votre réponse..."
+                          wrapText="true"
+                          prefRowCount="3"
+                          styleClass="reply-area"/>
+            </VBox>
+
+        </HBox>
+
+    </VBox>
+
+    <!-- ── Pied de carte ─────────────────────────────────── -->
+    <HBox alignment="CENTER_LEFT" spacing="8" styleClass="card-footer">
+
+        <!-- Actions réponse -->
+        <Button text="Envoyer réponse"   onAction="#handleAjouterReponse"  styleClass="btn-primary"/>
+        <Button text="Modifier réponse"  onAction="#handleModifierReponse" styleClass="btn-secondary"/>
+        <Button text="Voir réponses"     onAction="#handleVoirReponses"    styleClass="btn-secondary"/>
+
+        <Region HBox.hgrow="ALWAYS"/>
+
+        <!-- Actions avancées -->
+        <Button text="Résumé IA"  onAction="#handleVoirResume"  styleClass="btn-resume"/>
+        <Button text="Meet"       onAction="#handleDemarrerMeet" styleClass="btn-meet"/>
+
+    </HBox>
+
+</VBox>

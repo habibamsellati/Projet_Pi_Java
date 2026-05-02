@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<!-- Vue contenu seul — chargée dans le panneau central du dashboard admin -->
+<VBox prefHeight="760.0" prefWidth="960.0"
+      xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.ReclamationsAdminController"
+      styleClass="main-content"
+      stylesheets="@/css/reclamations-style.css"
+      spacing="20">
+
+    <!-- Titre page -->
+    <HBox alignment="CENTER_LEFT">
+        <Label fx:id="lblBienvenue" styleClass="page-title"/>
+    </HBox>
+
+    <!-- Barre filtres -->
+    <HBox spacing="10" alignment="CENTER_LEFT" styleClass="toolbar-row">
+        <TextField fx:id="tfSearch"
+                   promptText="Rechercher par titre, client, description..."
+                   styleClass="search-field"
+                   prefWidth="360"/>
+        <ComboBox fx:id="cbStatut" styleClass="filter-combo" prefWidth="180"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Exporter PDF" styleClass="btn-resume"/>
+    </HBox>
+
+    <!-- Liste réclamations -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="content-scroll">
+        <content>
+            <VBox fx:id="containerReclamations" styleClass="cards-wrap"/>
+        </content>
+    </ScrollPane>
+
+</VBox>

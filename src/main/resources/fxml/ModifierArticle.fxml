@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+
+<VBox spacing="14" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.ModifierArticleController">
+    <padding>
+        <Insets top="20" right="20" bottom="20" left="20"/>
+    </padding>
+
+    <Label text="Modifier l'article" styleClass="title-label"/>
+
+    <Label text="Titre *" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="tfTitre" promptText="Entrez le titre"/>
+
+    <Label text="Contenu *" style="-fx-font-weight: bold;"/>
+    <TextArea fx:id="taContenu" prefHeight="140" promptText="Entrez le contenu"/>
+
+    <HBox spacing="12">
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Categorie" style="-fx-font-weight: bold;"/>
+            <ComboBox fx:id="cbCategorie" maxWidth="Infinity">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Artisanat" />
+                        <String fx:value="Décoration" />
+                        <String fx:value="Textile" />
+                        <String fx:value="Céramique" />
+                        <String fx:value="Autres" />
+                    </FXCollections>
+                </items>
+            </ComboBox>
+        </VBox>
+        <VBox spacing="8" HBox.hgrow="ALWAYS">
+            <Label text="Prix (DT)" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="tfPrix"/>
+        </VBox>
+    </HBox>
+
+    <Label text="Image (URL/chemin)" style="-fx-font-weight: bold;"/>
+    <TextField fx:id="tfImage" promptText="Ex: file:/C:/images/tapis.jpg"/>
+
+    <HBox spacing="12" alignment="CENTER_RIGHT">
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+        <Button text="Enregistrer" styleClass="btn-publier" onAction="#handleModifier"/>
+    </HBox>
+</VBox>
+
+

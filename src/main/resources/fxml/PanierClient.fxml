@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.PanierClientController">
+
+    <!-- ── En-tête ── -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-padding: 18 28; -fx-background-color: white;
+                     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 3);">
+            <Label text="🛒 Mon Panier" styleClass="title-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Hyperlink text="⏱ Historique des commandes" onAction="#handleVoirHistorique"
+                       style="-fx-text-fill: #8D5E3C; -fx-font-weight: bold; -fx-font-size: 14;
+                              -fx-border-color: transparent;"/>
+        </HBox>
+    </top>
+
+    <!-- ── Zone centrale (état vide / état rempli) ── -->
+    <center>
+        <StackPane>
+
+            <!-- État vide -->
+            <VBox fx:id="vboxEmpty" alignment="CENTER" spacing="22"
+                  style="-fx-padding: 80;" visible="true" managed="true">
+                <Label text="🛒" style="-fx-font-size: 72;"/>
+                <Label text="Votre panier est vide"
+                       style="-fx-font-size: 30; -fx-font-weight: bold;
+                              -fx-text-fill: #8D6E63; -fx-font-family: 'Serif';"/>
+                <Label text="Découvrez nos créations artisanales et ajoutez-en à votre panier."
+                       wrapText="true" maxWidth="420" alignment="CENTER"
+                       style="-fx-font-size: 15; -fx-text-fill: #A1887F;"/>
+                <Button text="🔍 Voir les articles" onAction="#handleRetourCatalogue"
+                        style="-fx-background-color: #8D6E63; -fx-text-fill: white;
+                               -fx-font-weight: bold; -fx-background-radius: 26;
+                               -fx-padding: 14 36; -fx-font-size: 15; -fx-cursor: hand;"/>
+            </VBox>
+
+            <!-- État rempli -->
+            <ScrollPane fx:id="scrollFilled" fitToWidth="true"
+                        visible="false" managed="false"
+                        style="-fx-background-color: transparent;">
+                <content>
+                    <VBox fx:id="vbItems" spacing="14"
+                          style="-fx-padding: 24;"/>
+                </content>
+            </ScrollPane>
+
+        </StackPane>
+    </center>
+
+    <!-- ── Barre de bas (total + valider) ── -->
+    <bottom>
+        <HBox fx:id="hboxBottom" alignment="CENTER_LEFT" spacing="20"
+              visible="false" managed="false"
+              style="-fx-padding: 18 28; -fx-background-color: white;
+                     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.12), 10, 0, 0, -3);">
+            <Label fx:id="lblTotal" text="Total : 0.00 DT"
+                   style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="✓  Valider le panier" onAction="#handleValiderPanier"
+                    style="-fx-background-color: #2E8B57; -fx-text-fill: white;
+                           -fx-font-weight: bold; -fx-background-radius: 26;
+                           -fx-padding: 14 40; -fx-font-size: 16; -fx-cursor: hand;"/>
+        </HBox>
+    </bottom>
+
+</BorderPane>
+
+
+

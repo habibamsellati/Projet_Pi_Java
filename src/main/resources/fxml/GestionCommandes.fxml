@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.GestionCommandesController"
+      stylesheets="@/css/admin-dashboard.css"
+      style="-fx-background-color: #f5f0eb;">
+
+    <ScrollPane fitToWidth="true" styleClass="scroll-pane" VBox.vgrow="ALWAYS">
+        <VBox styleClass="content-area" spacing="20">
+            <padding><Insets top="24" right="32" bottom="32" left="32"/></padding>
+
+            <!-- Stat cards -->
+            <HBox spacing="16">
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <Label text="🛒" styleClass="stat-icon-box,ic-purple"/>
+                        <VBox spacing="4">
+                            <Label fx:id="lblTotalCommandes" text="0" styleClass="stat-val"/>
+                            <Label text="Total commandes" styleClass="stat-lbl"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <Label text="✅" styleClass="stat-icon-box,ic-green"/>
+                        <VBox spacing="4">
+                            <Label fx:id="lblConfirmees" text="0" styleClass="stat-val"/>
+                            <Label text="Confirmées" styleClass="stat-lbl"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <Label text="⏳" styleClass="stat-icon-box,ic-orange"/>
+                        <VBox spacing="4">
+                            <Label fx:id="lblEnAttente" text="0" styleClass="stat-val"/>
+                            <Label text="En attente" styleClass="stat-lbl"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+                <VBox styleClass="stat-card" HBox.hgrow="ALWAYS">
+                    <HBox spacing="16" alignment="CENTER_LEFT">
+                        <Label text="💰" styleClass="stat-icon-box,ic-brown"/>
+                        <VBox spacing="4">
+                            <Label fx:id="lblChiffreAffaires" text="0.00 DT" styleClass="stat-val"/>
+                            <Label text="Chiffre d'affaires" styleClass="stat-lbl"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </HBox>
+
+            <!-- Filtres et tableau -->
+            <VBox style="-fx-background-color: white; -fx-background-radius: 14;
+                         -fx-padding: 18; -fx-spacing: 14;
+                         -fx-border-color: #e8e0d8; -fx-border-radius: 14; -fx-border-width: 1;
+                         -fx-effect: dropshadow(three-pass-box,rgba(0,0,0,0.06),10,0,0,3);">
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Liste des commandes"
+                           style="-fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: #1a1a1a;"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Button text="Exporter PDF" onAction="#handleExportPdf"
+                            style="-fx-background-color: #4a1e2e; -fx-text-fill: white;
+                                   -fx-background-radius: 8; -fx-padding: 8 18; -fx-cursor: hand;"/>
+                </HBox>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <TextField fx:id="tfRecherche"
+                               promptText="Rechercher par numero ou adresse..."
+                               HBox.hgrow="ALWAYS"
+                               style="-fx-background-radius: 8; -fx-border-radius: 8; -fx-padding: 8 12;"/>
+                    <ComboBox fx:id="cbStatut" prefWidth="180"
+                              style="-fx-background-radius: 8;"/>
+                    <Button text="Appliquer" onAction="#handleFiltrer"
+                            style="-fx-background-color: #c8763a; -fx-text-fill: white;
+                                   -fx-background-radius: 8; -fx-padding: 8 18; -fx-cursor: hand;"/>
+                    <Button text="Reinitialiser" onAction="#handleReinitialiser"
+                            style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                                   -fx-background-radius: 8; -fx-padding: 8 18; -fx-cursor: hand;"/>
+                </HBox>
+
+                <!-- En-tete tableau -->
+                <HBox spacing="0"
+                      style="-fx-background-color: #f5f0eb; -fx-background-radius: 8; -fx-padding: 10 16;">
+                    <Label text="N Commande"  style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="180"/>
+                    <Label text="Date"        style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="130"/>
+                    <Label text="Client"      style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="160"/>
+                    <Label text="Statut"      style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="110"/>
+                    <Label text="Total"       style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="110"/>
+                    <Label text="Adresse"     style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" HBox.hgrow="ALWAYS"/>
+                    <Label text="Actions"     style="-fx-font-weight:bold;-fx-text-fill:#7a7570;-fx-font-size:12;" prefWidth="180"/>
+                </HBox>
+
+                <VBox fx:id="commandesContainer" spacing="2"/>
+
+                <Label fx:id="lblAucune" text="Aucune commande trouvee."
+                       visible="false"
+                       style="-fx-text-fill: #8D6E63; -fx-font-size: 14; -fx-padding: 16 0;"/>
+            </VBox>
+
+        </VBox>
+    </ScrollPane>
+</VBox>

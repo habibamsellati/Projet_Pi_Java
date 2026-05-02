@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.text.Text?>
+<?import javafx.scene.shape.Line?>
+
+<HBox fx:id="ticketCard" alignment="CENTER_LEFT" prefHeight="260.0" minWidth="900.0" spacing="0" 
+      style="-fx-background-color: white; -fx-background-radius: 20; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 15, 0, 0, 8);" 
+      xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.TicketController">
+    
+    <!-- IMAGE DE L'EVENT (À GAUCHE) -->
+    <StackPane prefWidth="250" minWidth="250">
+        <ImageView fx:id="ivEvent" fitHeight="260" fitWidth="250" pickOnBounds="true" preserveRatio="false" style="-fx-background-radius: 20 0 0 20;"/>
+        <VBox alignment="BOTTOM_LEFT" style="-fx-background-color: linear-gradient(to top, rgba(0,0,0,0.7), transparent); -fx-padding: 15; -fx-background-radius: 0 0 0 20;">
+            <Label fx:id="lblID" text="#AFK-0000" style="-fx-text-fill: white; -fx-font-family: 'Monospaced'; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+        </VBox>
+    </StackPane>
+
+    <!-- INFOS CENTRALES -->
+    <VBox spacing="10" HBox.hgrow="ALWAYS" style="-fx-padding: 25;">
+        
+        <HBox fx:id="boxPagination" spacing="15" alignment="CENTER_LEFT" visible="false" managed="false">
+             <Button fx:id="btnPrevTicket" text="&lt;" onAction="#handlePrevTicket" style="-fx-background-color: transparent; -fx-border-color: #c47653; -fx-text-fill: #c47653; -fx-border-radius: 5; -fx-cursor: hand;"/>
+             <Label fx:id="lblPagination" text="Billet 1 / 49" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+             <Button fx:id="btnNextTicket" text="&gt;" onAction="#handleNextTicket" style="-fx-background-color: transparent; -fx-border-color: #c47653; -fx-text-fill: #c47653; -fx-border-radius: 5; -fx-cursor: hand;"/>
+        </HBox>
+
+        <Label text="CERTIFICATION DE PLACE PREMIUM" style="-fx-text-fill: #c47653; -fx-font-size: 10px; -fx-font-weight: bold; -fx-letter-spacing: 2px;"/>
+        
+        <Label fx:id="lblEvenementTitre" text="NOM DE L'ÉVÉNEMENT" wrapText="true" style="-fx-font-family: 'Serif'; -fx-font-size: 32px; -fx-text-fill: #1a1a1a; -fx-max-width: 400; -fx-font-weight: bold;"/>
+        
+        <Line startX="0" endX="350" stroke="#f0f0f0" />
+        
+        <GridPane hgap="30" vgap="15">
+            <VBox spacing="2" GridPane.rowIndex="0" GridPane.columnIndex="0">
+                <Label text="DATE &amp; HEURE" style="-fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblDateHeure" text="--" style="-fx-text-fill: #1a1a1a; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </VBox>
+            <VBox spacing="2" GridPane.rowIndex="0" GridPane.columnIndex="1">
+                <Label text="Lieu" style="-fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblLieu" text="--" style="-fx-text-fill: #1a1a1a; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </VBox>
+            <VBox spacing="2" GridPane.rowIndex="1" GridPane.columnIndex="0">
+                <Label text="ADMISSION" style="-fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblNbPlaces" text="--" style="-fx-text-fill: #1a1a1a; -fx-font-size: 13px; -fx-font-weight: bold;"/>
+            </VBox>
+             <VBox spacing="2" GridPane.rowIndex="1" GridPane.columnIndex="1">
+                <Label text="PRIX TOTAL" style="-fx-text-fill: #9e8e82; -fx-font-size: 9px; -fx-font-weight: bold;"/>
+                <Label fx:id="lblPrix" text="0.00 TND" style="-fx-text-fill: #c47653; -fx-font-size: 16px; -fx-font-weight: bold;"/>
+            </VBox>
+        </GridPane>
+    </VBox>
+
+    <!-- ZONE QR CODE & ACTION -->
+    <VBox alignment="CENTER" spacing="15" prefWidth="250" minWidth="250" style="-fx-padding: 20; -fx-background-color: #fafaf9; -fx-background-radius: 0 20 20 0; -fx-border-color: #f0f0f0; -fx-border-width: 0 0 0 1;">
+        
+        <!-- Status Badge -->
+        <Label fx:id="lblActionRequise" text="⏳ ATTENTE PAIEMENT" style="-fx-background-color: #fef3c7; -fx-text-fill: #92400e; -fx-padding: 5 15; -fx-background-radius: 15; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+        <Label fx:id="lblPaye" text="✓ CONFIRMÉ" visible="false" managed="false" style="-fx-background-color: #d1fae5; -fx-text-fill: #065f46; -fx-padding: 5 15; -fx-background-radius: 15; -fx-font-size: 10px; -fx-font-weight: bold;"/>
+
+        <!-- QR Code Placeholder (Visible only when confirmed) -->
+        <ImageView fx:id="ivQRCode" fitHeight="130" fitWidth="130" pickOnBounds="true" preserveRatio="true" visible="false" managed="false" />
+
+        <!-- Formulaire de Paiement -->
+        <VBox fx:id="boxPaiement" spacing="10" alignment="CENTER">
+            <TextField fx:id="txtCardHolder" promptText="Nom sur la carte" style="-fx-background-radius: 10; -fx-font-size: 11px; -fx-padding: 8; -fx-background-color: white; -fx-border-color: #eee; -fx-border-radius: 10;"/>
+            <TextField fx:id="txtCardNumber" promptText="N° Carte (16 chiffres)" style="-fx-background-radius: 10; -fx-font-size: 11px; -fx-padding: 8; -fx-background-color: white; -fx-border-color: #eee; -fx-border-radius: 10;"/>
+            <HBox spacing="10">
+                <TextField fx:id="txtCardExp" promptText="MM/AA" HBox.hgrow="ALWAYS" style="-fx-background-radius: 10; -fx-font-size: 11px; -fx-padding: 8; -fx-background-color: white; -fx-border-color: #eee; -fx-border-radius: 10;"/>
+                <TextField fx:id="txtCardCVC" promptText="CVC" prefWidth="60" style="-fx-background-radius: 10; -fx-font-size: 11px; -fx-padding: 8; -fx-background-color: white; -fx-border-color: #eee; -fx-border-radius: 10;"/>
+            </HBox>
+            <Button fx:id="btnFinaliser" onAction="#handleFinaliserPaiement" text="PAYER MAINTENANT" style="-fx-background-color: #1a1a1a; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 10 20; -fx-font-size: 11px; -fx-font-weight: bold; -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Button fx:id="btnAnnuler" onAction="#handleAnnulerReservation" text="ANNULER" style="-fx-background-color: transparent; -fx-text-fill: #ef4444; -fx-border-color: #ef4444; -fx-border-radius: 10; -fx-padding: 8 20; -fx-font-size: 10px; -fx-font-weight: bold; -fx-cursor: hand;" maxWidth="Infinity"/>
+            <Label fx:id="lblExpiration" text="3h restantes" style="-fx-text-fill: #ef4444; -fx-font-size: 9px;"/>
+        </VBox>
+
+        <!-- Actions Billet Confirmé -->
+        <Button fx:id="btnTelecharger" onAction="#handleTelechargerBillet" text="TÉLÉCHARGER LE BILLET" visible="false" managed="false" 
+                style="-fx-background-color: #c47653; -fx-text-fill: white; -fx-background-radius: 10; -fx-padding: 12 25; -fx-font-size: 11px; -fx-font-weight: bold; -fx-cursor: hand;" maxWidth="Infinity"/>
+    </VBox>
+</HBox>

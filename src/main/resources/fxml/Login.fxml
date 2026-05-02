@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="18" alignment="CENTER" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.LoginController">
+    <padding>
+        <Insets top="40" right="40" bottom="40" left="40"/>
+    </padding>
+
+    <Label text="Connexion" styleClass="title-label"/>
+    <Label text="Accès différencié Artisan / Client" style="-fx-text-fill: #A1887F;"/>
+
+    <VBox spacing="12" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 25; -fx-max-width: 420; -fx-min-width: 420;">
+        <Label text="Email" style="-fx-font-weight: bold;"/>
+        <TextField fx:id="tfEmail" promptText="email@example.com"/>
+
+        <Label text="Mot de passe" style="-fx-font-weight: bold;"/>
+        <PasswordField fx:id="pfMotDePasse" promptText="Votre mot de passe"/>
+
+        <Label fx:id="lblInfo" textFill="#C05A54" wrapText="true"/>
+
+        <HBox spacing="10" alignment="CENTER_RIGHT">
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Effacer" styleClass="btn-annuler" onAction="#handleEffacer"/>
+            <Button text="Se connecter" styleClass="btn-publier" onAction="#handleConnexion"/>
+        </HBox>
+    </VBox>
+</VBox>
+

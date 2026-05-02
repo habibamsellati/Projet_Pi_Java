@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.ReclamationsClientController"
+            styleClass="root"
+            stylesheets="@/css/reclamations-style.css"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12;">
+
+
+    <!-- Header -->
+    <top>
+        <VBox styleClass="header" spacing="15" style="-fx-padding: 20; -fx-background-color: white;">
+            <Label fx:id="lblBienvenue"
+                   style="-fx-font-size: 24; -fx-font-weight: bold; -fx-text-fill: #4a3b2b;"/>
+
+            <HBox spacing="10" alignment="CENTER_LEFT">
+                <TextField fx:id="tfSearch"
+                          promptText="Rechercher par titre, statut..."
+                          styleClass="search-field"
+                          style="-fx-min-width: 300; -fx-padding: 10;"/>
+                <Button fx:id="btnNouvelleReclamation"
+                       text="+ Nouvelle Réclamation"
+                       onAction="#handleNouvelleReclamation"
+                       styleClass="btn-new"
+                       style="-fx-padding: 10 20; -fx-font-weight: bold;"/>
+            </HBox>
+        </VBox>
+    </top>
+
+    <!-- Content -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-padding: 0;">
+            <VBox fx:id="containerReclamations"
+                  spacing="15"
+                  style="-fx-padding: 20; -fx-background-color: #fdfaf6;">
+            </VBox>
+        </ScrollPane>
+    </center>
+
+</BorderPane>
+

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<!-- Écran d'accueil des réclamations - Route intelligente basée sur le rôle -->
+<BorderPane xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+            fx:id="root"
+            fx:controller="org.example.controllers.ReclamationsViewController"
+            stylesheets="@/css/reclamations-style.css"
+            style="-fx-font-family: 'Segoe UI'; -fx-font-size: 12;
+                   -fx-background-color: #fdfaf6;">
+
+
+</BorderPane>
+
+

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.collections.FXCollections?>
+<?import java.lang.String?>
+
+<ScrollPane fitToWidth="true" styleClass="main-container" stylesheets="@/css/style.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="org.example.controllers.AjouterArticleController">
+    <VBox spacing="20" alignment="TOP_CENTER" style="-fx-padding: 40;">
+
+        <HBox alignment="CENTER_LEFT" style="-fx-padding: 0 0 10 0;">
+            <Button text="← Retour" onAction="#handleRetour"
+                    style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                           -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;"/>
+        </HBox>
+
+        <Label text="Créer un Nouvel Article" style="-fx-font-size: 32; -fx-font-family: 'Serif'; -fx-text-fill: #8D6E63;"/>
+        <Label text="Partagez votre histoire, vos créations et vos passions" style="-fx-text-fill: #A1887F;"/>
+
+        <VBox spacing="10" alignment="CENTER" style="-fx-border-style: dashed; -fx-border-color: #8D6E63; -fx-border-width: 2; -fx-padding: 30; -fx-background-color: white;">
+            <Label text="📷" style="-fx-font-size: 40;"/>
+            <Label text="Cliquez pour télécharger une image" style="-fx-font-weight: bold;"/>
+            <Button text="Choisir un fichier" onAction="#handleUploadImage"/>
+        </VBox>
+
+        <VBox spacing="15" style="-fx-max-width: 600;">
+            <Label text="Titre de l'Article *" style="-fx-font-weight: bold;"/>
+            <TextField fx:id="tfTitre" promptText="Entrez le titre captivant..."/>
+
+            <Label text="Description &amp; Contenu *" style="-fx-font-weight: bold;"/>
+            <TextArea fx:id="taContenu" promptText="Écrivez une description détaillée..." prefHeight="150"/>
+
+            <HBox spacing="20">
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Categorie" style="-fx-font-weight: bold;"/>
+                    <ComboBox fx:id="cbCategorie" maxWidth="Infinity">
+                        <items>
+                            <FXCollections fx:factory="observableArrayList">
+                                <String fx:value="Artisanat" />
+                                <String fx:value="Décoration" />
+                                <String fx:value="Textile" />
+                                <String fx:value="Céramique" />
+                                <String fx:value="Autres" />
+                            </FXCollections>
+                        </items>
+                    </ComboBox>
+                </VBox>
+                <VBox HBox.hgrow="ALWAYS">
+                    <Label text="Prix (DT)" style="-fx-font-weight: bold;"/>
+                    <TextField fx:id="tfPrix" promptText="Optionnel (ex: 25.50)"/>
+                </VBox>
+            </HBox>
+
+            <HBox spacing="15" alignment="CENTER_RIGHT" style="-fx-padding: 20 0 0 0;">
+                <Button text="Annuler" styleClass="btn-annuler" onAction="#handleAnnuler"/>
+                <Button text="Publier l'Article" styleClass="btn-publier" onAction="#handleAjouter"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</ScrollPane>

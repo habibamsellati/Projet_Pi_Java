@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.collections.FXCollections?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+<?import java.lang.String?>
+
+<BorderPane styleClass="main-container" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.AfficherArticlesController">
+
+    <!-- ══ BARRE DU HAUT ══ -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="12"
+              style="-fx-padding: 20; -fx-background-color: white;
+                     -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 8, 0, 0, 3);">
+            <Button text="← Retour" onAction="#handleRetour"
+                    style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                           -fx-background-radius: 20; -fx-padding: 8 20; -fx-cursor: hand;"/>
+            <Label text="Articles" styleClass="title-label"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Rafraîchir" onAction="#handleRafraichir"
+                    style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                           -fx-background-radius: 8; -fx-padding: 8 16;"/>
+        </HBox>
+    </top>
+
+    <!-- ══ CONTENU CENTRAL ══ -->
+    <center>
+        <ScrollPane fitToWidth="true" style="-fx-background-color: transparent;">
+            <content>
+                <VBox spacing="20" style="-fx-padding: 18;">
+
+                    <!-- ── LISTE + RECHERCHE ── -->
+                    <VBox spacing="10"
+                          style="-fx-background-color: white; -fx-padding: 18; -fx-background-radius: 14;">
+                        <Label text="Articles publiés"
+                               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <TextField fx:id="tfRechercheArticle"
+                                       promptText="Rechercher par titre ou contenu…"
+                                       HBox.hgrow="ALWAYS"/>
+                            <ComboBox fx:id="cbTriArticles"
+                                      promptText="Tri"
+                                      style="-fx-min-width: 130;"/>
+                        </HBox>
+
+                        <Label fx:id="lblAucunArticle"
+                               text="Aucun article pour le moment."
+                               wrapText="true"
+                               style="-fx-text-fill: #8D6E63; -fx-font-size: 14;"/>
+                        <VBox fx:id="articlesContainer" spacing="16"/>
+                    </VBox>
+
+                    <!-- ── FORMULAIRE AJOUT ── -->
+                    <VBox spacing="12"
+                          style="-fx-background-color: white; -fx-padding: 20;
+                                 -fx-background-radius: 14;
+                                 -fx-border-color: #D7CCC8; -fx-border-radius: 14; -fx-border-width: 1;">
+
+                        <Label text="✏  Ajouter un article"
+                               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+
+                        <Label text="Titre *" style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="tfNomArticle"
+                                   promptText="Titre de l'article (min. 3 caractères)"/>
+
+                        <Label text="Contenu *" style="-fx-font-weight: bold;"/>
+                        <TextArea fx:id="taContenuArticle"
+                                  promptText="Décrivez l'article (min. 10 caractères)…"
+                                  wrapText="true" prefRowCount="4"/>
+
+                        <HBox spacing="12">
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="Catégorie" style="-fx-font-weight: bold;"/>
+                                <ComboBox fx:id="cbCategorieArticle" maxWidth="Infinity">
+                                    <items>
+                                        <FXCollections fx:factory="observableArrayList">
+                                            <String fx:value="Artisanat"/>
+                                            <String fx:value="Décoration"/>
+                                            <String fx:value="Textile"/>
+                                            <String fx:value="Céramique"/>
+                                            <String fx:value="Autres"/>
+                                        </FXCollections>
+                                    </items>
+                                </ComboBox>
+                            </VBox>
+                            <VBox spacing="6" HBox.hgrow="ALWAYS">
+                                <Label text="Prix (DT)" style="-fx-font-weight: bold;"/>
+                                <TextField fx:id="tfPrixArticle" promptText="Ex : 25.50"/>
+                            </VBox>
+                        </HBox>
+
+                        <Label text="Image (URL ou chemin — optionnel)"
+                               style="-fx-font-weight: bold;"/>
+                        <TextField fx:id="tfImageArticle"
+                                   promptText="Ex : file:/C:/images/tapis.jpg"/>
+
+                        <HBox alignment="CENTER_RIGHT" spacing="10">
+                            <Button text="Vider" onAction="#handleViderFormulaire"
+                                    style="-fx-background-color: #E0DDD5; -fx-text-fill: #5D4037;
+                                           -fx-background-radius: 10; -fx-padding: 10 20;"/>
+                            <Button text="Publier l'article" styleClass="btn-publier"
+                                    onAction="#handlePublierArticle"/>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </content>
+        </ScrollPane>
+    </center>
+
+    <padding>
+        <Insets top="0" right="8" bottom="8" left="8"/>
+    </padding>
+</BorderPane>

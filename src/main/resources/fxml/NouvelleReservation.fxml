@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fx:id="mainScrollPane" fitToWidth="true" style="-fx-background-color: #faf7f2;" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.NouvelleReservationController">
+    <VBox spacing="40" style="-fx-padding: 50; -fx-alignment: top-center; -fx-background-color: #faf7f2;">
+        
+        <!-- HEADER -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="ÉTAPE DE RÉSERVATION" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #c4956a; -fx-letter-spacing: 2px;"/>
+            <TextFlow textAlignment="CENTER">
+                <Text text="Finalisez votre " style="-fx-font-size: 36px; -fx-font-family: 'Serif'; -fx-fill: #2d2d2d;"/>
+                <Text text="Expérience" style="-fx-font-size: 36px; -fx-font-family: 'Serif'; -fx-fill: #c4956a;"/>
+            </TextFlow>
+            <Label text="Vérifiez vos informations et choisissez votre mode de réservation pour&#10;garantir votre place." textAlignment="CENTER" style="-fx-text-fill: #6b5b4f;"/>
+        </VBox>
+
+        <!-- DEUX COLONNES -->
+        <HBox spacing="30" alignment="TOP_CENTER" style="-fx-max-width: 900;">
+            
+            <!-- GAUCHE : FORMULAIRE -->
+            <VBox spacing="20" prefWidth="500" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                
+                <Label text="Détails de la Réservation" style="-fx-font-family: 'Serif'; -fx-font-size: 22px; -fx-text-fill: #2d2d2d;"/>
+                <Separator/>
+
+                <VBox spacing="5">
+                    <Label text="ÉVÉNEMENT SÉLECTIONNÉ" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                    <ComboBox fx:id="cbEvenement" maxWidth="Infinity" styleClass="text-field"/>
+                    <Label fx:id="lblErrEvenement" text="Erreur" style="-fx-text-fill: #e74c3c; -fx-font-size: 10px;" visible="false" managed="false"/>
+                </VBox>
+
+                <HBox spacing="15">
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="DATE SOUHAITÉE" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                        <DatePicker fx:id="dpDateReservation" maxWidth="Infinity" styleClass="date-picker"/>
+                        <Label fx:id="lblErrDate" text="Erreur" style="-fx-text-fill: #e74c3c; -fx-font-size: 10px;" visible="false" managed="false"/>
+                    </VBox>
+                    <VBox HBox.hgrow="ALWAYS" spacing="5">
+                        <Label text="NOMBRE DE PARTICIPANTS" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                        <TextField fx:id="tfNbPlaces" promptText="1" styleClass="text-field"/>
+                        <Label fx:id="lblErrPlaces" text="Erreur" style="-fx-text-fill: #e74c3c; -fx-font-size: 10px;" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+
+                <fx:define>
+                    <ToggleGroup fx:id="tgStatut"/>
+                </fx:define>
+
+                <VBox spacing="10">
+                    <Label text="MODALITÉ DE RÉSERVATION" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                    
+                    <RadioButton fx:id="rbAttente" text="Mise en attente (Confirmation sous 3h)" selected="true" toggleGroup="$tgStatut"/>
+                    <Label text="Réservez sans payer aujourd'hui. Vous aurez 3 heures pour confirmer." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82; -fx-padding: 0 0 0 25;"/>
+                    
+                    <Region prefHeight="10"/>
+                    
+                    <RadioButton fx:id="rbConfirme" text="Réservation ferme &amp; Paiement immédiat" toggleGroup="$tgStatut"/>
+                    <Label text="Garantissez votre place via notre portail sécurisé." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82; -fx-padding: 0 0 0 25;"/>
+                </VBox>
+
+                <Region prefHeight="20"/>
+
+                <HBox spacing="15" alignment="CENTER_LEFT">
+                    <Button text="Confirmer la Réservation" style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 20; -fx-padding: 10 20; -fx-font-weight: bold; -fx-cursor: hand;" onAction="#handleCreerReservation"/>
+                    <Button text="✕ Annuler" style="-fx-background-color: transparent; -fx-text-fill: #6b5b4f; -fx-cursor: hand;" onAction="#handleGoBack"/>
+                </HBox>
+            </VBox>
+
+            <!-- DROITE : RÉCAPITULATIF -->
+            <VBox spacing="20" prefWidth="350">
+                <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <Label text="Récapitulatif" style="-fx-font-family: 'Serif'; -fx-font-size: 22px; -fx-text-fill: #2d2d2d;"/>
+                    <Separator/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <ImageView fx:id="ivRecapImage" fitWidth="60" fitHeight="60" style="-fx-background-radius: 10;"/>
+                        <VBox spacing="2" alignment="CENTER_LEFT">
+                            <Label fx:id="lblRecapTitre" text="..." style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                            <Label fx:id="lblRecapLieu" text="📍 ..." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82;"/>
+                            <Label fx:id="lblRecapTag" text="..." style="-fx-font-size: 10px; -fx-text-fill: #c4956a; -fx-font-weight: bold;"/>
+                        </VBox>
+                    </HBox>
+
+                    <VBox spacing="10" style="-fx-background-color: #fdfaf8; -fx-padding: 15; -fx-background-radius: 10;">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Prix unitaire" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblRecapPrixUnitaire" text="0.00 TND" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                        </HBox>
+                        <Separator/>
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Estimation Total" style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblRecapTotal" text="0.00 TND" style="-fx-font-size: 18px; -fx-font-weight: bold; -fx-text-fill: #c47653;"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- SECURITE -->
+                <VBox alignment="CENTER" spacing="5" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-color: #fcece3; -fx-border-radius: 15; -fx-border-style: dashed; -fx-padding: 15;">
+                    <Label text="🔒 Paiement Sécurisé" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82;"/>
+                    <HBox alignment="CENTER" spacing="10">
+                        <Label text="Visa" style="-fx-font-weight: bold; -fx-text-fill: #273c75;"/>
+                        <Label text="Mastercard" style="-fx-font-weight: bold; -fx-text-fill: #e84118;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+
+        </HBox>
+        
+    </VBox>
+</ScrollPane>

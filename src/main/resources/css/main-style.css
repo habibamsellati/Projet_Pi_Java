@@ -1,0 +1,177 @@
+/* MAIN STYLE - Navbar + Accueil + navigation */
+
+.navbar {
+    -fx-background-color: white;
+    -fx-border-color: transparent transparent #E8E3D8 transparent;
+    -fx-border-width: 0 0 1 0;
+    -fx-pref-height: 72;
+    -fx-min-height: 72;
+}
+
+.logo-afk {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 22px;
+    -fx-text-fill: #2A2A2A;
+}
+
+.nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #333;
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-padding: 8 14;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+}
+
+.nav-btn:hover {
+    -fx-text-fill: #8B5A3C;
+    -fx-background-color: #F5F0E8;
+    -fx-background-radius: 6;
+}
+
+.nav-btn-active {
+    -fx-text-fill: #8B5A3C;
+    -fx-font-weight: bold;
+    -fx-background-color: transparent;
+    -fx-border-color: transparent transparent #8B5A3C transparent;
+    -fx-border-width: 0 0 2 0;
+}
+
+.user-card {
+    -fx-background-color: #F5F0E8;
+    -fx-background-radius: 12;
+    -fx-border-color: #E0D8CE;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+}
+
+.user-nom {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+
+.user-role {
+    -fx-font-family: "Arial";
+    -fx-font-size: 11px;
+    -fx-text-fill: #888;
+}
+
+.btn-deconnexion {
+    -fx-background-color: #F5F0E8;
+    -fx-border-color: #D5CFC6;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-text-fill: #444;
+    -fx-font-size: 13px;
+    -fx-padding: 10 18;
+    -fx-cursor: hand;
+}
+
+.btn-deconnexion:hover {
+    -fx-background-color: #E8E0D5;
+    -fx-text-fill: #C0392B;
+}
+
+.badge-eco {
+    -fx-background-color: #D4EDDA;
+    -fx-background-radius: 20;
+    -fx-text-fill: #2E6B45;
+    -fx-font-size: 13px;
+    -fx-padding: 7 16;
+    -fx-font-family: "Arial";
+}
+
+.hero-titre-noir {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 48px;
+    -fx-text-fill: #1A1A1A;
+}
+
+.hero-titre-marron {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 48px;
+    -fx-text-fill: #8B5A3C;
+    -fx-font-style: italic;
+}
+
+.hero-description {
+    -fx-font-family: "Arial";
+    -fx-font-size: 15px;
+    -fx-text-fill: #555;
+    -fx-line-spacing: 4;
+}
+
+.btn-explorer {
+    -fx-background-color: #8B5A3C;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-padding: 14 28;
+    -fx-background-radius: 26;
+    -fx-cursor: hand;
+}
+
+.btn-explorer:hover {
+    -fx-background-color: #7A4D33;
+}
+
+.btn-artisans {
+    -fx-background-color: transparent;
+    -fx-border-color: #333;
+    -fx-border-radius: 26;
+    -fx-background-radius: 26;
+    -fx-text-fill: #333;
+    -fx-font-size: 14px;
+    -fx-padding: 14 28;
+    -fx-cursor: hand;
+}
+
+.btn-artisans:hover {
+    -fx-background-color: #F5F0E8;
+}
+
+.stat-chiffre {
+    -fx-font-family: "Georgia";
+    -fx-font-size: 36px;
+    -fx-text-fill: #8B5A3C;
+    -fx-font-style: italic;
+}
+
+.stat-label {
+    -fx-font-family: "Arial";
+    -fx-font-size: 13px;
+    -fx-text-fill: #777;
+}
+
+.hero-image-placeholder {
+    -fx-background-color: #2C2C2C;
+    -fx-background-radius: 16;
+    -fx-min-width: 400;
+    -fx-min-height: 400;
+}
+
+.badge-local {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.15), 12, 0, 0, 3);
+    -fx-translate-x: -60;
+    -fx-translate-y: 120;
+    -fx-alignment: BOTTOM_LEFT;
+}
+
+.badge-local-titre {
+    -fx-font-family: "Arial";
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #222;
+}
+
+.badge-local-sub {
+    -fx-font-family: "Arial";
+    -fx-font-size: 12px;
+    -fx-text-fill: #888;
+}
+

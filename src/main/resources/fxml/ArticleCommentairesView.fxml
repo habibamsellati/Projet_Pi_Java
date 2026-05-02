@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox prefHeight="700" prefWidth="920" spacing="0"
+      styleClass="root" stylesheets="@/css/style.css"
+      xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+      fx:controller="org.example.controllers.ArticleCommentairesController">
+
+    <!-- ── En-tête article ── -->
+    <VBox spacing="10" styleClass="form-container">
+        <HBox alignment="CENTER_LEFT" spacing="10">
+            <Label fx:id="lblPageTitle" text="Article et commentaires"
+                   style="-fx-font-size: 22; -fx-font-weight: bold; -fx-text-fill: #5D4037;"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <!-- Sélecteur de langue -->
+            <ComboBox fx:id="langCombo" onAction="#handleChangerLangue"
+                      style="-fx-font-size: 13; -fx-background-radius: 8; -fx-padding: 4 8;"/>
+            <Button fx:id="btnFermer" text="Fermer" onAction="#handleFermer" styleClass="btn-annuler"/>
+        </HBox>
+
+        <Label fx:id="lblTitreArticle" text="Titre"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #4E342E;"/>
+        <HBox spacing="15">
+            <Label fx:id="lblPrixArticle" text="Prix : --" style="-fx-text-fill: #8D6E63;"/>
+            <Label fx:id="lblDateArticle" text="Date : --" style="-fx-text-fill: #8D6E63;"/>
+        </HBox>
+
+        <!-- ── Boutons like / dislike ── -->
+        <HBox spacing="12" alignment="CENTER_LEFT" style="-fx-padding: 6 0 0 0;">
+            <Button fx:id="btnLike"
+                    text="❤️  J'aime (0)"
+                    onAction="#handleLike"
+                    style="-fx-background-color: #f5f5f5; -fx-text-fill: #555; -fx-background-radius: 22; -fx-padding: 9 20; -fx-font-size: 13; -fx-cursor: hand; -fx-border-color: #ddd; -fx-border-radius: 22;"/>
+            <Button fx:id="btnDislike"
+                    text="👎  Je n'aime pas (0)"
+                    onAction="#handleDislike"
+                    style="-fx-background-color: #f5f5f5; -fx-text-fill: #555; -fx-background-radius: 22; -fx-padding: 9 20; -fx-font-size: 13; -fx-cursor: hand; -fx-border-color: #ddd; -fx-border-radius: 22;"/>
+        </HBox>
+    </VBox>
+
+    <!-- ── Liste des commentaires ── -->
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS">
+        <content>
+            <VBox fx:id="vboxScroll" spacing="12" style="-fx-padding: 20;">
+                <Label fx:id="lblAucunCommentaire"
+                       text="Aucun commentaire pour le moment. Soyez le premier a commenter !"
+                       style="-fx-font-size: 14; -fx-text-fill: #999;"/>
+                <VBox fx:id="vboxCommentaires" spacing="12"/>
+            </VBox>
+        </content>
+    </ScrollPane>
+
+    <!-- ── Formulaire nouveau commentaire ── -->
+    <VBox fx:id="vboxFormCommentaire" spacing="12" styleClass="form-container">
+        <Label fx:id="lblAddComment" text="Ajouter un commentaire"
+               style="-fx-font-size: 18; -fx-font-weight: bold; -fx-text-fill: #444;"/>
+        <FlowPane fx:id="emojiBar"
+                  hgap="8"
+                  vgap="8"
+                  prefWrapLength="420"
+                  style="-fx-padding: 0 0 4 0;"/>
+        <TextArea fx:id="taNouveauCommentaire"
+                  prefHeight="90"
+                  wrapText="true"
+                  promptText="Partagez votre avis (5 a 255 caracteres)..."
+                  styleClass="text-area"/>
+        <HBox alignment="CENTER_RIGHT">
+            <Button fx:id="btnPublier" text="Publier le commentaire"
+                    onAction="#handlePublierCommentaire" styleClass="button-submit"/>
+        </HBox>
+        <padding>
+            <Insets top="20" right="20" bottom="20" left="20"/>
+        </padding>
+    </VBox>
+</VBox>

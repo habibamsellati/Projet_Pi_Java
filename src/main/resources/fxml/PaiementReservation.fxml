@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fitToWidth="true" style="-fx-background-color: #f7f3f0;" stylesheets="@/css/style.css"
+            xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml"
+            fx:controller="org.example.controllers.PaiementReservationController">
+    <VBox spacing="40" style="-fx-padding: 50; -fx-alignment: top-center; -fx-background-color: #f7f3f0;">
+        
+        <!-- HEADER -->
+        <VBox alignment="CENTER" spacing="10">
+            <Label text="ÉTAPE DE PAIEMENT SÉCURISÉ" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #c4956a; -fx-letter-spacing: 2px;"/>
+            <TextFlow textAlignment="CENTER">
+                <Text text="Finalisez votre " style="-fx-font-size: 32px; -fx-font-family: 'Serif'; -fx-fill: #2d2d2d;"/>
+                <Text text="Paiement" style="-fx-font-size: 32px; -fx-font-family: 'Serif'; -fx-fill: #c4956a;"/>
+            </TextFlow>
+            <Label text="Vos informations bancaires sont chiffrées selon la norme PCI-DSS." textAlignment="CENTER" style="-fx-text-fill: #6b5b4f;"/>
+        </VBox>
+
+        <HBox spacing="30" alignment="TOP_CENTER" style="-fx-max-width: 900;">
+            <!-- GAUCHE : FORMULAIRE DE CARTE -->
+            <VBox spacing="25" prefWidth="550" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 40; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                <Label text="Informations de Carte" style="-fx-font-family: 'Serif'; -fx-font-size: 20px; -fx-text-fill: #2d2d2d;"/>
+                <Separator/>
+
+                <VBox spacing="10">
+                    <Label text="TITULAIRE DE LA CARTE" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                    <TextField fx:id="tfCartName" promptText="Nom affiché sur la carte" styleClass="text-field" style="-fx-pref-height: 40; -fx-background-color: #fdfaf8;"/>
+                </VBox>
+
+                <VBox spacing="10">
+                    <Label text="NUMÉRO DE CARTE" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="text-field" style="-fx-background-color: #fdfaf8; -fx-pref-height: 40; -fx-padding: 0 10; -fx-border-color: #ede5de; -fx-border-radius: 8;">
+                        <Label text="💳" style="-fx-font-size: 16px;"/>
+                        <TextField fx:id="tfCartNum" promptText="0000 0000 0000 0000" style="-fx-background-color: transparent; -fx-border-width: 0;" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+                </VBox>
+
+                <HBox spacing="15">
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="DATE D'EXPIRATION" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                        <TextField fx:id="tfCartExp" promptText="MM/AA" styleClass="text-field" style="-fx-pref-height: 40; -fx-background-color: #fdfaf8;"/>
+                    </VBox>
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label text="CODE CVC" style="-fx-font-size: 10px; -fx-font-weight: bold; -fx-text-fill: #9e8e82;"/>
+                        <HBox alignment="CENTER_LEFT" spacing="5" styleClass="text-field" style="-fx-background-color: #fdfaf8; -fx-pref-height: 40; -fx-padding: 0 10; -fx-border-color: #ede5de; -fx-border-radius: 8;">
+                            <TextField fx:id="tfCartCvc" promptText="123" style="-fx-background-color: transparent; -fx-border-width: 0;" HBox.hgrow="ALWAYS"/>
+                            <Label text="ℹ️" style="-fx-text-fill: #b0a09a; -fx-cursor: hand;">
+                                <tooltip><Tooltip text="Le code à 3 ou 4 chiffres situé au dos de votre carte."/></tooltip>
+                            </Label>
+                        </HBox>
+                    </VBox>
+                </HBox>
+
+                <Region prefHeight="10"/>
+
+                <Button fx:id="lblTotalBtn" text="Payer" maxWidth="Infinity" style="-fx-background-color: #2d2d2d; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 15; -fx-font-weight: bold; -fx-font-size: 14px; -fx-cursor: hand;" onAction="#handleContinuerPaiement"/>
+                
+                <Button text="Retour" maxWidth="Infinity" style="-fx-background-color: transparent; -fx-text-fill: #6b5b4f; -fx-cursor: hand; -fx-font-size: 12px; -fx-underline: true;" onAction="#handleAnnuler"/>
+            </VBox>
+
+            <!-- DROITE : RÉCAPITULATIF (SIMILAIRE À FACTURE) -->
+            <VBox spacing="20" prefWidth="320">
+                <VBox spacing="20" style="-fx-background-color: white; -fx-background-radius: 15; -fx-padding: 30; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 5);">
+                    <Label text="Détails de l'Achat" style="-fx-font-family: 'Serif'; -fx-font-size: 20px; -fx-text-fill: #2d2d2d;"/>
+                    <Separator/>
+
+                    <HBox spacing="15" alignment="CENTER_LEFT">
+                        <ImageView fx:id="ivEventPoster" fitWidth="60" fitHeight="60" style="-fx-background-radius: 10;"/>
+                        <VBox spacing="2" alignment="CENTER_LEFT">
+                            <Label fx:id="lblEventTitre" text="..." style="-fx-font-weight: bold; -fx-text-fill: #2d2d2d; -fx-font-size: 13px; -fx-wrap-text: true;"/>
+                            <Label fx:id="lblEventLieu" text="📍 ..." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82;"/>
+                            <Label fx:id="lblDateEvt" text="📅 ..." style="-fx-font-size: 10px; -fx-text-fill: #9e8e82;"/>
+                            <Label fx:id="lblEventTag" text="..." style="-fx-font-size: 10px; -fx-text-fill: #c4956a; -fx-font-weight: bold;"/>
+                        </VBox>
+                    </HBox>
+
+                    <Separator/>
+
+                    <VBox spacing="12">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Prix unitaire" style="-fx-font-size: 12px; -fx-text-fill: #6b5b4f;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblPrixUnitaire" text="0.00 TND" style="-fx-font-size: 12px; -fx-font-weight: bold; -fx-text-fill: #2d2d2d;"/>
+                        </HBox>
+                        
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Frais de traitement" style="-fx-font-size: 12px; -fx-text-fill: #6b5b4f;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label text="Inclus" style="-fx-font-size: 12px; -fx-text-fill: #4CAF50; -fx-font-weight: bold;"/>
+                        </HBox>
+                        
+                        <Separator/>
+                        
+                        <HBox alignment="CENTER_LEFT">
+                            <Label text="Total" style="-fx-font-weight: bold; -fx-font-size: 16px; -fx-text-fill: #2d2d2d;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblTotal" text="0.00 TND" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #c47653;"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- SECURITE -->
+                <VBox alignment="CENTER" spacing="8" style="-fx-background-color: white; -fx-background-radius: 15; -fx-border-color: #fcece3; -fx-border-radius: 15; -fx-border-style: dashed; -fx-padding: 15;">
+                    <Label text="🔒 Paiement 100% Sécurisé" style="-fx-font-size: 11px; -fx-text-fill: #9e8e82; -fx-font-weight: bold;"/>
+                    <HBox alignment="CENTER" spacing="15">
+                        <Label text="Visa" style="-fx-font-weight: bold; -fx-text-fill: #273c75; -fx-font-size: 14px;"/>
+                        <Label text="Mastercard" style="-fx-font-weight: bold; -fx-text-fill: #e84118; -fx-font-size: 14px;"/>
+                        <Label text="Paypal" style="-fx-font-weight: bold; -fx-text-fill: #009cde; -fx-font-size: 14px;"/>
+                    </HBox>
+                </VBox>
+            </VBox>
+        </HBox>
+    </VBox>
+</ScrollPane>

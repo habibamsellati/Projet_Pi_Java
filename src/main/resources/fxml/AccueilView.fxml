@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<ScrollPane fitToWidth="true"
+			style="-fx-background-color:#EEEADE; -fx-background:#EEEADE;"
+			xmlns="http://javafx.com/javafx/17"
+			xmlns:fx="http://javafx.com/fxml/1">
+
+	<VBox style="-fx-background-color:#EEEADE;" spacing="0">
+		<padding><Insets top="48" bottom="60" left="80" right="80"/></padding>
+
+		<HBox spacing="60" alignment="CENTER_LEFT">
+
+			<VBox spacing="24" HBox.hgrow="ALWAYS" maxWidth="600">
+				<HBox>
+					<Label text="Marketplace eco-responsable" styleClass="badge-eco"/>
+				</HBox>
+
+				<VBox spacing="0">
+					<Label text="L'art qui donne une" styleClass="hero-titre-noir"/>
+					<Label text="seconde vie" styleClass="hero-titre-marron"/>
+				</VBox>
+
+				<Label styleClass="hero-description" wrapText="true" maxWidth="520"
+					   text="Decouvrez des creations uniques realisees par des artisans locaux a partir de materiaux recycles. Chaque piece raconte une histoire."/>
+
+				<HBox spacing="16" alignment="CENTER_LEFT">
+					<Button text="Explorer la galerie" styleClass="btn-explorer"/>
+					<Button text="Nos artisans" styleClass="btn-artisans"/>
+				</HBox>
+
+				<HBox spacing="48" alignment="CENTER_LEFT">
+					<padding><Insets top="16"/></padding>
+					<VBox alignment="CENTER">
+						<Label text="150" styleClass="stat-chiffre"/>
+						<Label text="Artisans" styleClass="stat-label"/>
+					</VBox>
+					<VBox alignment="CENTER">
+						<Label text="2500" styleClass="stat-chiffre"/>
+						<Label text="Creations" styleClass="stat-label"/>
+					</VBox>
+					<VBox alignment="CENTER">
+						<Label text="98" styleClass="stat-chiffre"/>
+						<Label text="98% Satisfaits" styleClass="stat-label"/>
+					</VBox>
+				</HBox>
+			</VBox>
+
+			<StackPane HBox.hgrow="ALWAYS">
+				<Region styleClass="hero-image-placeholder" prefWidth="560" prefHeight="480"/>
+
+				<VBox styleClass="badge-local" alignment="CENTER_LEFT">
+					<padding><Insets top="14" bottom="14" left="20" right="20"/></padding>
+					<HBox spacing="12" alignment="CENTER_LEFT">
+						<Label text="Local" style="-fx-font-size:22px;"/>
+						<VBox>
+							<Label text="100% Local" styleClass="badge-local-titre"/>
+							<Label text="Artisans francais" styleClass="badge-local-sub"/>
+						</VBox>
+					</HBox>
+				</VBox>
+				<StackPane.margin>
+					<Insets/>
+				</StackPane.margin>
+			</StackPane>
+
+		</HBox>
+
+	</VBox>
+</ScrollPane>
+
