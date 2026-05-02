@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.text.Font?>
+
+<VBox prefHeight="750.0" prefWidth="1150.0" style="-fx-background-color: #FDFBF7;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.controllers.AfficherLivraisoncontrollers">
+    <children>
+
+        <HBox alignment="CENTER_LEFT" prefHeight="80.0" style="-fx-background-color: white; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.03), 10, 0, 0, 5);">
+            <children>
+                <Label text="Afk'Art" textFill="#2C1810">
+                    <font>
+                        <Font name="System Bold" size="26.0" />
+                    </font>
+                    <HBox.margin>
+                        <Insets left="60.0" right="40.0" />
+                    </HBox.margin>
+                </Label>
+
+                <HBox spacing="25.0" alignment="CENTER_LEFT">
+                    <children>
+                        <Label style="-fx-cursor: hand;" text="Accueil" textFill="#8D6E63" />
+                        <Label style="-fx-cursor: hand;" text="Blog" textFill="#8D6E63" />
+                        <VBox alignment="CENTER" spacing="5">
+                            <children>
+                                <Label text="Livraisons" textFill="#2C1810" style="-fx-font-weight: bold;" />
+                                <AnchorPane prefHeight="3.0" prefWidth="40.0" style="-fx-background-color: #D4A373; -fx-background-radius: 5;" />
+                            </children>
+                        </VBox>
+                        <Label style="-fx-cursor: hand;" text="Suivi Livraison" textFill="#8D6E63" />
+                        <Label style="-fx-cursor: hand;" text="Produits" textFill="#8D6E63" />
+                        <Label style="-fx-cursor: hand;" text="Propositions" textFill="#8D6E63" />
+                        <Label style="-fx-cursor: hand;" text="Événements" textFill="#8D6E63" />
+                    </children>
+                </HBox>
+            </children>
+        </HBox>
+
+        <VBox spacing="10.0" VBox.vgrow="ALWAYS">
+            <children>
+
+                <HBox alignment="CENTER_LEFT" prefHeight="100.0">
+                    <children>
+                        <VBox alignment="CENTER_LEFT" HBox.hgrow="ALWAYS">
+                            <children>
+                                <Label text="Gestion des Livraisons" textFill="#2C1810">
+                                    <font>
+                                        <Font name="System Bold" size="30.0" />
+                                    </font>
+                                </Label>
+                                <Label text="Suivi et gestion de vos expéditions en temps réel" textFill="#A0856C">
+                                    <font><Font size="13.0" /></font>
+                                </Label>
+                            </children>
+                        </VBox>
+                        <Button mnemonicParsing="false" onAction="#versAjouter" prefHeight="48.0" prefWidth="220.0"
+                                style="-fx-background-color: #A67B5B; -fx-background-radius: 25; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(166, 123, 91, 0.3), 15, 0, 0, 5);"
+                                text="+ AJOUTER UNE LIVRAISON" textFill="WHITE">
+                            <font>
+                                <Font name="System Bold" size="12.0" />
+                            </font>
+                        </Button>
+                    </children>
+                    <padding>
+                        <Insets left="60.0" right="60.0" top="20.0" />
+                    </padding>
+                </HBox>
+
+                <ScrollPane fitToWidth="true" style="-fx-background-color: transparent; -fx-background: transparent; -fx-border-color: transparent;" VBox.vgrow="ALWAYS">
+                    <content>
+                        <VBox fx:id="vboxLivraisons" spacing="20.0" style="-fx-background-color: transparent;">
+                            <padding>
+                                <Insets bottom="40.0" left="60.0" right="60.0" top="10.0" />
+                            </padding>
+                        </VBox>
+                    </content>
+                </ScrollPane>
+
+            </children>
+        </VBox>
+    </children>
+</VBox>
