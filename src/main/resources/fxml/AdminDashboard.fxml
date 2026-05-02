@@ -37,13 +37,14 @@
             <Button fx:id="btnNavDashboard" text="⊞  Dashboard"
                     styleClass="nav-btn,nav-btn-active" maxWidth="Infinity"
                     onAction="#handleNavDashboard"/>
-            <Button text="👥  Utilisateurs"         styleClass="nav-btn" maxWidth="Infinity"/>
+            <Button fx:id="btnNavUsers" text="👥  Utilisateurs" styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavUsers"/>
             <Button fx:id="btnNavProduits" text="♻  Produits recyclables"  styleClass="nav-btn" maxWidth="Infinity"
                     onAction="#handleNavProduits"/>
             <Button fx:id="btnNavPropositions" text="📋  Propositions"  styleClass="nav-btn" maxWidth="Infinity"
                     onAction="#handleNavPropositions"/>
-            <Button text="🚚  Livraisons"            styleClass="nav-btn" maxWidth="Infinity"/>
-            <Button text="🏠  Suivi Livraisons"      styleClass="nav-btn" maxWidth="Infinity"/>
+            <Button fx:id="btnNavLivraisons" text="🚚  Livraisons" styleClass="nav-btn" maxWidth="Infinity"
+                    onAction="#handleNavLivraisons"/>
             <Button fx:id="btnNavReclamations" text="⚠  Réclamations"  styleClass="nav-btn" maxWidth="Infinity"
                     onAction="#handleNavReclamations"/>
             <Button text="🔧  Artisans"              styleClass="nav-btn" maxWidth="Infinity"/>

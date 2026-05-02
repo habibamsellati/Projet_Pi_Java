@@ -68,6 +68,20 @@ public class EmailService {
         return send(emailAdmin, subject, html);
     }
 
+    public boolean envoyerConfirmationInscription(String emailClient, String nomComplet) {
+        if (emailClient == null || emailClient.isBlank()) return false;
+        String subject = "Bienvenue sur AfkArt - Confirmez votre inscription";
+        String html    = buildConfirmationInscriptionHtml(nomComplet, emailClient);
+        return send(emailClient, subject, html);
+    }
+
+    public boolean envoyerCodeVerification(String emailClient, String nomComplet, String code) {
+        if (emailClient == null || emailClient.isBlank()) return false;
+        String subject = "AfkArt — Votre code de vérification : " + code;
+        String html    = buildCodeVerificationHtml(nomComplet, code);
+        return send(emailClient, subject, html);
+    }
+
     public boolean envoyerStatutProposition(String emailClient, String titreProposition,
                                              String nomProduit, String statut, double prix) {
         if (emailClient == null || emailClient.isBlank()) return false;
@@ -87,6 +101,13 @@ public class EmailService {
         if (emailClient == null || emailClient.isBlank()) return false;
         String subject = "Réponse à votre réclamation - AfkArt";
         String html    = buildReponseReclamationHtml(nomClient, titreReclamation, contenuReponse, nomAdmin);
+        return send(emailClient, subject, html);
+    }
+
+    public boolean envoyerCodeReinitialisation(String emailClient, String nomClient, String code) {
+        if (emailClient == null || emailClient.isBlank()) return false;
+        String subject = "Code de réinitialisation du mot de passe - AfkArt";
+        String html = buildPasswordResetHtml(nomClient, code);
         return send(emailClient, subject, html);
     }
 
@@ -191,6 +212,78 @@ public class EmailService {
         return sb.toString();
     }
 
+    private String buildCodeVerificationHtml(String nomComplet, String code) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><body style='font-family:Arial,sans-serif;background:#f6f7fb;padding:24px;color:#2f2f2f;'>");
+        sb.append("<div style='max-width:560px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7ef;'>");
+
+        // Header
+        sb.append("<div style='background:#8D6E63;color:#fff;padding:24px;text-align:center;'>");
+        sb.append("<h1 style='margin:0;font-size:24px;font-family:Georgia;'>AfkArt</h1>");
+        sb.append("</div>");
+
+        // Corps
+        sb.append("<div style='padding:32px 28px;text-align:center;'>");
+        sb.append("<p style='font-size:16px;color:#555;margin:0 0 8px;'>Bonjour <strong>").append(esc(nomComplet)).append("</strong>,</p>");
+        sb.append("<p style='font-size:14px;color:#7a6a5a;margin:0 0 28px;'>Voici votre code de vérification AfkArt :</p>");
+
+        // Code en grand
+        sb.append("<div style='background:#fff8f2;border:2px dashed #c8763a;border-radius:12px;padding:20px 32px;display:inline-block;margin:0 0 24px;'>");
+        sb.append("<span style='font-size:40px;font-weight:bold;letter-spacing:12px;color:#c8763a;font-family:Consolas,monospace;'>");
+        sb.append(esc(code));
+        sb.append("</span>");
+        sb.append("</div>");
+
+        sb.append("<p style='font-size:13px;color:#999;margin:0 0 8px;'>Ce code expire dans <strong>10 minutes</strong>.</p>");
+        sb.append("<p style='font-size:12px;color:#bbb;margin:0;'>Si vous n'avez pas créé de compte AfkArt, ignorez cet email.</p>");
+        sb.append("</div>");
+
+        sb.append("<div style='background:#faf8f5;padding:14px;text-align:center;border-top:1px solid #f0ebe4;'>");
+        sb.append("<p style='font-size:11px;color:#bbb;margin:0;'>© 2026 AfkArt — Marketplace éco-responsable</p>");
+        sb.append("</div>");
+        sb.append("</div></body></html>");
+        return sb.toString();
+    }
+
+    private String buildConfirmationInscriptionHtml(String nomComplet, String email) {
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><body style='font-family:Arial,sans-serif;background:#f6f7fb;padding:24px;color:#2f2f2f;'>");
+        sb.append("<div style='max-width:600px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7ef;'>");
+
+        // Header
+        sb.append("<div style='background:#8D6E63;color:#fff;padding:28px 24px;text-align:center;'>");
+        sb.append("<h1 style='margin:0;font-size:26px;font-family:Georgia;'>AfkArt</h1>");
+        sb.append("<p style='margin:8px 0 0;font-size:14px;opacity:.9;'>L'art qui donne une seconde vie</p>");
+        sb.append("</div>");
+
+        // Corps
+        sb.append("<div style='padding:32px 28px;'>");
+        sb.append("<h2 style='color:#5D4037;font-size:20px;margin:0 0 12px;'>Bienvenue, <strong>").append(esc(nomComplet)).append("</strong> !</h2>");
+        sb.append("<p style='line-height:1.7;color:#555;margin:0 0 16px;'>");
+        sb.append("Votre compte AfkArt a été créé avec succès pour l'adresse <strong>").append(esc(email)).append("</strong>.");
+        sb.append("</p>");
+        sb.append("<p style='line-height:1.7;color:#555;margin:0 0 24px;'>");
+        sb.append("Vous pouvez maintenant vous connecter et découvrir des créations uniques réalisées par nos artisans locaux à partir de matériaux recyclés.");
+        sb.append("</p>");
+
+        // Bouton
+        sb.append("<div style='text-align:center;margin:24px 0;'>");
+        sb.append("<a href='#' style='background:#c8763a;color:#fff;padding:14px 32px;border-radius:24px;");
+        sb.append("text-decoration:none;font-weight:bold;font-size:15px;display:inline-block;'>");
+        sb.append("Se connecter à AfkArt</a>");
+        sb.append("</div>");
+
+        // Séparateur
+        sb.append("<hr style='border:none;border-top:1px solid #f0ebe4;margin:24px 0;'/>");
+
+        sb.append("<p style='font-size:12px;color:#999;text-align:center;margin:0;'>");
+        sb.append("Si vous n'avez pas créé ce compte, ignorez cet email.<br/>");
+        sb.append("© 2026 AfkArt — Marketplace éco-responsable");
+        sb.append("</p>");
+        sb.append("</div></div></body></html>");
+        return sb.toString();
+    }
+
     private String buildStatutPropositionHtml(String titre, String nomProduit, String statut, double prix) {
         String couleur = switch (statut) {
             case "acceptee" -> "#1e8e3e";
@@ -287,6 +380,30 @@ public class EmailService {
         sb.append("</p>");
         sb.append("<p style='font-size:12px;color:#888;word-break:break-all;'>Lien : ").append(esc(url)).append("</p>");
         sb.append("<p>Merci,<br/><strong>Equipe AfkArt</strong></p>");
+        sb.append("</div></div></body></html>");
+        return sb.toString();
+    }
+
+    private String buildPasswordResetHtml(String nomClient, String code) {
+        String nom = nvl(nomClient, "utilisateur");
+        String safeCode = nvl(code, "------");
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("<!DOCTYPE html><html><body style='font-family:Arial,sans-serif;background:#f6f7fb;padding:24px;color:#2f2f2f;'>");
+        sb.append("<div style='max-width:620px;margin:0 auto;background:#fff;border-radius:12px;overflow:hidden;border:1px solid #e5e7ef;'>");
+        sb.append("<div style='background:#c8763a;color:#fff;padding:22px 24px;'>");
+        sb.append("<h1 style='margin:0;font-size:20px;'>Réinitialisation du mot de passe</h1>");
+        sb.append("</div>");
+        sb.append("<div style='padding:24px;'>");
+        sb.append("<p>Bonjour <strong>").append(esc(nom)).append("</strong>,</p>");
+        sb.append("<p>Nous avons reçu une demande de réinitialisation de votre mot de passe AfkArt.</p>");
+        sb.append("<div style='margin:22px 0;padding:18px;text-align:center;background:#fff6f0;border:1px solid #f0dbc9;border-radius:10px;'>");
+        sb.append("<div style='font-size:12px;color:#9a7b67;letter-spacing:1px;text-transform:uppercase;margin-bottom:8px;'>Code de vérification</div>");
+        sb.append("<div style='font-size:30px;font-weight:bold;color:#7b4d39;letter-spacing:6px;'>").append(esc(safeCode)).append("</div>");
+        sb.append("</div>");
+        sb.append("<p>Ce code expire dans <strong>10 minutes</strong>.</p>");
+        sb.append("<p>Si vous n'êtes pas à l'origine de cette demande, vous pouvez ignorer cet email.</p>");
+        sb.append("<p style='margin-top:22px;color:#555;'>Équipe AfkArt</p>");
         sb.append("</div></div></body></html>");
         return sb.toString();
     }

@@ -43,11 +43,14 @@ public class AdminDashboardController {
 
     // ── Boutons sidebar navigation ──
     @FXML private Button btnNavDashboard;
+    @FXML private Button btnNavUsers;
     @FXML private Button btnNavProduits;
     @FXML private Button btnNavPropositions;
     @FXML private Button btnNavReclamations;
     @FXML private Button btnNavArticles;
     @FXML private Button btnNavCommandes;
+    @FXML private Button btnNavLivraisons;
+    @FXML private Button btnNavSuiviLivraisons;
     @FXML private Button btnNavEvenements;
     @FXML private Button btnNavReservations;
 
@@ -366,6 +369,10 @@ public class AdminDashboardController {
         loadSubView("/fxml/AdminProduitsView.fxml", "Produits recyclables", btnNavProduits);
     }
 
+    @FXML void handleNavUsers(ActionEvent e) {
+        loadSubView("/fxml/AdminUsers.fxml", "Gestion des utilisateurs", btnNavUsers);
+    }
+
     @FXML void handleNavPropositions(ActionEvent e) {
         loadSubView("/fxml/AdminPropositionsView.fxml", "Propositions", btnNavPropositions);
     }
@@ -380,6 +387,15 @@ public class AdminDashboardController {
 
     @FXML void handleNavCommandes(ActionEvent e) {
         loadSubView("/fxml/GestionCommandes.fxml", "Commandes", btnNavCommandes);
+    }
+
+    @FXML void handleNavLivraisons(ActionEvent e) {
+        loadSubView("/fxml/GestionLivraisons.fxml", "Gestion des Livraisons", btnNavLivraisons);
+    }
+
+    @FXML void handleNavSuiviLivraisons(ActionEvent e) {
+        // Une seule interface de livraison: suivre redirige vers la meme vue de gestion.
+        loadSubView("/fxml/GestionLivraisons.fxml", "Gestion des Livraisons", btnNavLivraisons);
     }
 
     @FXML void handleNavEvenements(ActionEvent e) {
@@ -404,8 +420,9 @@ public class AdminDashboardController {
     }
 
     private void setSidebarActive(Button active) {
-        Button[] navBtns = {btnNavDashboard, btnNavProduits, btnNavPropositions,
+        Button[] navBtns = {btnNavDashboard, btnNavUsers, btnNavProduits, btnNavPropositions,
                             btnNavReclamations, btnNavArticles, btnNavCommandes,
+                            btnNavLivraisons, btnNavSuiviLivraisons,
                             btnNavEvenements, btnNavReservations};
         for (Button b : navBtns) {
             if (b == null) continue;

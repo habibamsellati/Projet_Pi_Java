@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import org.example.models.Role;
 import org.example.models.User;
 
 public class MainController {
@@ -47,8 +48,15 @@ public class MainController {
 
     @FXML public void goAccueil() { chargerPage("/fxml/AccueilView.fxml"); setActif(btnAccueil); }
     @FXML public void goBlog() { chargerPage("/fxml/BlogView.fxml"); setActif(btnBlog); }
-    @FXML public void goLivraisons() { chargerPage("/fxml/LivraisonsView.fxml"); setActif(btnLivraisons); }
-    @FXML public void goSuiviLivraison() { chargerPage("/fxml/SuiviLivraisonView.fxml"); setActif(btnSuiviLivraison); }
+    @FXML public void goLivraisons() {
+        if (isLivreur()) {
+            chargerPage("/fxml/AjouterLivraison.fxml");
+        } else {
+            chargerPage("/fxml/LivraisonsView.fxml");
+        }
+        setActif(btnLivraisons);
+    }
+    @FXML public void goSuiviLivraison() { chargerPage("/fxml/LivraisonsView.fxml"); setActif(btnSuiviLivraison); }
     @FXML public void goProduits() { chargerPage("/fxml/ProduitsView.fxml"); setActif(btnProduits); }
     @FXML public void goPropositions() { chargerPage("/fxml/PropositionsView.fxml"); setActif(btnPropositions); }
     @FXML public void goEvenements() { chargerPage("/fxml/ModuleEvenementReservation.fxml"); setActif(btnEvenements); }
@@ -84,6 +92,16 @@ public class MainController {
             actif.getStyleClass().remove("nav-btn");
             actif.getStyleClass().add("nav-btn-active");
         }
+    }
+
+    private boolean isLivreur() {
+        User currentUser = org.example.utils.SessionManager.getCurrentUser();
+        if (currentUser != null && currentUser.getRole() == Role.LIVREUR) {
+            return true;
+        }
+        return SessionManager.utilisateurConnecte != null
+                && SessionManager.utilisateurConnecte.role != null
+                && "LIVREUR".equalsIgnoreCase(SessionManager.utilisateurConnecte.role);
     }
 
     @FXML

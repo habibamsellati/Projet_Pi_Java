@@ -1,0 +1,206 @@
+/* ── Login Page — AfkArt ── */
+
+.root {
+    -fx-background-color: #f0ebe4;
+    -fx-font-family: 'Segoe UI', Arial, sans-serif;
+}
+
+/* Navbar */
+.navbar {
+    -fx-background-color: #f0ebe4;
+    -fx-padding: 12 32;
+    -fx-border-color: transparent transparent #e0d8d0 transparent;
+    -fx-border-width: 0 0 1 0;
+}
+
+.logo-text {
+    -fx-font-size: 22;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2430;
+    -fx-font-family: Georgia;
+}
+
+.nav-link {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2f2430;
+    -fx-font-size: 14;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-padding: 8 16;
+}
+
+.nav-link:hover {
+    -fx-text-fill: #8D6E63;
+}
+
+.btn-connexion {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2f2430;
+    -fx-border-color: #2f2430;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-rejoindre {
+    -fx-background-color: #c8763a;
+    -fx-text-fill: white;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 8 20;
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-rejoindre:hover {
+    -fx-background-color: #a85e2a;
+}
+
+/* Formulaire */
+.form-card {
+    -fx-background-color: white;
+    -fx-background-radius: 12;
+    -fx-border-color: #e8e0d8;
+    -fx-border-radius: 12;
+    -fx-border-width: 1;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.08), 12, 0, 0, 4);
+}
+
+.form-title {
+    -fx-font-family: Georgia;
+    -fx-font-size: 26;
+    -fx-text-fill: #8D6E63;
+    -fx-font-weight: bold;
+}
+
+.form-subtitle {
+    -fx-font-size: 13;
+    -fx-text-fill: #9a8a7a;
+}
+
+.field-label {
+    -fx-font-size: 13;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2f2430;
+    -fx-background-color: #f5ede8;
+    -fx-background-radius: 6;
+    -fx-padding: 4 10;
+}
+
+.input-field {
+    -fx-background-color: white;
+    -fx-border-color: #dcd5ce;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 10 16;
+    -fx-font-size: 13;
+    -fx-text-fill: #2f2430;
+    -fx-prompt-text-fill: #b0a090;
+}
+
+.input-field:focused {
+    -fx-border-color: #c8763a;
+    -fx-border-width: 1.5;
+}
+
+.captcha-field {
+    -fx-background-color: white;
+    -fx-border-color: #dcd5ce;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 10 16;
+    -fx-font-size: 13;
+    -fx-prompt-text-fill: #b0a090;
+}
+
+.btn-refresh {
+    -fx-background-color: white;
+    -fx-border-color: #dcd5ce;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 8 12;
+    -fx-font-size: 14;
+    -fx-cursor: hand;
+}
+
+.btn-refresh:hover {
+    -fx-background-color: #f5f0ea;
+}
+
+.btn-login {
+    -fx-background-color: #c8763a;
+    -fx-text-fill: white;
+    -fx-background-radius: 24;
+    -fx-padding: 13 0;
+    -fx-font-size: 15;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-login:hover {
+    -fx-background-color: #a85e2a;
+}
+
+.separator-label {
+    -fx-font-size: 12;
+    -fx-text-fill: #b0a090;
+}
+
+.btn-google {
+    -fx-background-color: white;
+    -fx-text-fill: #2f2430;
+    -fx-border-color: #dcd5ce;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-padding: 11 0;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-google:hover {
+    -fx-background-color: #f5f0ea;
+}
+
+.btn-facebook {
+    -fx-background-color: #e8eeff;
+    -fx-text-fill: #3b5998;
+    -fx-border-color: transparent;
+    -fx-border-radius: 24;
+    -fx-background-radius: 24;
+    -fx-padding: 11 0;
+    -fx-font-size: 14;
+    -fx-font-weight: bold;
+    -fx-cursor: hand;
+}
+
+.btn-facebook:hover {
+    -fx-background-color: #d8e4ff;
+}
+
+.link-forgot {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c8763a;
+    -fx-font-size: 13;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-underline: true;
+}
+
+.link-register {
+    -fx-background-color: transparent;
+    -fx-text-fill: #c8763a;
+    -fx-font-size: 13;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-font-weight: bold;
+}
+
+.error-label {
+    -fx-text-fill: #d93025;
+    -fx-font-size: 12;
+}

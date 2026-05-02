@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Hyperlink?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.PasswordField?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="org.example.controllers.SignupController"
+            prefWidth="1600.0"
+            prefHeight="900.0"
+            stylesheets="@/css/signup.css"
+            styleClass="root">
+
+    <top>
+        <HBox alignment="CENTER_LEFT" prefHeight="72.0" styleClass="header">
+            <children>
+                <Label text="AfkArt" styleClass="logo"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="Accueil" styleClass="nav-btn-flat"/>
+                <Button text="Connexion" onAction="#handleRetourLogin" styleClass="nav-btn-outline"/>
+                <Button text="Rejoindre" styleClass="nav-btn-primary"/>
+            </children>
+            <padding>
+                <Insets top="12" right="42" bottom="12" left="42"/>
+            </padding>
+        </HBox>
+    </top>
+
+    <center>
+        <StackPane alignment="CENTER">
+            <children>
+                <VBox alignment="TOP_LEFT" spacing="10.0" maxWidth="470.0" styleClass="card">
+                    <padding>
+                        <Insets top="30" right="34" bottom="24" left="34"/>
+                    </padding>
+
+                    <Label text="Créer un compte" styleClass="title"/>
+                    <Label text="Rejoignez AfkArt et découvrez l'art qui donne une seconde vie"
+                           wrapText="true"
+                           styleClass="subtitle"/>
+
+                    <Label text="Nom" styleClass="field-label"/>
+                    <TextField fx:id="tfNom" promptText="Entrez votre nom" styleClass="input"/>
+
+                    <Label text="Prénom" styleClass="field-label"/>
+                    <TextField fx:id="tfPrenom" promptText="Entrez votre prénom" styleClass="input"/>
+
+                    <Label text="Email" styleClass="field-label"/>
+                    <TextField fx:id="tfEmail" promptText="Entrez votre email" styleClass="input"/>
+
+                    <Label text="Mot de passe" styleClass="field-label"/>
+                    <PasswordField fx:id="pfMotDePasse" promptText="Au moins 6 caractères" styleClass="input"/>
+
+                    <Label text="Sexe" styleClass="field-label"/>
+                    <ComboBox fx:id="cbSexe" promptText="Sélectionner le sexe" styleClass="combo-box-custom"/>
+
+                    <HBox alignment="CENTER_LEFT" spacing="10" styleClass="info-box">
+                        <children>
+                            <ImageView fx:id="imgAvatarPreview" fitWidth="54" fitHeight="54" preserveRatio="true" smooth="true" styleClass="avatar-preview"/>
+                            <VBox spacing="4">
+                                <children>
+                                    <Label text="Avatar généré automatiquement" styleClass="field-label"/>
+                                    <Label text="L'avatar change selon votre nom, email et sexe."
+                                           wrapText="true"
+                                           styleClass="info-text"/>
+                                </children>
+                            </VBox>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button text="↻" onAction="#handleRefreshAvatar" styleClass="nav-btn-outline"/>
+                        </children>
+                    </HBox>
+
+                    <Label text="Rôle" styleClass="field-label"/>
+                    <ComboBox fx:id="cbRole" promptText="Sélectionner le rôle" styleClass="combo-box-custom"/>
+
+                    <Label fx:id="lblMessage"
+                           wrapText="true"
+                           maxWidth="400"
+                           styleClass="message-label"/>
+
+                    <Button text="S'inscrire"
+                            onAction="#handleInscription"
+                            maxWidth="Infinity"
+                            styleClass="btn-primary"/>
+
+                    <HBox alignment="CENTER" spacing="4">
+                        <children>
+                            <Label text="Vous avez déjà un compte ?" styleClass="bottom-text"/>
+                            <Hyperlink text="Se connecter" onAction="#handleRetourLogin" styleClass="signup-link"/>
+                        </children>
+                    </HBox>
+                </VBox>
+            </children>
+        </StackPane>
+    </center>
+</BorderPane>

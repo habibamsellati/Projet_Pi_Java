@@ -55,5 +55,34 @@ public class AuthService {
             }
         }
     }
+
+    /**
+     * Connexion via Google — cherche l'utilisateur par email
+     * sans vérification de mot de passe (OAuth simulé).
+     * Fonctionne pour les comptes avec oauth_provider='google' ET les comptes normaux.
+     */
+    public User loginAvecGoogle(String email) throws SQLException {
+        if (email == null || email.isBlank()) return null;
+
+        // Chercher dans la table user (BD Java piprojet1)
+        String sql = "SELECT id, nom, prenom, email, role FROM `user` " +
+                     "WHERE email = ? AND deleted_at IS NULL LIMIT 1";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setString(1, email.trim().toLowerCase());
+            try (ResultSet rs = ps.executeQuery()) {
+                if (!rs.next()) return null;
+
+                Role role = Role.fromDatabaseValue(rs.getString("role"));
+
+                User user = new User();
+                user.setId(rs.getInt("id"));
+                user.setNom(rs.getString("nom"));
+                user.setPrenom(rs.getString("prenom"));
+                user.setEmail(rs.getString("email"));
+                user.setRole(role);
+                return user;
+            }
+        }
+    }
 }
 

@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox spacing="20" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.AdminUsersController"
+      stylesheets="@/css/admin-users.css"
+      styleClass="users-root">
+
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="14">
+        <children>
+            <VBox spacing="5">
+                <children>
+                    <Label text="Gestion des Utilisateurs" styleClass="page-title"/>
+                    <Label text="Liste et gestion des comptes utilisateurs" styleClass="page-subtitle"/>
+                </children>
+            </VBox>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button text="Ajouter un utilisateur" onAction="#handleCreerUtilisateur" styleClass="orange-btn"/>
+        </children>
+    </HBox>
+
+    <HBox spacing="14" alignment="CENTER_LEFT" styleClass="toolbar-box">
+        <children>
+            <TextField fx:id="tfSearch"
+                       promptText="Rechercher par nom, prénom, email ou rôle..."
+                       styleClass="filter-field"/>
+            <Button text="Rechercher" onAction="#handleSearch" styleClass="dark-btn"/>
+            <Button text="Actualiser" onAction="#handleRefresh" styleClass="light-btn"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Button fx:id="btnDesactiver" text="Désactiver" onAction="#handleDesactiver" styleClass="danger-btn"/>
+        </children>
+    </HBox>
+
+    <VBox spacing="0" styleClass="table-card" VBox.vgrow="ALWAYS">
+        <children>
+            <HBox alignment="CENTER_LEFT" styleClass="table-header-box">
+                <children>
+                    <Label text="Comptes actifs" styleClass="table-title"/>
+                    <Region HBox.hgrow="ALWAYS"/>
+                    <Label text="Vue administrateur" styleClass="table-chip"/>
+                </children>
+            </HBox>
+
+            <TableView fx:id="tableUsers" VBox.vgrow="ALWAYS" styleClass="users-table">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="70"/>
+                    <TableColumn fx:id="colNom" text="Nom" prefWidth="150"/>
+                    <TableColumn fx:id="colPrenom" text="Prénom" prefWidth="150"/>
+                    <TableColumn fx:id="colEmail" text="Email" prefWidth="260"/>
+                    <TableColumn fx:id="colRole" text="Rôle" prefWidth="140"/>
+                    <TableColumn fx:id="colStatut" text="Statut" prefWidth="130"/>
+                    <TableColumn fx:id="colDateCreation" text="Créé le" prefWidth="190"/>
+                </columns>
+            </TableView>
+        </children>
+    </VBox>
+</VBox>
+

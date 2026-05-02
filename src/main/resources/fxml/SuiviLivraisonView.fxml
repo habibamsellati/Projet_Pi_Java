@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<VBox xmlns="http://javafx.com/javafx/17"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="org.example.controllers.MesLivraisonsController"
+      spacing="14"
+      style="-fx-background-color:#f5f0e8;">
+
+    <padding>
+        <Insets top="22" right="24" bottom="24" left="24"/>
+    </padding>
+
+    <HBox alignment="CENTER_LEFT" spacing="10">
+        <Label fx:id="lblTitre" text="Suivi Livraison" style="-fx-font-size:56; -fx-font-family: Georgia; -fx-font-weight:bold; -fx-text-fill:#2f2430;"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button fx:id="btnAjouter" text="+ AJOUTER UNE LIVRAISON" onAction="#handleAjouter"
+                style="-fx-background-color:#A67B5B; -fx-text-fill:white; -fx-font-weight:bold; -fx-background-radius:26; -fx-padding:12 24;"/>
+    </HBox>
+
+    <Label text="Suivi et gestion de vos expeditions en temps reel" style="-fx-text-fill:#8D6E63; -fx-font-size:28;"/>
+
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="tfRecherche" promptText="Rechercher une livraison..." HBox.hgrow="ALWAYS"
+                   style="-fx-background-radius:18; -fx-padding: 10 16;"/>
+        <Button text="Rafraichir" onAction="#handleRafraichir"/>
+        <Label text="Total:" style="-fx-font-size:16; -fx-text-fill:#6b6b6b;"/>
+        <Label fx:id="lblCount" text="0" style="-fx-font-size:20; -fx-font-weight:bold; -fx-text-fill:#5C3A1E;"/>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" style="-fx-background-color:transparent; -fx-background:transparent; -fx-border-color: transparent;">
+        <content>
+            <VBox fx:id="vboxLivraisons" spacing="16" style="-fx-background-color:transparent;">
+                <padding>
+                    <Insets top="8" right="4" bottom="40" left="4"/>
+                </padding>
+            </VBox>
+        </content>
+    </ScrollPane>
+</VBox>
+
