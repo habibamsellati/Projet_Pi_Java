@@ -218,7 +218,7 @@ CREATE DATABASE afkart;
 Configurer les paramètres de connexion :
 
 ```java
-DB_URL=jdbc:mysql://localhost:3306/afkart
+DB_URL=jdbc:mysql://localhost:3306/pi_projet
 DB_USER=root
 DB_PASSWORD=password
 ```
